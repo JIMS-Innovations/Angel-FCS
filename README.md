@@ -26,17 +26,28 @@
 ## 🗂️ Project Structure
 
 ```plaintext
-AngelFC/
-├── Core/               → CubeMX-generated STM32 HAL/Startup code
-├── Drivers/
-│   └── MyDrivers/      → Custom sensor drivers (e.g. MPU6050, MPL3115A2)
-├── App/
-│   ├── Tasks/          → FreeRTOS tasks (SensorTask, ControlTask, USBTask, etc.)
-│   └── Inc/            → Shared interfaces and structs (e.g. sensor_types.h)
-├── Middlewares/        → Optional third-party libraries
-├── USB/                → USB CDC and DFU handling
-├── README.md           → Project documentation (this file)
-└── AngelFC.ioc         → STM32CubeMX configuration file
+Angel-FC/
+├── App
+│   ├── Config
+│   ├── Middleware
+│   ├── Tasks
+│   └── Utils
+├── build
+├── config
+├── Core
+│   ├── Inc
+│   └── Src
+├── Docs
+├── Drivers
+│   ├── CMSIS
+│   ├── MyDrivers
+│   └── STM32F4xx_HAL_Driver
+├── Middlewares
+│   ├── ST
+│   └── Third_Party
+└── USB_DEVICE
+    ├── App
+    └── Target
 ```
 
 ---
