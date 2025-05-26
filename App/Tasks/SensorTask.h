@@ -18,7 +18,7 @@
 
 /* Public API */
 void SensorTask_Init(void);
-bool SensorTask_GetIMU(IMU_Data_t *imu_out, TickType_t timeout);
+void SensorTask_GetIMU(IMU_Data_t *imu_out);
 
 #endif/*SENSOR_TASK_H*/
 

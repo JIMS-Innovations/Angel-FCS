@@ -164,13 +164,13 @@ void USBTask_Run(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    if(SensorTask_GetIMU(&imu, pdMS_TO_TICKS(5)))
-    {
-      char buffer[128];
-      snprintf(buffer, 128, "[IMU] Gyro(deg/s) >> X:%.2f, Y:%.2f, Z:%.2f | Acc(m/s2) >> X:%.2f, Y:%.2f, Z:%.2f\r\n", imu.gyro[0], imu.gyro[1],
-        imu.gyro[2], imu.accel[0], imu.accel[1], imu.accel[2]);
-      CDC_Transmit_FS(buffer, strlen(buffer));
-    }
+    SensorTask_GetIMU(&imu);
+    
+    char buffer[128];
+    snprintf(buffer, 128, "[IMU] Gyro(deg/s) >> X:%.2f, Y:%.2f, Z:%.2f | Acc(m/s2) >> X:%.2f, Y:%.2f, Z:%.2f\r\n", imu.gyro[0], imu.gyro[1],
+      imu.gyro[2], imu.accel[0], imu.accel[1], imu.accel[2]);
+    CDC_Transmit_FS(buffer, strlen(buffer));
+
     osDelay(50);
   }
   /* USER CODE END USBTask_Run */

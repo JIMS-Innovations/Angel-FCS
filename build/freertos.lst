@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 1
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 1
   13:Core/Src/freertos.c ****   * in the root directory of this software component.
   14:Core/Src/freertos.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
   15:Core/Src/freertos.c ****   *
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 2
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 2
 
 
   16:Core/Src/freertos.c ****   ******************************************************************************
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 1
   70:Core/Src/freertos.c **** /* GetTimerTaskMemory prototype (linked to static allocation support) */
   71:Core/Src/freertos.c **** void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTa
   72:Core/Src/freertos.c **** 
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 3
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 3
 
 
   73:Core/Src/freertos.c **** /* Hook prototypes */
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 1
  127:Core/Src/freertos.c ****   /* USER CODE END RTOS_SEMAPHORES */
  128:Core/Src/freertos.c **** 
  129:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_TIMERS */
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 4
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 4
 
 
  130:Core/Src/freertos.c ****   /* start timers, add new ones, ... */
@@ -228,393 +228,379 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 1
   49              		.loc 1 160 3 is_stmt 1 view .LVU2
   50 0004 FFF7FEFF 		bl	MX_USB_DEVICE_Init
   51              	.LVL1:
-  52              		.loc 1 160 3 is_stmt 0 view .LVU3
-  53 0008 2CE0     		b	.L3
-  54              	.L5:
-  55              	.LBB2:
+  52              	.L2:
  161:Core/Src/freertos.c ****   /* USER CODE BEGIN USBTask_Run */
  162:Core/Src/freertos.c ****   IMU_Data_t imu;
+  53              		.loc 1 162 3 view .LVU3
  163:Core/Src/freertos.c **** 
  164:Core/Src/freertos.c ****   /* Infinite loop */
  165:Core/Src/freertos.c ****   for(;;)
+  54              		.loc 1 165 3 view .LVU4
+  55              	.LBB2:
  166:Core/Src/freertos.c ****   {
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 5
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 5
 
 
- 167:Core/Src/freertos.c ****     if(SensorTask_GetIMU(&imu, pdMS_TO_TICKS(5)))
- 168:Core/Src/freertos.c ****     {
- 169:Core/Src/freertos.c ****       char buffer[128];
-  56              		.loc 1 169 7 is_stmt 1 view .LVU4
- 170:Core/Src/freertos.c ****       snprintf(buffer, 128, "[IMU] Gyro(deg/s) >> X:%.2f, Y:%.2f, Z:%.2f | Acc(m/s2) >> X:%.2f, Y:%
-  57              		.loc 1 170 7 view .LVU5
-  58 000a 2F98     		ldr	r0, [sp, #188]	@ float
-  59 000c FFF7FEFF 		bl	__aeabi_f2d
-  60              	.LVL2:
-  61 0010 CDE90A01 		strd	r0, [sp, #40]
-  62 0014 2E98     		ldr	r0, [sp, #184]	@ float
-  63 0016 FFF7FEFF 		bl	__aeabi_f2d
+ 167:Core/Src/freertos.c ****     SensorTask_GetIMU(&imu);
+  56              		.loc 1 167 5 view .LVU5
+  57 0008 2DA8     		add	r0, sp, #180
+  58 000a FFF7FEFF 		bl	SensorTask_GetIMU
+  59              	.LVL2:
+ 168:Core/Src/freertos.c ****     
+ 169:Core/Src/freertos.c ****     char buffer[128];
+  60              		.loc 1 169 5 view .LVU6
+ 170:Core/Src/freertos.c ****     snprintf(buffer, 128, "[IMU] Gyro(deg/s) >> X:%.2f, Y:%.2f, Z:%.2f | Acc(m/s2) >> X:%.2f, Y:%.2
+  61              		.loc 1 170 5 view .LVU7
+  62 000e 2F98     		ldr	r0, [sp, #188]	@ float
+  63 0010 FFF7FEFF 		bl	__aeabi_f2d
   64              	.LVL3:
-  65 001a CDE90801 		strd	r0, [sp, #32]
-  66 001e 2D98     		ldr	r0, [sp, #180]	@ float
-  67 0020 FFF7FEFF 		bl	__aeabi_f2d
+  65 0014 CDE90A01 		strd	r0, [sp, #40]
+  66 0018 2E98     		ldr	r0, [sp, #184]	@ float
+  67 001a FFF7FEFF 		bl	__aeabi_f2d
   68              	.LVL4:
-  69 0024 CDE90601 		strd	r0, [sp, #24]
-  70 0028 3298     		ldr	r0, [sp, #200]	@ float
-  71 002a FFF7FEFF 		bl	__aeabi_f2d
+  69 001e CDE90801 		strd	r0, [sp, #32]
+  70 0022 2D98     		ldr	r0, [sp, #180]	@ float
+  71 0024 FFF7FEFF 		bl	__aeabi_f2d
   72              	.LVL5:
-  73 002e CDE90401 		strd	r0, [sp, #16]
-  74 0032 3198     		ldr	r0, [sp, #196]	@ float
-  75 0034 FFF7FEFF 		bl	__aeabi_f2d
+  73 0028 CDE90601 		strd	r0, [sp, #24]
+  74 002c 3298     		ldr	r0, [sp, #200]	@ float
+  75 002e FFF7FEFF 		bl	__aeabi_f2d
   76              	.LVL6:
-  77 0038 CDE90201 		strd	r0, [sp, #8]
-  78 003c 3098     		ldr	r0, [sp, #192]	@ float
-  79 003e FFF7FEFF 		bl	__aeabi_f2d
+  77 0032 CDE90401 		strd	r0, [sp, #16]
+  78 0036 3198     		ldr	r0, [sp, #196]	@ float
+  79 0038 FFF7FEFF 		bl	__aeabi_f2d
   80              	.LVL7:
-  81 0042 CDE90001 		strd	r0, [sp]
-  82 0046 0B4A     		ldr	r2, .L6
-  83 0048 8021     		movs	r1, #128
-  84 004a 0DA8     		add	r0, sp, #52
-  85 004c FFF7FEFF 		bl	snprintf
-  86              	.LVL8:
- 171:Core/Src/freertos.c ****         imu.gyro[2], imu.accel[0], imu.accel[1], imu.accel[2]);
- 172:Core/Src/freertos.c ****       CDC_Transmit_FS(buffer, strlen(buffer));
-  87              		.loc 1 172 7 view .LVU6
-  88              		.loc 1 172 31 is_stmt 0 view .LVU7
-  89 0050 0DA8     		add	r0, sp, #52
-  90 0052 FFF7FEFF 		bl	strlen
-  91              	.LVL9:
-  92              		.loc 1 172 7 discriminator 1 view .LVU8
-  93 0056 81B2     		uxth	r1, r0
-  94 0058 0DA8     		add	r0, sp, #52
-  95 005a FFF7FEFF 		bl	CDC_Transmit_FS
-  96              	.LVL10:
-  97              	.L2:
-  98              	.LBE2:
- 173:Core/Src/freertos.c ****     }
+  81 003c CDE90201 		strd	r0, [sp, #8]
+  82 0040 3098     		ldr	r0, [sp, #192]	@ float
+  83 0042 FFF7FEFF 		bl	__aeabi_f2d
+  84              	.LVL8:
+  85 0046 CDE90001 		strd	r0, [sp]
+  86 004a 084A     		ldr	r2, .L4
+  87 004c 8021     		movs	r1, #128
+  88 004e 0DA8     		add	r0, sp, #52
+  89 0050 FFF7FEFF 		bl	snprintf
+  90              	.LVL9:
+ 171:Core/Src/freertos.c ****       imu.gyro[2], imu.accel[0], imu.accel[1], imu.accel[2]);
+ 172:Core/Src/freertos.c ****     CDC_Transmit_FS(buffer, strlen(buffer));
+  91              		.loc 1 172 5 view .LVU8
+  92              		.loc 1 172 29 is_stmt 0 view .LVU9
+  93 0054 0DA8     		add	r0, sp, #52
+  94 0056 FFF7FEFF 		bl	strlen
+  95              	.LVL10:
+  96              		.loc 1 172 5 discriminator 1 view .LVU10
+  97 005a 81B2     		uxth	r1, r0
+  98 005c 0DA8     		add	r0, sp, #52
+  99 005e FFF7FEFF 		bl	CDC_Transmit_FS
+ 100              	.LVL11:
+ 173:Core/Src/freertos.c **** 
  174:Core/Src/freertos.c ****     osDelay(50);
-  99              		.loc 1 174 5 is_stmt 1 view .LVU9
- 100 005e 3220     		movs	r0, #50
- 101 0060 FFF7FEFF 		bl	osDelay
- 102              	.LVL11:
- 165:Core/Src/freertos.c ****   {
- 103              		.loc 1 165 3 view .LVU10
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 6
+ 101              		.loc 1 174 5 is_stmt 1 view .LVU11
+ 102 0062 3220     		movs	r0, #50
+ 103 0064 FFF7FEFF 		bl	osDelay
+ 104              	.LVL12:
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 6
 
 
- 104              	.L3:
- 162:Core/Src/freertos.c **** 
- 105              		.loc 1 162 3 view .LVU11
+ 105              	.LBE2:
  165:Core/Src/freertos.c ****   {
  106              		.loc 1 165 3 view .LVU12
- 167:Core/Src/freertos.c ****     {
- 107              		.loc 1 167 5 view .LVU13
- 167:Core/Src/freertos.c ****     {
- 108              		.loc 1 167 8 is_stmt 0 view .LVU14
- 109 0064 0521     		movs	r1, #5
- 110 0066 2DA8     		add	r0, sp, #180
- 111 0068 FFF7FEFF 		bl	SensorTask_GetIMU
- 112              	.LVL12:
- 167:Core/Src/freertos.c ****     {
- 113              		.loc 1 167 7 discriminator 1 view .LVU15
- 114 006c 0028     		cmp	r0, #0
- 115 006e CCD1     		bne	.L5
- 116 0070 F5E7     		b	.L2
- 117              	.L7:
- 118 0072 00BF     		.align	2
- 119              	.L6:
- 120 0074 00000000 		.word	.LC2
- 121              		.cfi_endproc
- 122              	.LFE753:
- 124              		.section	.text.vApplicationStackOverflowHook,"ax",%progbits
- 125              		.align	1
- 126              		.weak	vApplicationStackOverflowHook
- 127              		.syntax unified
- 128              		.thumb
- 129              		.thumb_func
- 131              	vApplicationStackOverflowHook:
- 132              	.LVL13:
- 133              	.LFB749:
+ 107 0068 CEE7     		b	.L2
+ 108              	.L5:
+ 109 006a 00BF     		.align	2
+ 110              	.L4:
+ 111 006c 00000000 		.word	.LC2
+ 112              		.cfi_endproc
+ 113              	.LFE753:
+ 115              		.section	.text.vApplicationStackOverflowHook,"ax",%progbits
+ 116              		.align	1
+ 117              		.weak	vApplicationStackOverflowHook
+ 118              		.syntax unified
+ 119              		.thumb
+ 120              		.thumb_func
+ 122              	vApplicationStackOverflowHook:
+ 123              	.LVL13:
+ 124              	.LFB749:
   78:Core/Src/freertos.c ****    /* Run time stack overflow checking is performed if
- 134              		.loc 1 78 1 is_stmt 1 view -0
- 135              		.cfi_startproc
- 136              		@ args = 0, pretend = 0, frame = 0
- 137              		@ frame_needed = 0, uses_anonymous_args = 0
- 138              		@ link register save eliminated.
+ 125              		.loc 1 78 1 view -0
+ 126              		.cfi_startproc
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129              		@ link register save eliminated.
   82:Core/Src/freertos.c **** /* USER CODE END 4 */
- 139              		.loc 1 82 1 view .LVU17
- 140 0000 7047     		bx	lr
- 141              		.cfi_endproc
- 142              	.LFE749:
- 144              		.section	.text.vApplicationGetIdleTaskMemory,"ax",%progbits
- 145              		.align	1
- 146              		.global	vApplicationGetIdleTaskMemory
- 147              		.syntax unified
- 148              		.thumb
- 149              		.thumb_func
- 151              	vApplicationGetIdleTaskMemory:
- 152              	.LVL14:
- 153              	.LFB750:
+ 130              		.loc 1 82 1 view .LVU14
+ 131 0000 7047     		bx	lr
+ 132              		.cfi_endproc
+ 133              	.LFE749:
+ 135              		.section	.text.vApplicationGetIdleTaskMemory,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	vApplicationGetIdleTaskMemory
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	vApplicationGetIdleTaskMemory:
+ 143              	.LVL14:
+ 144              	.LFB750:
   90:Core/Src/freertos.c ****   *ppxIdleTaskTCBBuffer = &xIdleTaskTCBBuffer;
- 154              		.loc 1 90 1 view -0
- 155              		.cfi_startproc
- 156              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 7
+ 145              		.loc 1 90 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+  91:Core/Src/freertos.c ****   *ppxIdleTaskStackBuffer = &xIdleStack[0];
+ 150              		.loc 1 91 3 view .LVU16
+  91:Core/Src/freertos.c ****   *ppxIdleTaskStackBuffer = &xIdleStack[0];
+ 151              		.loc 1 91 25 is_stmt 0 view .LVU17
+ 152 0000 034B     		ldr	r3, .L8
+ 153 0002 0360     		str	r3, [r0]
+  92:Core/Src/freertos.c ****   *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+ 154              		.loc 1 92 3 is_stmt 1 view .LVU18
+  92:Core/Src/freertos.c ****   *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+ 155              		.loc 1 92 27 is_stmt 0 view .LVU19
+ 156 0004 034B     		ldr	r3, .L8+4
+ 157 0006 0B60     		str	r3, [r1]
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 7
 
 
- 157              		@ frame_needed = 0, uses_anonymous_args = 0
- 158              		@ link register save eliminated.
-  91:Core/Src/freertos.c ****   *ppxIdleTaskStackBuffer = &xIdleStack[0];
- 159              		.loc 1 91 3 view .LVU19
-  91:Core/Src/freertos.c ****   *ppxIdleTaskStackBuffer = &xIdleStack[0];
- 160              		.loc 1 91 25 is_stmt 0 view .LVU20
- 161 0000 034B     		ldr	r3, .L10
- 162 0002 0360     		str	r3, [r0]
-  92:Core/Src/freertos.c ****   *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
- 163              		.loc 1 92 3 is_stmt 1 view .LVU21
-  92:Core/Src/freertos.c ****   *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
- 164              		.loc 1 92 27 is_stmt 0 view .LVU22
- 165 0004 034B     		ldr	r3, .L10+4
- 166 0006 0B60     		str	r3, [r1]
   93:Core/Src/freertos.c ****   /* place for user code */
- 167              		.loc 1 93 3 is_stmt 1 view .LVU23
+ 158              		.loc 1 93 3 is_stmt 1 view .LVU20
   93:Core/Src/freertos.c ****   /* place for user code */
- 168              		.loc 1 93 25 is_stmt 0 view .LVU24
- 169 0008 8023     		movs	r3, #128
- 170 000a 1360     		str	r3, [r2]
+ 159              		.loc 1 93 25 is_stmt 0 view .LVU21
+ 160 0008 8023     		movs	r3, #128
+ 161 000a 1360     		str	r3, [r2]
   95:Core/Src/freertos.c **** /* USER CODE END GET_IDLE_TASK_MEMORY */
- 171              		.loc 1 95 1 view .LVU25
- 172 000c 7047     		bx	lr
- 173              	.L11:
- 174 000e 00BF     		.align	2
- 175              	.L10:
- 176 0010 00000000 		.word	xIdleTaskTCBBuffer
- 177 0014 00000000 		.word	xIdleStack
- 178              		.cfi_endproc
- 179              	.LFE750:
- 181              		.section	.text.vApplicationGetTimerTaskMemory,"ax",%progbits
- 182              		.align	1
- 183              		.global	vApplicationGetTimerTaskMemory
- 184              		.syntax unified
- 185              		.thumb
- 186              		.thumb_func
- 188              	vApplicationGetTimerTaskMemory:
- 189              	.LVL15:
- 190              	.LFB751:
+ 162              		.loc 1 95 1 view .LVU22
+ 163 000c 7047     		bx	lr
+ 164              	.L9:
+ 165 000e 00BF     		.align	2
+ 166              	.L8:
+ 167 0010 00000000 		.word	xIdleTaskTCBBuffer
+ 168 0014 00000000 		.word	xIdleStack
+ 169              		.cfi_endproc
+ 170              	.LFE750:
+ 172              		.section	.text.vApplicationGetTimerTaskMemory,"ax",%progbits
+ 173              		.align	1
+ 174              		.global	vApplicationGetTimerTaskMemory
+ 175              		.syntax unified
+ 176              		.thumb
+ 177              		.thumb_func
+ 179              	vApplicationGetTimerTaskMemory:
+ 180              	.LVL15:
+ 181              	.LFB751:
  103:Core/Src/freertos.c ****   *ppxTimerTaskTCBBuffer = &xTimerTaskTCBBuffer;
- 191              		.loc 1 103 1 is_stmt 1 view -0
- 192              		.cfi_startproc
- 193              		@ args = 0, pretend = 0, frame = 0
- 194              		@ frame_needed = 0, uses_anonymous_args = 0
- 195              		@ link register save eliminated.
+ 182              		.loc 1 103 1 is_stmt 1 view -0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
  104:Core/Src/freertos.c ****   *ppxTimerTaskStackBuffer = &xTimerStack[0];
- 196              		.loc 1 104 3 view .LVU27
+ 187              		.loc 1 104 3 view .LVU24
  104:Core/Src/freertos.c ****   *ppxTimerTaskStackBuffer = &xTimerStack[0];
- 197              		.loc 1 104 26 is_stmt 0 view .LVU28
- 198 0000 034B     		ldr	r3, .L13
- 199 0002 0360     		str	r3, [r0]
+ 188              		.loc 1 104 26 is_stmt 0 view .LVU25
+ 189 0000 034B     		ldr	r3, .L11
+ 190 0002 0360     		str	r3, [r0]
  105:Core/Src/freertos.c ****   *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
- 200              		.loc 1 105 3 is_stmt 1 view .LVU29
+ 191              		.loc 1 105 3 is_stmt 1 view .LVU26
  105:Core/Src/freertos.c ****   *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
- 201              		.loc 1 105 28 is_stmt 0 view .LVU30
- 202 0004 034B     		ldr	r3, .L13+4
- 203 0006 0B60     		str	r3, [r1]
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 8
-
-
+ 192              		.loc 1 105 28 is_stmt 0 view .LVU27
+ 193 0004 034B     		ldr	r3, .L11+4
+ 194 0006 0B60     		str	r3, [r1]
  106:Core/Src/freertos.c ****   /* place for user code */
- 204              		.loc 1 106 3 is_stmt 1 view .LVU31
+ 195              		.loc 1 106 3 is_stmt 1 view .LVU28
  106:Core/Src/freertos.c ****   /* place for user code */
- 205              		.loc 1 106 26 is_stmt 0 view .LVU32
- 206 0008 4FF48073 		mov	r3, #256
- 207 000c 1360     		str	r3, [r2]
+ 196              		.loc 1 106 26 is_stmt 0 view .LVU29
+ 197 0008 4FF48073 		mov	r3, #256
+ 198 000c 1360     		str	r3, [r2]
  108:Core/Src/freertos.c **** /* USER CODE END GET_TIMER_TASK_MEMORY */
- 208              		.loc 1 108 1 view .LVU33
- 209 000e 7047     		bx	lr
- 210              	.L14:
- 211              		.align	2
- 212              	.L13:
- 213 0010 00000000 		.word	xTimerTaskTCBBuffer
- 214 0014 00000000 		.word	xTimerStack
- 215              		.cfi_endproc
- 216              	.LFE751:
- 218              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
- 219              		.align	1
- 220              		.global	MX_FREERTOS_Init
- 221              		.syntax unified
- 222              		.thumb
- 223              		.thumb_func
- 225              	MX_FREERTOS_Init:
- 226              	.LFB752:
+ 199              		.loc 1 108 1 view .LVU30
+ 200 000e 7047     		bx	lr
+ 201              	.L12:
+ 202              		.align	2
+ 203              	.L11:
+ 204 0010 00000000 		.word	xTimerTaskTCBBuffer
+ 205 0014 00000000 		.word	xTimerStack
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 8
+
+
+ 206              		.cfi_endproc
+ 207              	.LFE751:
+ 209              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
+ 210              		.align	1
+ 211              		.global	MX_FREERTOS_Init
+ 212              		.syntax unified
+ 213              		.thumb
+ 214              		.thumb_func
+ 216              	MX_FREERTOS_Init:
+ 217              	.LFB752:
  116:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
- 227              		.loc 1 116 29 is_stmt 1 view -0
- 228              		.cfi_startproc
- 229              		@ args = 0, pretend = 0, frame = 32
- 230              		@ frame_needed = 0, uses_anonymous_args = 0
- 231 0000 10B5     		push	{r4, lr}
- 232              	.LCFI2:
- 233              		.cfi_def_cfa_offset 8
- 234              		.cfi_offset 4, -8
- 235              		.cfi_offset 14, -4
- 236 0002 88B0     		sub	sp, sp, #32
- 237              	.LCFI3:
- 238              		.cfi_def_cfa_offset 40
+ 218              		.loc 1 116 29 is_stmt 1 view -0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 32
+ 221              		@ frame_needed = 0, uses_anonymous_args = 0
+ 222 0000 10B5     		push	{r4, lr}
+ 223              	.LCFI2:
+ 224              		.cfi_def_cfa_offset 8
+ 225              		.cfi_offset 4, -8
+ 226              		.cfi_offset 14, -4
+ 227 0002 88B0     		sub	sp, sp, #32
+ 228              	.LCFI3:
+ 229              		.cfi_def_cfa_offset 40
  139:Core/Src/freertos.c ****   USBTaskHandle = osThreadCreate(osThread(USBTask), NULL);
- 239              		.loc 1 139 3 view .LVU35
- 240 0004 0DF1040C 		add	ip, sp, #4
- 241 0008 084C     		ldr	r4, .L17
- 242 000a 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
- 243 000c ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
- 244 0010 94E80700 		ldm	r4, {r0, r1, r2}
- 245 0014 8CE80700 		stm	ip, {r0, r1, r2}
+ 230              		.loc 1 139 3 view .LVU32
+ 231 0004 0DF1040C 		add	ip, sp, #4
+ 232 0008 084C     		ldr	r4, .L15
+ 233 000a 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 234 000c ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 235 0010 94E80700 		ldm	r4, {r0, r1, r2}
+ 236 0014 8CE80700 		stm	ip, {r0, r1, r2}
  140:Core/Src/freertos.c **** 
- 246              		.loc 1 140 3 view .LVU36
+ 237              		.loc 1 140 3 view .LVU33
  140:Core/Src/freertos.c **** 
- 247              		.loc 1 140 19 is_stmt 0 view .LVU37
- 248 0018 0021     		movs	r1, #0
- 249 001a 01A8     		add	r0, sp, #4
- 250 001c FFF7FEFF 		bl	osThreadCreate
- 251              	.LVL16:
+ 238              		.loc 1 140 19 is_stmt 0 view .LVU34
+ 239 0018 0021     		movs	r1, #0
+ 240 001a 01A8     		add	r0, sp, #4
+ 241 001c FFF7FEFF 		bl	osThreadCreate
+ 242              	.LVL16:
  140:Core/Src/freertos.c **** 
- 252              		.loc 1 140 17 discriminator 1 view .LVU38
- 253 0020 034B     		ldr	r3, .L17+4
- 254 0022 1860     		str	r0, [r3]
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 9
-
-
+ 243              		.loc 1 140 17 discriminator 1 view .LVU35
+ 244 0020 034B     		ldr	r3, .L15+4
+ 245 0022 1860     		str	r0, [r3]
  143:Core/Src/freertos.c **** 
- 255              		.loc 1 143 3 is_stmt 1 view .LVU39
- 256 0024 FFF7FEFF 		bl	SensorTask_Init
- 257              	.LVL17:
+ 246              		.loc 1 143 3 is_stmt 1 view .LVU36
+ 247 0024 FFF7FEFF 		bl	SensorTask_Init
+ 248              	.LVL17:
  148:Core/Src/freertos.c **** 
- 258              		.loc 1 148 1 is_stmt 0 view .LVU40
- 259 0028 08B0     		add	sp, sp, #32
- 260              	.LCFI4:
- 261              		.cfi_def_cfa_offset 8
- 262              		@ sp needed
- 263 002a 10BD     		pop	{r4, pc}
- 264              	.L18:
- 265              		.align	2
- 266              	.L17:
- 267 002c 00000000 		.word	.LANCHOR0
- 268 0030 00000000 		.word	USBTaskHandle
- 269              		.cfi_endproc
- 270              	.LFE752:
- 272              		.section	.rodata.str1.4,"aMS",%progbits,1
- 273              		.align	2
- 274              	.LC0:
- 275 0000 55534254 		.ascii	"USBTask\000"
- 275      61736B00 
- 276              		.section	.bss.xTimerStack,"aw",%nobits
- 277              		.align	2
- 280              	xTimerStack:
- 281 0000 00000000 		.space	1024
- 281      00000000 
- 281      00000000 
- 281      00000000 
- 281      00000000 
- 282              		.section	.bss.xTimerTaskTCBBuffer,"aw",%nobits
- 283              		.align	3
- 286              	xTimerTaskTCBBuffer:
- 287 0000 00000000 		.space	384
- 287      00000000 
- 287      00000000 
- 287      00000000 
- 287      00000000 
- 288              		.section	.bss.xIdleStack,"aw",%nobits
- 289              		.align	2
- 292              	xIdleStack:
- 293 0000 00000000 		.space	512
- 293      00000000 
- 293      00000000 
- 293      00000000 
- 293      00000000 
- 294              		.section	.bss.xIdleTaskTCBBuffer,"aw",%nobits
- 295              		.align	3
- 298              	xIdleTaskTCBBuffer:
- 299 0000 00000000 		.space	384
- 299      00000000 
- 299      00000000 
- 299      00000000 
- 299      00000000 
- 300              		.global	USBTaskHandle
- 301              		.section	.bss.USBTaskHandle,"aw",%nobits
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 10
+ 249              		.loc 1 148 1 is_stmt 0 view .LVU37
+ 250 0028 08B0     		add	sp, sp, #32
+ 251              	.LCFI4:
+ 252              		.cfi_def_cfa_offset 8
+ 253              		@ sp needed
+ 254 002a 10BD     		pop	{r4, pc}
+ 255              	.L16:
+ 256              		.align	2
+ 257              	.L15:
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 9
 
 
- 302              		.align	2
- 305              	USBTaskHandle:
- 306 0000 00000000 		.space	4
- 307              		.section	.rodata
- 308              		.align	2
- 309              		.set	.LANCHOR0,. + 0
- 310              	.LC3:
- 311 0000 00000000 		.word	.LC0
- 312 0004 00000000 		.word	USBTask_Run
- 313 0008 0200     		.short	2
- 314 000a 0000     		.space	2
- 315 000c 00000000 		.word	0
- 316 0010 00020000 		.word	512
- 317 0014 00000000 		.word	0
- 318 0018 00000000 		.word	0
- 319              		.text
- 320              	.Letext0:
- 321              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
- 322              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 323              		.file 4 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 324              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
- 325              		.file 6 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_types.h"
- 326              		.file 7 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/reent.h"
- 327              		.file 8 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/lock.h"
- 328              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
- 329              		.file 10 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 330              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
- 331              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
- 332              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
- 333              		.file 14 "App/Config/sensor_types.h"
- 334              		.file 15 "USB_DEVICE/App/usbd_cdc_if.h"
- 335              		.file 16 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/string.h"
- 336              		.file 17 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
- 337              		.file 18 "App/Tasks/SensorTask.h"
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s 			page 11
+ 258 002c 00000000 		.word	.LANCHOR0
+ 259 0030 00000000 		.word	USBTaskHandle
+ 260              		.cfi_endproc
+ 261              	.LFE752:
+ 263              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 264              		.align	2
+ 265              	.LC0:
+ 266 0000 55534254 		.ascii	"USBTask\000"
+ 266      61736B00 
+ 267              		.section	.bss.xTimerStack,"aw",%nobits
+ 268              		.align	2
+ 271              	xTimerStack:
+ 272 0000 00000000 		.space	1024
+ 272      00000000 
+ 272      00000000 
+ 272      00000000 
+ 272      00000000 
+ 273              		.section	.bss.xTimerTaskTCBBuffer,"aw",%nobits
+ 274              		.align	3
+ 277              	xTimerTaskTCBBuffer:
+ 278 0000 00000000 		.space	384
+ 278      00000000 
+ 278      00000000 
+ 278      00000000 
+ 278      00000000 
+ 279              		.section	.bss.xIdleStack,"aw",%nobits
+ 280              		.align	2
+ 283              	xIdleStack:
+ 284 0000 00000000 		.space	512
+ 284      00000000 
+ 284      00000000 
+ 284      00000000 
+ 284      00000000 
+ 285              		.section	.bss.xIdleTaskTCBBuffer,"aw",%nobits
+ 286              		.align	3
+ 289              	xIdleTaskTCBBuffer:
+ 290 0000 00000000 		.space	384
+ 290      00000000 
+ 290      00000000 
+ 290      00000000 
+ 290      00000000 
+ 291              		.global	USBTaskHandle
+ 292              		.section	.bss.USBTaskHandle,"aw",%nobits
+ 293              		.align	2
+ 296              	USBTaskHandle:
+ 297 0000 00000000 		.space	4
+ 298              		.section	.rodata
+ 299              		.align	2
+ 300              		.set	.LANCHOR0,. + 0
+ 301              	.LC3:
+ 302 0000 00000000 		.word	.LC0
+ 303 0004 00000000 		.word	USBTask_Run
+ 304 0008 0200     		.short	2
+ 305 000a 0000     		.space	2
+ 306 000c 00000000 		.word	0
+ 307 0010 00020000 		.word	512
+ 308 0014 00000000 		.word	0
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 10
+
+
+ 309 0018 00000000 		.word	0
+ 310              		.text
+ 311              	.Letext0:
+ 312              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
+ 313              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 314              		.file 4 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 315              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 316              		.file 6 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_types.h"
+ 317              		.file 7 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/reent.h"
+ 318              		.file 8 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/lock.h"
+ 319              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 320              		.file 10 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 321              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
+ 322              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
+ 323              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 324              		.file 14 "App/Config/sensor_types.h"
+ 325              		.file 15 "USB_DEVICE/App/usbd_cdc_if.h"
+ 326              		.file 16 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/string.h"
+ 327              		.file 17 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/stdio.h"
+ 328              		.file 18 "App/Tasks/SensorTask.h"
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 freertos.c
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:21     .rodata.USBTask_Run.str1.4:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:27     .text.USBTask_Run:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:33     .text.USBTask_Run:00000000 USBTask_Run
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:120    .text.USBTask_Run:00000074 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:125    .text.vApplicationStackOverflowHook:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:131    .text.vApplicationStackOverflowHook:00000000 vApplicationStackOverflowHook
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:145    .text.vApplicationGetIdleTaskMemory:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:151    .text.vApplicationGetIdleTaskMemory:00000000 vApplicationGetIdleTaskMemory
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:176    .text.vApplicationGetIdleTaskMemory:00000010 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:298    .bss.xIdleTaskTCBBuffer:00000000 xIdleTaskTCBBuffer
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:292    .bss.xIdleStack:00000000 xIdleStack
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:182    .text.vApplicationGetTimerTaskMemory:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:188    .text.vApplicationGetTimerTaskMemory:00000000 vApplicationGetTimerTaskMemory
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:213    .text.vApplicationGetTimerTaskMemory:00000010 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:286    .bss.xTimerTaskTCBBuffer:00000000 xTimerTaskTCBBuffer
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:280    .bss.xTimerStack:00000000 xTimerStack
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:219    .text.MX_FREERTOS_Init:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:225    .text.MX_FREERTOS_Init:00000000 MX_FREERTOS_Init
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:267    .text.MX_FREERTOS_Init:0000002c $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:305    .bss.USBTaskHandle:00000000 USBTaskHandle
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:273    .rodata.str1.4:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:277    .bss.xTimerStack:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:283    .bss.xTimerTaskTCBBuffer:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:289    .bss.xIdleStack:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:295    .bss.xIdleTaskTCBBuffer:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:302    .bss.USBTaskHandle:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccaw20pl.s:308    .rodata:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:21     .rodata.USBTask_Run.str1.4:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:27     .text.USBTask_Run:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:33     .text.USBTask_Run:00000000 USBTask_Run
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:111    .text.USBTask_Run:0000006c $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:116    .text.vApplicationStackOverflowHook:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:122    .text.vApplicationStackOverflowHook:00000000 vApplicationStackOverflowHook
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:136    .text.vApplicationGetIdleTaskMemory:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:142    .text.vApplicationGetIdleTaskMemory:00000000 vApplicationGetIdleTaskMemory
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:167    .text.vApplicationGetIdleTaskMemory:00000010 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:289    .bss.xIdleTaskTCBBuffer:00000000 xIdleTaskTCBBuffer
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:283    .bss.xIdleStack:00000000 xIdleStack
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:173    .text.vApplicationGetTimerTaskMemory:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:179    .text.vApplicationGetTimerTaskMemory:00000000 vApplicationGetTimerTaskMemory
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:204    .text.vApplicationGetTimerTaskMemory:00000010 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:277    .bss.xTimerTaskTCBBuffer:00000000 xTimerTaskTCBBuffer
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:271    .bss.xTimerStack:00000000 xTimerStack
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:210    .text.MX_FREERTOS_Init:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:216    .text.MX_FREERTOS_Init:00000000 MX_FREERTOS_Init
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:258    .text.MX_FREERTOS_Init:0000002c $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:296    .bss.USBTaskHandle:00000000 USBTaskHandle
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:264    .rodata.str1.4:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:268    .bss.xTimerStack:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:274    .bss.xTimerTaskTCBBuffer:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:280    .bss.xIdleStack:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:286    .bss.xIdleTaskTCBBuffer:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:293    .bss.USBTaskHandle:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccNwjZAf.s:299    .rodata:00000000 $d
 
 UNDEFINED SYMBOLS
 __aeabi_f2d
 MX_USB_DEVICE_Init
+SensorTask_GetIMU
 snprintf
 strlen
 CDC_Transmit_FS
 osDelay
-SensorTask_GetIMU
 osThreadCreate
 SensorTask_Init

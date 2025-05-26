@@ -24,7 +24,8 @@ osThreadDef(SensorTask, SensorTask_Run, osPriorityNormal, 0, 256);
 
 /* Task Variables */
 static osThreadId SensorTaskHandle;
-static QueueHandle_t imuQueue;
+static SemaphoreHandle_t imuMutex;
+static IMU_Data_t imu_data;
 
 void SensorTask_Init(void)
 {
@@ -34,8 +35,8 @@ void SensorTask_Init(void)
     /* Create task */
     SensorTaskHandle = osThreadCreate(osThread(SensorTask), NULL);
 
-    /* Create queue */
-    imuQueue = xQueueCreate(IMU_QUEUE_LENGTH, sizeof(IMU_Data_t));
+    /* Create mutex */
+    imuMutex = xSemaphoreCreateMutex();
     
 }
 
@@ -47,10 +48,11 @@ void SensorTask_Run(void *arg)
     {
         if(MPU6050_Read(&imu))
         {
-            imu.has_mag = false;
-            imu.has_temp = true;
-
-            xQueueSend(imuQueue, &imu, 0);
+            xSemaphoreTake(imuMutex, portMAX_DELAY);
+            imu_data = imu;
+            imu_data.has_mag = false;
+            imu_data.has_temp = true;
+            xSemaphoreGive(imuMutex);
         }
 
         osDelay(10);
@@ -58,8 +60,11 @@ void SensorTask_Run(void *arg)
     
 }
 
-bool SensorTask_GetIMU(IMU_Data_t *imu_out, TickType_t timeout)
+void SensorTask_GetIMU(IMU_Data_t *imu_out)
 {
-    return(xQueueReceive(imuQueue, imu_out, timeout) == pdPASS);
+    if (xSemaphoreTake(imuMutex, portMAX_DELAY)) {
+        *imu_out = imu_data;
+        xSemaphoreGive(imuMutex);
+    }
 }
 
