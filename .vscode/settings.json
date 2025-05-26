@@ -1,0 +1,9 @@
+{
+    "C_Cpp.default.compileCommands": [
+
+        ""
+    ],
+    "files.associations": {
+        "sensortask.h": "c"
+    }
+}

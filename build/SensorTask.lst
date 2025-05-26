@@ -1,0 +1,353 @@
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"SensorTask.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "App/Tasks/SensorTask.c"
+  20              		.section	.text.SensorTask_Run,"ax",%progbits
+  21              		.align	1
+  22              		.global	SensorTask_Run
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	SensorTask_Run:
+  28              	.LFB746:
+   1:App/Tasks/SensorTask.c **** /**
+   2:App/Tasks/SensorTask.c ****  * @file SensorTask.c
+   3:App/Tasks/SensorTask.c ****  * @author Jesutofunmi Kupoluyi (jimsufficiency@gmail.com)
+   4:App/Tasks/SensorTask.c ****  * @brief 
+   5:App/Tasks/SensorTask.c ****  * @version 0.1
+   6:App/Tasks/SensorTask.c ****  * @date 2025-05-25
+   7:App/Tasks/SensorTask.c ****  * 
+   8:App/Tasks/SensorTask.c ****  * @copyright Copyright (c) 2025
+   9:App/Tasks/SensorTask.c ****  * 
+  10:App/Tasks/SensorTask.c ****  */
+  11:App/Tasks/SensorTask.c **** 
+  12:App/Tasks/SensorTask.c **** #include "SensorTask.h"
+  13:App/Tasks/SensorTask.c **** #include "imu_mpu6050.h"
+  14:App/Tasks/SensorTask.c **** #include "main.h"
+  15:App/Tasks/SensorTask.c **** #include "i2c.h"
+  16:App/Tasks/SensorTask.c **** 
+  17:App/Tasks/SensorTask.c **** #define IMU_QUEUE_LENGTH 10
+  18:App/Tasks/SensorTask.c **** 
+  19:App/Tasks/SensorTask.c **** /* Task prototype */
+  20:App/Tasks/SensorTask.c **** void SensorTask_Run(void *arg);
+  21:App/Tasks/SensorTask.c **** 
+  22:App/Tasks/SensorTask.c **** /* Task Configuration */
+  23:App/Tasks/SensorTask.c **** osThreadDef(SensorTask, SensorTask_Run, osPriorityNormal, 0, 256);
+  24:App/Tasks/SensorTask.c **** 
+  25:App/Tasks/SensorTask.c **** /* Task Variables */
+  26:App/Tasks/SensorTask.c **** static osThreadId SensorTaskHandle;
+  27:App/Tasks/SensorTask.c **** static QueueHandle_t imuQueue;
+  28:App/Tasks/SensorTask.c **** 
+  29:App/Tasks/SensorTask.c **** void SensorTask_Init(void)
+  30:App/Tasks/SensorTask.c **** {
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s 			page 2
+
+
+  31:App/Tasks/SensorTask.c ****     /* Initialise MPU6050 */
+  32:App/Tasks/SensorTask.c ****     MPU6050_Init(&hi2c1);
+  33:App/Tasks/SensorTask.c **** 
+  34:App/Tasks/SensorTask.c ****     /* Create task */
+  35:App/Tasks/SensorTask.c ****     SensorTaskHandle = osThreadCreate(osThread(SensorTask), NULL);
+  36:App/Tasks/SensorTask.c **** 
+  37:App/Tasks/SensorTask.c ****     /* Create queue */
+  38:App/Tasks/SensorTask.c ****     imuQueue = xQueueCreate(IMU_QUEUE_LENGTH, sizeof(IMU_Data_t));
+  39:App/Tasks/SensorTask.c ****     
+  40:App/Tasks/SensorTask.c **** }
+  41:App/Tasks/SensorTask.c **** 
+  42:App/Tasks/SensorTask.c **** void SensorTask_Run(void *arg)
+  43:App/Tasks/SensorTask.c **** {
+  29              		.loc 1 43 1 view -0
+  30              		.cfi_startproc
+  31              		@ Volatile: function does not return.
+  32              		@ args = 0, pretend = 0, frame = 48
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35              		.loc 1 43 1 is_stmt 0 view .LVU1
+  36 0000 00B5     		push	{lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 4
+  39              		.cfi_offset 14, -4
+  40 0002 8DB0     		sub	sp, sp, #52
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 56
+  43 0004 0EE0     		b	.L3
+  44              	.LVL1:
+  45              	.L5:
+  44:App/Tasks/SensorTask.c ****     IMU_Data_t imu;
+  45:App/Tasks/SensorTask.c **** 
+  46:App/Tasks/SensorTask.c ****     while (1)
+  47:App/Tasks/SensorTask.c ****     {
+  48:App/Tasks/SensorTask.c ****         if(MPU6050_Read(&imu))
+  49:App/Tasks/SensorTask.c ****         {
+  50:App/Tasks/SensorTask.c ****             imu.has_mag = false;
+  46              		.loc 1 50 13 is_stmt 1 view .LVU2
+  47              		.loc 1 50 25 is_stmt 0 view .LVU3
+  48 0006 0022     		movs	r2, #0
+  49 0008 8DF82C20 		strb	r2, [sp, #44]
+  51:App/Tasks/SensorTask.c ****             imu.has_temp = true;
+  50              		.loc 1 51 13 is_stmt 1 view .LVU4
+  51              		.loc 1 51 26 is_stmt 0 view .LVU5
+  52 000c 0123     		movs	r3, #1
+  53 000e 8DF82D30 		strb	r3, [sp, #45]
+  52:App/Tasks/SensorTask.c **** 
+  53:App/Tasks/SensorTask.c ****             xQueueSend(imuQueue, &imu, 0);
+  54              		.loc 1 53 13 is_stmt 1 view .LVU6
+  55 0012 1346     		mov	r3, r2
+  56 0014 01A9     		add	r1, sp, #4
+  57 0016 0648     		ldr	r0, .L6
+  58 0018 0068     		ldr	r0, [r0]
+  59 001a FFF7FEFF 		bl	xQueueGenericSend
+  60              	.LVL2:
+  61              	.L2:
+  54:App/Tasks/SensorTask.c ****         }
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s 			page 3
+
+
+  55:App/Tasks/SensorTask.c **** 
+  56:App/Tasks/SensorTask.c ****         osDelay(10);
+  62              		.loc 1 56 9 view .LVU7
+  63 001e 0A20     		movs	r0, #10
+  64 0020 FFF7FEFF 		bl	osDelay
+  65              	.LVL3:
+  46:App/Tasks/SensorTask.c ****     {
+  66              		.loc 1 46 11 view .LVU8
+  67              	.L3:
+  44:App/Tasks/SensorTask.c **** 
+  68              		.loc 1 44 5 view .LVU9
+  46:App/Tasks/SensorTask.c ****     {
+  69              		.loc 1 46 5 view .LVU10
+  48:App/Tasks/SensorTask.c ****         {
+  70              		.loc 1 48 9 view .LVU11
+  48:App/Tasks/SensorTask.c ****         {
+  71              		.loc 1 48 12 is_stmt 0 view .LVU12
+  72 0024 01A8     		add	r0, sp, #4
+  73 0026 FFF7FEFF 		bl	MPU6050_Read
+  74              	.LVL4:
+  48:App/Tasks/SensorTask.c ****         {
+  75              		.loc 1 48 11 discriminator 1 view .LVU13
+  76 002a 0028     		cmp	r0, #0
+  77 002c EBD1     		bne	.L5
+  78 002e F6E7     		b	.L2
+  79              	.L7:
+  80              		.align	2
+  81              	.L6:
+  82 0030 00000000 		.word	imuQueue
+  83              		.cfi_endproc
+  84              	.LFE746:
+  86              		.section	.text.SensorTask_Init,"ax",%progbits
+  87              		.align	1
+  88              		.global	SensorTask_Init
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	SensorTask_Init:
+  94              	.LFB745:
+  30:App/Tasks/SensorTask.c ****     /* Initialise MPU6050 */
+  95              		.loc 1 30 1 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99 0000 08B5     		push	{r3, lr}
+ 100              	.LCFI2:
+ 101              		.cfi_def_cfa_offset 8
+ 102              		.cfi_offset 3, -8
+ 103              		.cfi_offset 14, -4
+  32:App/Tasks/SensorTask.c **** 
+ 104              		.loc 1 32 5 view .LVU15
+ 105 0002 0848     		ldr	r0, .L10
+ 106 0004 FFF7FEFF 		bl	MPU6050_Init
+ 107              	.LVL5:
+  35:App/Tasks/SensorTask.c **** 
+ 108              		.loc 1 35 5 view .LVU16
+  35:App/Tasks/SensorTask.c **** 
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s 			page 4
+
+
+ 109              		.loc 1 35 24 is_stmt 0 view .LVU17
+ 110 0008 0021     		movs	r1, #0
+ 111 000a 0748     		ldr	r0, .L10+4
+ 112 000c FFF7FEFF 		bl	osThreadCreate
+ 113              	.LVL6:
+  35:App/Tasks/SensorTask.c **** 
+ 114              		.loc 1 35 22 discriminator 1 view .LVU18
+ 115 0010 064B     		ldr	r3, .L10+8
+ 116 0012 1860     		str	r0, [r3]
+  38:App/Tasks/SensorTask.c ****     
+ 117              		.loc 1 38 5 is_stmt 1 view .LVU19
+  38:App/Tasks/SensorTask.c ****     
+ 118              		.loc 1 38 16 is_stmt 0 view .LVU20
+ 119 0014 0022     		movs	r2, #0
+ 120 0016 2C21     		movs	r1, #44
+ 121 0018 0A20     		movs	r0, #10
+ 122 001a FFF7FEFF 		bl	xQueueGenericCreate
+ 123              	.LVL7:
+  38:App/Tasks/SensorTask.c ****     
+ 124              		.loc 1 38 14 discriminator 1 view .LVU21
+ 125 001e 044B     		ldr	r3, .L10+12
+ 126 0020 1860     		str	r0, [r3]
+  40:App/Tasks/SensorTask.c **** 
+ 127              		.loc 1 40 1 view .LVU22
+ 128 0022 08BD     		pop	{r3, pc}
+ 129              	.L11:
+ 130              		.align	2
+ 131              	.L10:
+ 132 0024 00000000 		.word	hi2c1
+ 133 0028 00000000 		.word	os_thread_def_SensorTask
+ 134 002c 00000000 		.word	SensorTaskHandle
+ 135 0030 00000000 		.word	imuQueue
+ 136              		.cfi_endproc
+ 137              	.LFE745:
+ 139              		.section	.text.SensorTask_GetIMU,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	SensorTask_GetIMU
+ 142              		.syntax unified
+ 143              		.thumb
+ 144              		.thumb_func
+ 146              	SensorTask_GetIMU:
+ 147              	.LVL8:
+ 148              	.LFB747:
+  57:App/Tasks/SensorTask.c ****     }
+  58:App/Tasks/SensorTask.c ****     
+  59:App/Tasks/SensorTask.c **** }
+  60:App/Tasks/SensorTask.c **** 
+  61:App/Tasks/SensorTask.c **** bool SensorTask_GetIMU(IMU_Data_t *imu_out, TickType_t timeout)
+  62:App/Tasks/SensorTask.c **** {
+ 149              		.loc 1 62 1 is_stmt 1 view -0
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 0
+ 152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 153              		.loc 1 62 1 is_stmt 0 view .LVU24
+ 154 0000 08B5     		push	{r3, lr}
+ 155              	.LCFI3:
+ 156              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s 			page 5
+
+
+ 157              		.cfi_offset 3, -8
+ 158              		.cfi_offset 14, -4
+ 159 0002 0A46     		mov	r2, r1
+  63:App/Tasks/SensorTask.c ****     return(xQueueReceive(imuQueue, imu_out, timeout) == pdPASS);
+ 160              		.loc 1 63 5 is_stmt 1 view .LVU25
+ 161              		.loc 1 63 12 is_stmt 0 view .LVU26
+ 162 0004 0146     		mov	r1, r0
+ 163              	.LVL9:
+ 164              		.loc 1 63 12 view .LVU27
+ 165 0006 044B     		ldr	r3, .L14
+ 166 0008 1868     		ldr	r0, [r3]
+ 167              	.LVL10:
+ 168              		.loc 1 63 12 view .LVU28
+ 169 000a FFF7FEFF 		bl	xQueueReceive
+ 170              	.LVL11:
+  64:App/Tasks/SensorTask.c **** }
+ 171              		.loc 1 64 1 view .LVU29
+ 172 000e 0128     		cmp	r0, #1
+ 173 0010 14BF     		ite	ne
+ 174 0012 0020     		movne	r0, #0
+ 175 0014 0120     		moveq	r0, #1
+ 176 0016 08BD     		pop	{r3, pc}
+ 177              	.L15:
+ 178              		.align	2
+ 179              	.L14:
+ 180 0018 00000000 		.word	imuQueue
+ 181              		.cfi_endproc
+ 182              	.LFE747:
+ 184              		.section	.bss.imuQueue,"aw",%nobits
+ 185              		.align	2
+ 188              	imuQueue:
+ 189 0000 00000000 		.space	4
+ 190              		.section	.bss.SensorTaskHandle,"aw",%nobits
+ 191              		.align	2
+ 194              	SensorTaskHandle:
+ 195 0000 00000000 		.space	4
+ 196              		.global	os_thread_def_SensorTask
+ 197              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 198              		.align	2
+ 199              	.LC0:
+ 200 0000 53656E73 		.ascii	"SensorTask\000"
+ 200      6F725461 
+ 200      736B00
+ 201              		.section	.rodata.os_thread_def_SensorTask,"a"
+ 202              		.align	2
+ 205              	os_thread_def_SensorTask:
+ 206 0000 00000000 		.word	.LC0
+ 207 0004 00000000 		.word	SensorTask_Run
+ 208 0008 0000     		.short	0
+ 209 000a 0000     		.space	2
+ 210 000c 00000000 		.word	0
+ 211 0010 00010000 		.word	256
+ 212 0014 00000000 		.word	0
+ 213 0018 00000000 		.word	0
+ 214              		.text
+ 215              	.Letext0:
+ 216              		.file 2 "App/Config/sensor_types.h"
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s 			page 6
+
+
+ 217              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 218              		.file 4 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 219              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 220              		.file 6 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
+ 221              		.file 7 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_types.h"
+ 222              		.file 8 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/reent.h"
+ 223              		.file 9 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/lock.h"
+ 224              		.file 10 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 225              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 226              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 227              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 228              		.file 14 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 229              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 230              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 231              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 232              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
+ 233              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
+ 234              		.file 20 "Core/Inc/i2c.h"
+ 235              		.file 21 "Drivers/MyDrivers/imu_mpu6050.h"
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 SensorTask.c
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:21     .text.SensorTask_Run:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:27     .text.SensorTask_Run:00000000 SensorTask_Run
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:82     .text.SensorTask_Run:00000030 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:188    .bss.imuQueue:00000000 imuQueue
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:87     .text.SensorTask_Init:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:93     .text.SensorTask_Init:00000000 SensorTask_Init
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:132    .text.SensorTask_Init:00000024 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:205    .rodata.os_thread_def_SensorTask:00000000 os_thread_def_SensorTask
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:194    .bss.SensorTaskHandle:00000000 SensorTaskHandle
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:140    .text.SensorTask_GetIMU:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:146    .text.SensorTask_GetIMU:00000000 SensorTask_GetIMU
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:180    .text.SensorTask_GetIMU:00000018 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:185    .bss.imuQueue:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:191    .bss.SensorTaskHandle:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:198    .rodata.str1.4:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccH3JRCN.s:202    .rodata.os_thread_def_SensorTask:00000000 $d
+
+UNDEFINED SYMBOLS
+xQueueGenericSend
+osDelay
+MPU6050_Read
+MPU6050_Init
+osThreadCreate
+xQueueGenericCreate
+hi2c1
+xQueueReceive
