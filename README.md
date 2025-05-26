@@ -112,4 +112,4 @@ This project is licensed under the EULA License.
 ## 👤 Author
 
 **Jesutofunmi Kupoluyi**  
-Embedded Systems Engineer | Drone & Robotics Developer
+Embedded Systems Engineer
