@@ -19,6 +19,7 @@
 /* Public API */
 void SensorTask_Init(void);
 void SensorTask_GetIMU(IMU_Data_t *imu_out);
+void SensorTask_GetBaro(Barometer_Data_t *baro_out);
 
 #endif/*SENSOR_TASK_H*/
 
