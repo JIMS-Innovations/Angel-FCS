@@ -101,9 +101,9 @@ bool MPU6050_Read(IMU_Data_t *data)
     else
     {
         /* Combine raw values */
-        data_16[0] = (data_8[0] << 8 | data_8[1]); // X-axis
-        data_16[1] = (data_8[2] << 8 | data_8[3]); // Y-axis
-        data_16[2] = (data_8[4] << 8 | data_8[5]); // Z-axis
+        data_16[0] = (data_8[0] << 8 | data_8[1]); // Angular velocity around X-axis (RAW)
+        data_16[1] = (data_8[2] << 8 | data_8[3]); // Angular velocity around Y-axis (RAW)
+        data_16[2] = (data_8[4] << 8 | data_8[5]); // Angular velocity around Z-axis (RAW)
 
 #ifdef USE_GYRO_DEGS
         /* Convert values to deg/s */
@@ -111,10 +111,10 @@ bool MPU6050_Read(IMU_Data_t *data)
         data->gyro[1] = RAW_TO_DEGS * data_16[1];
         data->gyro[2] = RAW_TO_DEGS * data_16[2];
 #else
-        /* Convert values to rad/s */
-        data->gyro[0] = RAW_TO_RADS * data_16[0];
-        data->gyro[1] = RAW_TO_RADS * data_16[1];
-        data->gyro[2] = RAW_TO_RADS * data_16[2];
+        /* Convert values to rad/s and coordinates to NED */
+        data->gyro[0] = RAW_TO_RADS * data_16[1];   // Y (RAW) now X (IMU)
+        data->gyro[1] = RAW_TO_RADS * data_16[0];   // X (RAW) now Y (IMU)
+        data->gyro[2] = -RAW_TO_RADS * data_16[2];  // Inverse Z (RAW) now Z (IMU)
 #endif
 
     }
@@ -125,14 +125,14 @@ bool MPU6050_Read(IMU_Data_t *data)
     else
     {
         /* Combine raw values */
-        data_16[0] = (data_8[0] << 8 | data_8[1]); // X-axis
-        data_16[1] = (data_8[2] << 8 | data_8[3]); // Y-axis
-        data_16[2] = (data_8[4] << 8 | data_8[5]); // Z-axis
+        data_16[0] = (data_8[0] << 8 | data_8[1]);  // X-axis (RAW)
+        data_16[1] = (data_8[2] << 8 | data_8[3]);  // Y-axis (RAW)
+        data_16[2] = (data_8[4] << 8 | data_8[5]);  // Z-axis (RAW)
 
-        /* Convert values to ms/2 */
-        data->accel[0] = RAW_TO_MS2 * data_16[0];
-        data->accel[1] = RAW_TO_MS2 * data_16[1];
-        data->accel[2] = RAW_TO_MS2 * data_16[2];
+        /* Convert values to ms/2 and coordinates to NED */
+        data->accel[0] = -RAW_TO_MS2 * data_16[1];  // Inverse Y (RAW) now X (IMU)
+        data->accel[1] = -RAW_TO_MS2 * data_16[0];  // Inverse X (RAW) now Y (IMU)
+        data->accel[2] = -RAW_TO_MS2 * data_16[2];  // Inverse Z (RAW) now Z (IMU)
     }
 
     /* Read temperature data */

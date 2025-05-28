@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
   29:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c ****  * Implementation of functions defined in portable.h for the ARM CM4F port.
   30:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c ****  *----------------------------------------------------------*/
   31:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 2
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 2
 
 
   32:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /* Scheduler includes. */
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
   86:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** #define portASPEN_AND_LSPEN_BITS			( 0x3UL << 30UL )
   87:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
   88:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /* Constants required to set up the initial stack. */
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 3
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 3
 
 
   89:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** #define portINITIAL_XPSR					( 0x01000000 )
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  143:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  144:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /* Each task maintains its own interrupt status in the critical nesting
  145:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** variable. */
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 4
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 4
 
 
  146:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** static UBaseType_t uxCriticalNesting = 0xaaaaaaaa;
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  200:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	*pxTopOfStack = ( StackType_t ) portTASK_RETURN_ADDRESS;	/* LR */
  201:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  202:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* Save code space by skipping register initialisation. */
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 5
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 5
 
 
  203:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	pxTopOfStack -= 5;	/* R12, R3, R2 and R1. */
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
    9:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  * the Software, and to permit persons to whom the Software is furnished to do so,
   10:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  * subject to the following conditions:
   11:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  *
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 6
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 6
 
 
   12:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  * The above copyright notice and this permission notice shall be included in all
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
   66:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	/* 32-bit tick type on a 32-bit architecture, so reads of the tick count do
   67:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	not need to be guarded with a critical section. */
   68:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	#define portTICK_TYPE_IS_ATOMIC 1
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 7
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 7
 
 
   69:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** #endif
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  123:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** #ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
  124:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	#define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
  125:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** #endif
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 8
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 8
 
 
  126:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
@@ -478,7 +478,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  180:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	}
  181:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	else
  182:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	{
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 9
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 9
 
 
  183:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 		xReturn = pdTRUE;
@@ -538,7 +538,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
   87              		.syntax unified
   88              	.LBE34:
   89              	.LBE33:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 10
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 10
 
 
  229:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	while( ulDummy == 0 )
@@ -598,7 +598,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  256:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 					"pxCurrentTCBConst2: .word pxCurrentTCB				\n"
  257:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				);
  258:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 11
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 11
 
 
  259:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
@@ -658,7 +658,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  150              		.thumb_func
  152              	vPortEnableVFP:
  153              	.LFB16:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 12
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 12
 
 
  282:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
@@ -718,7 +718,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  336:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			from the hardware. */
  337:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			configASSERT( ( portMAX_PRIGROUP_BITS - ulMaxPRIGROUPValue ) == __NVIC_PRIO_BITS );
  338:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 13
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 13
 
 
  339:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		#endif
@@ -778,7 +778,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  393:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
  394:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  395:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** void vPortEndScheduler( void )
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 14
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 14
 
 
  396:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** {
@@ -838,7 +838,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  450:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"	stmdb sp!, {r0, r3}					\n"
  451:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"	mov r0, %0 							\n"
  452:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"	msr basepri, r0						\n"
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 15
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 15
 
 
  453:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"	dsb									\n"
@@ -898,7 +898,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  507:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  508:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** #if( configUSE_TICKLESS_IDLE == 1 )
  509:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 16
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 16
 
 
  510:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	__attribute__((weak)) void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
@@ -958,7 +958,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  564:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_LOAD_REG = ulReloadValue;
  565:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  566:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			/* Clear the SysTick count flag and set the count value back to
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 17
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 17
 
 
  567:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			zero. */
@@ -1018,7 +1018,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  621:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				/* The tick interrupt is already pending, and the SysTick count
  622:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				reloaded with ulReloadValue.  Reset the
  623:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				portNVIC_SYSTICK_LOAD_REG with whatever remains of this tick
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 18
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 18
 
 
  624:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				period. */
@@ -1078,7 +1078,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  678:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c ****  */
  679:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** __attribute__(( weak )) void vPortSetupTimerInterrupt( void )
  680:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** {
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 19
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 19
 
 
  681:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* Calculate the constants required to configure the tick interrupt. */
@@ -1138,7 +1138,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  177              		.global	pxPortInitialiseStack
  178              		.syntax unified
  179              		.thumb
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 20
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 20
 
 
  180              		.thumb_func
@@ -1198,7 +1198,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  209:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  218              		.loc 1 209 16 is_stmt 0 view .LVU42
  219 001a 6FF00203 		mvn	r3, #2
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 21
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 21
 
 
  220 001e 40F8243C 		str	r3, [r0, #-36]
@@ -1258,7 +1258,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  269              		.syntax unified
  270              		.cfi_endproc
  271              	.LFE7:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 22
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 22
 
 
  273              		.section	.text.vPortEndScheduler,"ax",%progbits
@@ -1318,7 +1318,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  320              	.L17:
  321 0020 00000000 		.word	uxCriticalNesting
  322              		.cfi_endproc
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 23
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 23
 
 
  323              	.LFE10:
@@ -1378,7 +1378,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  370 001c 7047     		bx	lr
  371              	.L22:
  415:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 24
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 24
 
 
  372              		.loc 1 415 3 is_stmt 1 view .LVU69
@@ -1438,7 +1438,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  421              		.loc 1 422 2 view .LVU77
  422 0000 094B     		ldr	r3, .L29
  423 0002 1B68     		ldr	r3, [r3]
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 25
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 25
 
 
  424 0004 43B9     		cbnz	r3, .L26
@@ -1498,7 +1498,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  201:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 		:"=r" (ulNewBASEPRI) : "i" ( configMAX_SYSCALL_INTERRUPT_PRIORITY ) : "memory"
  202:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	);
  203:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** }
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 26
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 26
 
 
  204:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
@@ -1558,7 +1558,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  490              		.thumb_func
  492              	PendSV_Handler:
  493              	.LFB13:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 27
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 27
 
 
  432:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* This is a naked function. */
@@ -1618,7 +1618,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  544              		.loc 1 485 1 is_stmt 0 view .LVU96
  545              		.thumb
  546              		.syntax unified
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 28
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 28
 
 
  547              		.cfi_endproc
@@ -1678,7 +1678,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  501:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
  594              		.loc 1 501 26 is_stmt 0 view .LVU106
  595 0018 4FF0E023 		mov	r3, #-536813568
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 29
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 29
 
 
  596 001c 4FF08052 		mov	r2, #268435456
@@ -1738,7 +1738,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  695:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
  644              		.loc 1 695 2 is_stmt 1 view .LVU117
  695:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 30
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 30
 
 
  645              		.loc 1 695 55 is_stmt 0 view .LVU118
@@ -1798,7 +1798,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  691              		.loc 1 297 2 view .LVU129
  692 000e 4FF0E023 		mov	r3, #-536813568
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 31
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 31
 
 
  693 0012 D3F8002D 		ldr	r2, [r3, #3328]
@@ -1858,7 +1858,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  732 0034 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
  733 0038 03F05003 		and	r3, r3, #80
  321:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 32
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 32
 
 
  734              		.loc 1 321 24 view .LVU145
@@ -1918,7 +1918,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  777              	.L50:
  297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  778              		.loc 1 297 2 discriminator 1 view .LVU157
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 33
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 33
 
 
  779              	.LBB54:
@@ -1978,7 +1978,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
  823              		.loc 1 326 31 is_stmt 0 view .LVU168
  824 0080 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 34
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 34
 
 
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
@@ -2038,7 +2038,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  866 00ae 1360     		str	r3, [r2]
  357:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
  867              		.loc 1 357 3 is_stmt 1 view .LVU182
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 35
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 35
 
 
  357:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
@@ -2098,7 +2098,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  908 00f6 FFF7FEFF 		bl	prvTaskExitError
  909              	.LVL20:
  391:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 36
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 36
 
 
  910              		.loc 1 391 2 view .LVU197
@@ -2158,7 +2158,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  726:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( ulCurrentInterrupt >= portFIRST_USER_INTERRUPT_NUMBER )
  952              		.loc 1 726 3 view .LVU203
  953              		.loc 1 726 5 is_stmt 0 view .LVU204
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 37
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 37
 
 
  954              		.thumb
@@ -2218,7 +2218,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
  978              		.loc 2 195 2 view .LVU213
  979              		.syntax unified
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 38
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 38
 
 
  980              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
@@ -2278,7 +2278,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  1014              		.loc 2 195 2 view .LVU222
  1015              		.syntax unified
  1016              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 39
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 39
 
 
  1017 003c 4FF05003 			mov r3, #80												
@@ -2325,59 +2325,59 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 1
  1064              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
  1065              		.file 6 "Core/Inc/FreeRTOSConfig.h"
  1066              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s 			page 40
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s 			page 40
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 port.c
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:21     .text.prvTaskExitError:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:26     .text.prvTaskExitError:00000000 prvTaskExitError
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:106    .text.prvTaskExitError:0000003c $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:1058   .data.uxCriticalNesting:00000000 uxCriticalNesting
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:111    .text.prvPortStartFirstTask:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:116    .text.prvPortStartFirstTask:00000000 prvPortStartFirstTask
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:147    .text.vPortEnableVFP:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:152    .text.vPortEnableVFP:00000000 vPortEnableVFP
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:176    .text.pxPortInitialiseStack:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:182    .text.pxPortInitialiseStack:00000000 pxPortInitialiseStack
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:232    .text.pxPortInitialiseStack:00000028 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:237    .text.SVC_Handler:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:243    .text.SVC_Handler:00000000 SVC_Handler
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:264    .text.SVC_Handler:00000020 pxCurrentTCBConst2
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:264    .text.SVC_Handler:00000020 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:274    .text.vPortEndScheduler:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:280    .text.vPortEndScheduler:00000000 vPortEndScheduler
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:321    .text.vPortEndScheduler:00000020 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:326    .text.vPortEnterCritical:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:332    .text.vPortEnterCritical:00000000 vPortEnterCritical
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:403    .text.vPortEnterCritical:00000040 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:408    .text.vPortExitCritical:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:414    .text.vPortExitCritical:00000000 vPortExitCritical
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:481    .text.vPortExitCritical:00000028 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:486    .text.PendSV_Handler:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:492    .text.PendSV_Handler:00000000 PendSV_Handler
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:541    .text.PendSV_Handler:00000060 pxCurrentTCBConst
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:541    .text.PendSV_Handler:00000060 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:551    .text.SysTick_Handler:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:557    .text.SysTick_Handler:00000000 SysTick_Handler
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:623    .text.vPortSetupTimerInterrupt:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:629    .text.vPortSetupTimerInterrupt:00000000 vPortSetupTimerInterrupt
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:664    .text.vPortSetupTimerInterrupt:00000020 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:670    .text.xPortStartScheduler:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:676    .text.xPortStartScheduler:00000000 xPortStartScheduler
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:921    .text.xPortStartScheduler:00000100 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:1052   .bss.ucMaxSysCallPriority:00000000 ucMaxSysCallPriority
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:1047   .bss.ulMaxPRIGROUPValue:00000000 ulMaxPRIGROUPValue
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:931    .text.vPortValidateInterruptPriority:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:937    .text.vPortValidateInterruptPriority:00000000 vPortValidateInterruptPriority
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:1037   .text.vPortValidateInterruptPriority:00000050 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:1044   .bss.ulMaxPRIGROUPValue:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:1053   .bss.ucMaxSysCallPriority:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:1055   .data.uxCriticalNesting:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:175    .text.vPortEnableVFP:0000000e $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:2842   .text.vPortEnableVFP:00000010 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:146    .text.prvPortStartFirstTask:00000022 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUOyjcH.s:2842   .text.prvPortStartFirstTask:00000024 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:21     .text.prvTaskExitError:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:26     .text.prvTaskExitError:00000000 prvTaskExitError
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:106    .text.prvTaskExitError:0000003c $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:1058   .data.uxCriticalNesting:00000000 uxCriticalNesting
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:111    .text.prvPortStartFirstTask:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:116    .text.prvPortStartFirstTask:00000000 prvPortStartFirstTask
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:147    .text.vPortEnableVFP:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:152    .text.vPortEnableVFP:00000000 vPortEnableVFP
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:176    .text.pxPortInitialiseStack:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:182    .text.pxPortInitialiseStack:00000000 pxPortInitialiseStack
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:232    .text.pxPortInitialiseStack:00000028 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:237    .text.SVC_Handler:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:243    .text.SVC_Handler:00000000 SVC_Handler
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:264    .text.SVC_Handler:00000020 pxCurrentTCBConst2
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:264    .text.SVC_Handler:00000020 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:274    .text.vPortEndScheduler:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:280    .text.vPortEndScheduler:00000000 vPortEndScheduler
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:321    .text.vPortEndScheduler:00000020 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:326    .text.vPortEnterCritical:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:332    .text.vPortEnterCritical:00000000 vPortEnterCritical
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:403    .text.vPortEnterCritical:00000040 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:408    .text.vPortExitCritical:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:414    .text.vPortExitCritical:00000000 vPortExitCritical
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:481    .text.vPortExitCritical:00000028 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:486    .text.PendSV_Handler:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:492    .text.PendSV_Handler:00000000 PendSV_Handler
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:541    .text.PendSV_Handler:00000060 pxCurrentTCBConst
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:541    .text.PendSV_Handler:00000060 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:551    .text.SysTick_Handler:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:557    .text.SysTick_Handler:00000000 SysTick_Handler
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:623    .text.vPortSetupTimerInterrupt:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:629    .text.vPortSetupTimerInterrupt:00000000 vPortSetupTimerInterrupt
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:664    .text.vPortSetupTimerInterrupt:00000020 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:670    .text.xPortStartScheduler:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:676    .text.xPortStartScheduler:00000000 xPortStartScheduler
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:921    .text.xPortStartScheduler:00000100 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:1052   .bss.ucMaxSysCallPriority:00000000 ucMaxSysCallPriority
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:1047   .bss.ulMaxPRIGROUPValue:00000000 ulMaxPRIGROUPValue
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:931    .text.vPortValidateInterruptPriority:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:937    .text.vPortValidateInterruptPriority:00000000 vPortValidateInterruptPriority
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:1037   .text.vPortValidateInterruptPriority:00000050 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:1044   .bss.ulMaxPRIGROUPValue:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:1053   .bss.ucMaxSysCallPriority:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:1055   .data.uxCriticalNesting:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:175    .text.vPortEnableVFP:0000000e $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:2842   .text.vPortEnableVFP:00000010 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:146    .text.prvPortStartFirstTask:00000022 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccd8tesx.s:2842   .text.prvPortStartFirstTask:00000024 $d
 
 UNDEFINED SYMBOLS
 pxCurrentTCB
