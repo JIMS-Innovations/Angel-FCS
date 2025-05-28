@@ -1,6 +1,6 @@
-# 🕊️ Angel FC – A Lightweight STM32 Flight Controller
+# 🕊️ Angel FCS – A Lightweight STM32 Flight Controller
 
-**Angel FC** is a modular, RTOS-based flight controller firmware for drones and robotics, built around the STM32F411CEU6 microcontroller. Inspired by the Pixhawk architecture, Angel FC is designed with real-time performance, expandability, and code clarity in mind.
+**Angel FCS** is a modular, RTOS-based flight controller firmware for drones and robotics, built around the STM32F411CEU6 microcontroller. Inspired by the Pixhawk architecture, Angel FC is designed with real-time performance, expandability, and code clarity in mind.
 
 ---
 
@@ -26,7 +26,7 @@
 ## 🗂️ Project Structure
 
 ```plaintext
-Angel-FC/
+Angel-FCS/
 ├── App
 │   ├── Config
 │   ├── Middleware
