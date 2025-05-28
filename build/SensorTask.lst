@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
   28:App/Tasks/SensorTask.c **** static SemaphoreHandle_t baroMutex;
   29:App/Tasks/SensorTask.c **** static IMU_Data_t imu_data;
   30:App/Tasks/SensorTask.c **** static Barometer_Data_t baro_data;
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 2
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 2
 
 
   31:App/Tasks/SensorTask.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
   54 0012 234C     		ldr	r4, .L8+4
   55 0014 A446     		mov	ip, r4
   56 0016 0DF1180E 		add	lr, sp, #24
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 3
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 3
 
 
   57 001a BEE80F00 		ldmia	lr!, {r0, r1, r2, r3}
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
  100 0074 1A46     		mov	r2, r3
  101 0076 1946     		mov	r1, r3
  102 0078 2068     		ldr	r0, [r4]
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 4
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 4
 
 
  103 007a FFF7FEFF 		bl	xQueueGenericSend
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
  145              		.global	SensorTask_Init
  146              		.syntax unified
  147              		.thumb
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 5
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 5
 
 
  148              		.thumb_func
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
   45:App/Tasks/SensorTask.c ****     
  192              		.loc 1 45 15 discriminator 1 view .LVU38
  193 002c 054B     		ldr	r3, .L12+16
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 6
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 6
 
 
  194 002e 1860     		str	r0, [r3]
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
   81:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
   82:App/Tasks/SensorTask.c ****         xSemaphoreGive(imuMutex);
   83:App/Tasks/SensorTask.c ****     }
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 7
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 7
 
 
   84:App/Tasks/SensorTask.c **** }
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
   86:App/Tasks/SensorTask.c **** void SensorTask_GetBaro(Barometer_Data_t *baro_out)
   87:App/Tasks/SensorTask.c **** {
  290              		.loc 1 87 1 is_stmt 1 view -0
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 8
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 8
 
 
  291              		.cfi_startproc
@@ -478,7 +478,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
  335 002c 0068     		ldr	r0, [r0]
  336 002e FFF7FEFF 		bl	xQueueGenericSend
  337              	.LVL30:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 9
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 9
 
 
  338              		.loc 1 92 1 is_stmt 0 view .LVU66
@@ -538,7 +538,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
  395 0018 00000000 		.word	0
  396              		.text
  397              	.Letext0:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 10
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 10
 
 
  398              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
@@ -563,36 +563,36 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 1
  417              		.file 21 "Core/Inc/i2c.h"
  418              		.file 22 "Drivers/MyDrivers/baro_mpl3115a2.h"
  419              		.file 23 "Drivers/MyDrivers/imu_mpu6050.h"
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s 			page 11
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 SensorTask.c
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:21     .text.SensorTask_Run:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:27     .text.SensorTask_Run:00000000 SensorTask_Run
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:136    .text.SensorTask_Run:0000009c $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:370    .bss.imuMutex:00000000 imuMutex
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:358    .bss.imu_data:00000000 imu_data
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:364    .bss.baroMutex:00000000 baroMutex
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:352    .bss.baro_data:00000000 baro_data
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:144    .text.SensorTask_Init:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:150    .text.SensorTask_Init:00000000 SensorTask_Init
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:200    .text.SensorTask_Init:00000034 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:387    .rodata.os_thread_def_SensorTask:00000000 os_thread_def_SensorTask
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:376    .bss.SensorTaskHandle:00000000 SensorTaskHandle
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:209    .text.SensorTask_GetIMU:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:215    .text.SensorTask_GetIMU:00000000 SensorTask_GetIMU
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:275    .text.SensorTask_GetIMU:0000003c $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:281    .text.SensorTask_GetBaro:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:287    .text.SensorTask_GetBaro:00000000 SensorTask_GetBaro
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:343    .text.SensorTask_GetBaro:00000034 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:349    .bss.baro_data:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:355    .bss.imu_data:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:361    .bss.baroMutex:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:367    .bss.imuMutex:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:373    .bss.SensorTaskHandle:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:380    .rodata.str1.4:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccjWr53P.s:384    .rodata.os_thread_def_SensorTask:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:21     .text.SensorTask_Run:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:27     .text.SensorTask_Run:00000000 SensorTask_Run
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:136    .text.SensorTask_Run:0000009c $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:370    .bss.imuMutex:00000000 imuMutex
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:358    .bss.imu_data:00000000 imu_data
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:364    .bss.baroMutex:00000000 baroMutex
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:352    .bss.baro_data:00000000 baro_data
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:144    .text.SensorTask_Init:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:150    .text.SensorTask_Init:00000000 SensorTask_Init
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:200    .text.SensorTask_Init:00000034 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:387    .rodata.os_thread_def_SensorTask:00000000 os_thread_def_SensorTask
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:376    .bss.SensorTaskHandle:00000000 SensorTaskHandle
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:209    .text.SensorTask_GetIMU:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:215    .text.SensorTask_GetIMU:00000000 SensorTask_GetIMU
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:275    .text.SensorTask_GetIMU:0000003c $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:281    .text.SensorTask_GetBaro:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:287    .text.SensorTask_GetBaro:00000000 SensorTask_GetBaro
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:343    .text.SensorTask_GetBaro:00000034 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:349    .bss.baro_data:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:355    .bss.imu_data:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:361    .bss.baroMutex:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:367    .bss.imuMutex:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:373    .bss.SensorTaskHandle:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:380    .rodata.str1.4:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccMf5bsc.s:384    .rodata.os_thread_def_SensorTask:00000000 $d
 
 UNDEFINED SYMBOLS
 xQueueSemaphoreTake

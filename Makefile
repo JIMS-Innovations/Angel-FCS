@@ -101,6 +101,9 @@ Core/Src/sysmem.c \
 Core/Src/syscalls.c \
 Drivers/MyDrivers/baro_mpl3115a2.c \
 Drivers/MyDrivers/imu_mpu6050.c \
+App/Utils/filter_complementary.c \
+App/Utils/filter_EKF_RollPitch.c \
+App/Utils/filter_madgwick.c \
 App/Tasks/SensorTask.c
 
 # ASM sources
@@ -176,6 +179,7 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
 -IDrivers/CMSIS/Include \
 -IDrivers/MyDrivers \
+-IApp/Utils \
 -IApp/Config \
 -IApp/Tasks 
 

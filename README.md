@@ -105,7 +105,7 @@ Angel-FC/
 
 ## 📜 License
 
-This project is licensed under the EULA License.
+This project is licensed under the MIT License.
 
 ---
 

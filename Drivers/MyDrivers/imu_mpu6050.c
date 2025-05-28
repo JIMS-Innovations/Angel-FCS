@@ -15,13 +15,15 @@
 #define MPU6050_ADDRESS       	(0X68 << 1) // IMU I2C address
 #define WHO_AM_I				0X75        // Device ID
 #define I2C_TIMEOUT 			1000        // 1000ms
+// #define USE_GYRO_DEGS                       // if defined gyro output is in deg/s, else rad/s
+
 
 /*  CONSTANTS   */
 #define RAW_TO_G        4096 // For full scale range of +/- 8g
 #define RAW_TO_MS2      0.00239420166f // GRAVITY/RAW_TO_G : 9.80665/4096 >> raw to ms/2
 #define RAW_TO_DEGS_DIV 65.5 // For full scale range of +/- 500 deg/s
 #define RAW_TO_DEGS     0.01526717557f // inv(RAW_TO_DEGS_DIV) : 1/65.5 >> raw to deg/s
-#define RAD_TO_DEG      57.2957795131f
+#define RAW_TO_RADS     0.0002664624812f 
 
 /* REGISTERS */
 #define SELF_TEST_X   	0X0D // R/W
@@ -103,10 +105,18 @@ bool MPU6050_Read(IMU_Data_t *data)
         data_16[1] = (data_8[2] << 8 | data_8[3]); // Y-axis
         data_16[2] = (data_8[4] << 8 | data_8[5]); // Z-axis
 
+#ifdef USE_GYRO_DEGS
         /* Convert values to deg/s */
         data->gyro[0] = RAW_TO_DEGS * data_16[0];
         data->gyro[1] = RAW_TO_DEGS * data_16[1];
         data->gyro[2] = RAW_TO_DEGS * data_16[2];
+#else
+        /* Convert values to rad/s */
+        data->gyro[0] = RAW_TO_RADS * data_16[0];
+        data->gyro[1] = RAW_TO_RADS * data_16[1];
+        data->gyro[2] = RAW_TO_RADS * data_16[2];
+#endif
+
     }
     
     /* Read accelerometer data */

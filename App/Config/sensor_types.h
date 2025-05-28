@@ -18,7 +18,7 @@
 typedef struct 
 {
     float accel[3];     // X, Y, Z in m/s^2
-    float gyro[3];      // X, Y, Z in deg/s
+    float gyro[3];      // X, Y, Z in deg/s or rad/s
     float mag[3];       // X, Y, Z in µT (microtesla), optional
     float temperature;  // In °C (optional)
 

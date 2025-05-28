@@ -4743,7 +4743,7 @@ LOAD /Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_ranges  0x000022f0       0x28 build/SensorTask.o
  .debug_ranges  0x00002318       0x20 build/startup_stm32f411xe.o
 
-.debug_line     0x00000000    0x25bba
+.debug_line     0x00000000    0x25bbc
  .debug_line    0x00000000      0x3ee build/main.o
  .debug_line    0x000003ee      0x20a build/gpio.o
  .debug_line    0x000005f8      0x42a build/freertos.o
@@ -4787,9 +4787,9 @@ LOAD /Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_line    0x0002497a      0x1cf build/sysmem.o
  .debug_line    0x00024b49      0x3e2 build/syscalls.o
  .debug_line    0x00024f2b      0x38a build/baro_mpl3115a2.o
- .debug_line    0x000252b5      0x3cb build/imu_mpu6050.o
- .debug_line    0x00025680      0x4c7 build/SensorTask.o
- .debug_line    0x00025b47       0x73 build/startup_stm32f411xe.o
+ .debug_line    0x000252b5      0x3cd build/imu_mpu6050.o
+ .debug_line    0x00025682      0x4c7 build/SensorTask.o
+ .debug_line    0x00025b49       0x73 build/startup_stm32f411xe.o
 
 .debug_str      0x00000000     0xa2f2
  .debug_str     0x00000000     0xa2f2 build/main.o
