@@ -15,6 +15,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/**
+ * @brief IMU data structure
+ * 
+ */
 typedef struct 
 {
     float accel[3];     // X, Y, Z in m/s^2
@@ -28,6 +32,10 @@ typedef struct
     uint32_t timestamp_ms;
 } IMU_Data_t;
 
+/**
+ * @brief Barometer data structure
+ * 
+ */
 typedef struct 
 {
     float pressure;       // in Pascals

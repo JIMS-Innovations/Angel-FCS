@@ -161,16 +161,19 @@ void USBTask_Run(void const * argument)
   /* USER CODE BEGIN USBTask_Run */
   IMU_Data_t imu;
   Barometer_Data_t baro;
+  Attitude_Data_t attitude;
 
   /* Infinite loop */
   for(;;)
   {
-    SensorTask_GetIMU(&imu);
-    SensorTask_GetBaro(&baro);
+    // SensorTask_GetIMU(&imu);
+    // SensorTask_GetBaro(&baro);
+    SensorTask_GetAttitude(&attitude);
     
     char buffer[128];
-    snprintf(buffer, 128, "[IMU] Gyro(deg/s) >> X:%.2f, Y:%.2f, Z:%.2f | Acc(m/s2) >> X:%.2f, Y:%.2f, Z:%.2f | Baro >> %.2fm, %.2fPa, %.2f\r\n", imu.gyro[0], imu.gyro[1],
-      imu.gyro[2], imu.accel[0], imu.accel[1], imu.accel[2], baro.altitude, baro.pressure, baro.temperature);
+    // snprintf(buffer, 128, "[IMU] Gyro(deg/s) >> X:%.2f, Y:%.2f, Z:%.2f | Acc(m/s2) >> X:%.2f, Y:%.2f, Z:%.2f | Baro >> %.2fm, %.2fPa, %.2f\r\n", imu.gyro[0], imu.gyro[1], imu.gyro[2], imu.accel[0], imu.accel[1], imu.accel[2], baro.altitude, baro.pressure, baro.temperature);
+
+    snprintf(buffer, 128, "[ATT] Pitch: %.2f, Roll: %.2f\r\n", RAD2DEG(attitude.pitch), RAD2DEG(attitude.roll));
     CDC_Transmit_FS(buffer, strlen(buffer));
 
     osDelay(50);

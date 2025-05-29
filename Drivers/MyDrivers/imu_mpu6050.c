@@ -64,7 +64,13 @@ static HAL_StatusTypeDef status;
 static uint8_t data_8[6];
 static int16_t data_16[3];
 
-
+/**
+ * @brief MPU6050 initialisation function
+ * 
+ * @param hi2c 
+ * @return true 
+ * @return false 
+ */
 bool MPU6050_Init(I2C_HandleTypeDef *hi2c)
 {
     imu_i2c = hi2c;
@@ -93,6 +99,13 @@ bool MPU6050_Init(I2C_HandleTypeDef *hi2c)
 
 }
 
+/**
+ * @brief MPU6050 read function
+ * 
+ * @param data 
+ * @return true 
+ * @return false 
+ */
 bool MPU6050_Read(IMU_Data_t *data)
 {
     /* Read gyro data */
@@ -132,7 +145,7 @@ bool MPU6050_Read(IMU_Data_t *data)
         /* Convert values to ms/2 and coordinates to NED */
         data->accel[0] = -RAW_TO_MS2 * data_16[1];  // Inverse Y (RAW) now X (IMU)
         data->accel[1] = -RAW_TO_MS2 * data_16[0];  // Inverse X (RAW) now Y (IMU)
-        data->accel[2] = -RAW_TO_MS2 * data_16[2];  // Inverse Z (RAW) now Z (IMU)
+        data->accel[2] = RAW_TO_MS2 * data_16[2];   // Z (RAW) now Z (IMU)
     }
 
     /* Read temperature data */

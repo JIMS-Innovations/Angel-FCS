@@ -39,7 +39,13 @@ static uint8_t data_8[6];
 static int16_t data_16;
 static uint32_t data_u32;
 
-
+/**
+ * @brief MPL3115A2 initilisation function
+ * 
+ * @param hi2c 
+ * @return true 
+ * @return false 
+ */
 bool MPL3115A2_Init(I2C_HandleTypeDef *hi2c)
 {
     baro_i2c = hi2c;
@@ -70,6 +76,13 @@ bool MPL3115A2_Init(I2C_HandleTypeDef *hi2c)
     return true;
 }
 
+/**
+ * @brief MPL3115A2 read function
+ * 
+ * @param data 
+ * @return true 
+ * @return false 
+ */
 bool MPL3115A2_Read(Barometer_Data_t *data)
 {
     

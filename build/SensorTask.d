@@ -1,5 +1,6 @@
 build/SensorTask.o: App/Tasks/SensorTask.c App/Tasks/SensorTask.h \
- App/Config/sensor_types.h \
+ App/Config/sensor_types.h App/Config/sensor_constants.h \
+ App/Utils/filter_complementary.h App/Config/filter_types.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
@@ -64,6 +65,9 @@ build/SensorTask.o: App/Tasks/SensorTask.c App/Tasks/SensorTask.h \
  Core/Inc/main.h
 App/Tasks/SensorTask.h:
 App/Config/sensor_types.h:
+App/Config/sensor_constants.h:
+App/Utils/filter_complementary.h:
+App/Config/filter_types.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:

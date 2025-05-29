@@ -16,6 +16,7 @@
 #include "i2c.h"
 
 
+
 /* Task prototype */
 void SensorTask_Run(void *arg);
 
@@ -26,8 +27,11 @@ osThreadDef(SensorTask, SensorTask_Run, osPriorityNormal, 0, 512);
 static osThreadId SensorTaskHandle;
 static SemaphoreHandle_t imuMutex;
 static SemaphoreHandle_t baroMutex;
+static SemaphoreHandle_t attMutex;
 static IMU_Data_t imu_data;
 static Barometer_Data_t baro_data;
+static Attitude_Data_t attitude;
+static ComplementaryFilter_Data_t CFilter = {.attitude = &attitude};
 
 void SensorTask_Init(void)
 {
@@ -42,7 +46,11 @@ void SensorTask_Init(void)
 
     /* Create mutex */
     imuMutex = xSemaphoreCreateMutex();
+    attMutex = xSemaphoreCreateMutex();
     baroMutex = xSemaphoreCreateMutex();
+
+    /* Initialise Complementary filter */
+    ComplementaryFilter_Init(&CFilter, 0.98);
     
 }
 
@@ -50,9 +58,17 @@ void SensorTask_Run(void *arg)
 {
     IMU_Data_t imu;
     Barometer_Data_t baro;
+    uint32_t last_ms = HAL_GetTick();
+    float dt = 0.0f;
 
     while (1)
     {
+        /* Calculate dt */
+        uint32_t now_ms = HAL_GetTick();
+        dt = (now_ms - last_ms) / 1000.0f;
+        last_ms = now_ms;
+
+        /* Read IMU */
         if(MPU6050_Read(&imu))
         {
             xSemaphoreTake(imuMutex, portMAX_DELAY);
@@ -62,6 +78,7 @@ void SensorTask_Run(void *arg)
             xSemaphoreGive(imuMutex);
         }
 
+        /* Read Barometer */
         if(MPL3115A2_Read(&baro))
         {
             xSemaphoreTake(baroMutex, portMAX_DELAY);
@@ -70,7 +87,11 @@ void SensorTask_Run(void *arg)
             xSemaphoreGive(baroMutex);
         }
 
-        osDelay(10);
+        /* Perform sensor fusion */
+        ComplementaryFilter_Update(&CFilter, &imu, dt);
+
+
+        osDelay(5);
     }
     
 }
@@ -80,6 +101,14 @@ void SensorTask_GetIMU(IMU_Data_t *imu_out)
     if (xSemaphoreTake(imuMutex, portMAX_DELAY)) {
         *imu_out = imu_data;
         xSemaphoreGive(imuMutex);
+    }
+}
+
+void SensorTask_GetAttitude(Attitude_Data_t *attitude_out)
+{
+    if (xSemaphoreTake(attMutex, portMAX_DELAY)) {
+        *attitude_out = attitude;
+        xSemaphoreGive(attMutex);
     }
 }
 

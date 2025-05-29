@@ -12,11 +12,28 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/**
+ * @brief Attitude data structure
+ * 
+ */
 typedef struct 
 {
-    float theta;    // Pitch
-    float phi;      // Roll
-    float psi;      // Yaw
+    float pitch;    // Pitch
+    float roll;      // Roll
+    float yaw;      // Yaw
 
     uint32_t timestamp_ms;
 } Attitude_Data_t;
+
+/**
+ * @brief Complementary filter data structure
+ * 
+ */
+typedef struct 
+{
+    float alpha;
+    Attitude_Data_t* attitude;
+    uint32_t sample_ms;
+
+    uint32_t timestamp_ms;
+} ComplementaryFilter_Data_t;

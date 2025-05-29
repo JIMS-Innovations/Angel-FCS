@@ -17,6 +17,7 @@
                 "Drivers/CMSIS/Include",
                 "Drivers/MyDrivers",
                 "App/Tasks",
+                "App/Utils",
                 "App/Config"
             ],
             "defines": [

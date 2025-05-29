@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 1
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -27,7 +27,8 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 1
   24              		.thumb
   25              		.thumb_func
   27              	SensorTask_Run:
-  28              	.LFB746:
+  28              	.LVL0:
+  29              	.LFB746:
    1:App/Tasks/SensorTask.c **** /**
    2:App/Tasks/SensorTask.c ****  * @file SensorTask.c
    3:App/Tasks/SensorTask.c ****  * @author Jesutofunmi Kupoluyi (jimsufficiency@gmail.com)
@@ -46,557 +47,770 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 1
   16:App/Tasks/SensorTask.c **** #include "i2c.h"
   17:App/Tasks/SensorTask.c **** 
   18:App/Tasks/SensorTask.c **** 
-  19:App/Tasks/SensorTask.c **** /* Task prototype */
-  20:App/Tasks/SensorTask.c **** void SensorTask_Run(void *arg);
-  21:App/Tasks/SensorTask.c **** 
-  22:App/Tasks/SensorTask.c **** /* Task Configuration */
-  23:App/Tasks/SensorTask.c **** osThreadDef(SensorTask, SensorTask_Run, osPriorityNormal, 0, 512);
-  24:App/Tasks/SensorTask.c **** 
-  25:App/Tasks/SensorTask.c **** /* Task Variables */
-  26:App/Tasks/SensorTask.c **** static osThreadId SensorTaskHandle;
-  27:App/Tasks/SensorTask.c **** static SemaphoreHandle_t imuMutex;
-  28:App/Tasks/SensorTask.c **** static SemaphoreHandle_t baroMutex;
-  29:App/Tasks/SensorTask.c **** static IMU_Data_t imu_data;
-  30:App/Tasks/SensorTask.c **** static Barometer_Data_t baro_data;
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 2
+  19:App/Tasks/SensorTask.c **** 
+  20:App/Tasks/SensorTask.c **** /* Task prototype */
+  21:App/Tasks/SensorTask.c **** void SensorTask_Run(void *arg);
+  22:App/Tasks/SensorTask.c **** 
+  23:App/Tasks/SensorTask.c **** /* Task Configuration */
+  24:App/Tasks/SensorTask.c **** osThreadDef(SensorTask, SensorTask_Run, osPriorityNormal, 0, 512);
+  25:App/Tasks/SensorTask.c **** 
+  26:App/Tasks/SensorTask.c **** /* Task Variables */
+  27:App/Tasks/SensorTask.c **** static osThreadId SensorTaskHandle;
+  28:App/Tasks/SensorTask.c **** static SemaphoreHandle_t imuMutex;
+  29:App/Tasks/SensorTask.c **** static SemaphoreHandle_t baroMutex;
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 2
 
 
-  31:App/Tasks/SensorTask.c **** 
-  32:App/Tasks/SensorTask.c **** void SensorTask_Init(void)
-  33:App/Tasks/SensorTask.c **** {
-  34:App/Tasks/SensorTask.c ****     /* Initialise MPU6050 */
-  35:App/Tasks/SensorTask.c ****     MPU6050_Init(&hi2c1);
-  36:App/Tasks/SensorTask.c **** 
-  37:App/Tasks/SensorTask.c ****     /* Initialise Barometer */
-  38:App/Tasks/SensorTask.c ****     MPL3115A2_Init(&hi2c1);
-  39:App/Tasks/SensorTask.c **** 
-  40:App/Tasks/SensorTask.c ****     /* Create task */
-  41:App/Tasks/SensorTask.c ****     SensorTaskHandle = osThreadCreate(osThread(SensorTask), NULL);
-  42:App/Tasks/SensorTask.c **** 
-  43:App/Tasks/SensorTask.c ****     /* Create mutex */
-  44:App/Tasks/SensorTask.c ****     imuMutex = xSemaphoreCreateMutex();
-  45:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
-  46:App/Tasks/SensorTask.c ****     
-  47:App/Tasks/SensorTask.c **** }
-  48:App/Tasks/SensorTask.c **** 
-  49:App/Tasks/SensorTask.c **** void SensorTask_Run(void *arg)
-  50:App/Tasks/SensorTask.c **** {
-  29              		.loc 1 50 1 view -0
-  30              		.cfi_startproc
-  31              		@ Volatile: function does not return.
+  30:App/Tasks/SensorTask.c **** static SemaphoreHandle_t attMutex;
+  31:App/Tasks/SensorTask.c **** static IMU_Data_t imu_data;
+  32:App/Tasks/SensorTask.c **** static Barometer_Data_t baro_data;
+  33:App/Tasks/SensorTask.c **** static Attitude_Data_t attitude;
+  34:App/Tasks/SensorTask.c **** static ComplementaryFilter_Data_t CFilter = {.attitude = &attitude};
+  35:App/Tasks/SensorTask.c **** 
+  36:App/Tasks/SensorTask.c **** void SensorTask_Init(void)
+  37:App/Tasks/SensorTask.c **** {
+  38:App/Tasks/SensorTask.c ****     /* Initialise MPU6050 */
+  39:App/Tasks/SensorTask.c ****     MPU6050_Init(&hi2c1);
+  40:App/Tasks/SensorTask.c **** 
+  41:App/Tasks/SensorTask.c ****     /* Initialise Barometer */
+  42:App/Tasks/SensorTask.c ****     MPL3115A2_Init(&hi2c1);
+  43:App/Tasks/SensorTask.c **** 
+  44:App/Tasks/SensorTask.c ****     /* Create task */
+  45:App/Tasks/SensorTask.c ****     SensorTaskHandle = osThreadCreate(osThread(SensorTask), NULL);
+  46:App/Tasks/SensorTask.c **** 
+  47:App/Tasks/SensorTask.c ****     /* Create mutex */
+  48:App/Tasks/SensorTask.c ****     imuMutex = xSemaphoreCreateMutex();
+  49:App/Tasks/SensorTask.c ****     attMutex = xSemaphoreCreateMutex();
+  50:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
+  51:App/Tasks/SensorTask.c **** 
+  52:App/Tasks/SensorTask.c ****     /* Initialise Complementary filter */
+  53:App/Tasks/SensorTask.c ****     ComplementaryFilter_Init(&CFilter, 0.98);
+  54:App/Tasks/SensorTask.c ****     
+  55:App/Tasks/SensorTask.c **** }
+  56:App/Tasks/SensorTask.c **** 
+  57:App/Tasks/SensorTask.c **** void SensorTask_Run(void *arg)
+  58:App/Tasks/SensorTask.c **** {
+  30              		.loc 1 58 1 view -0
+  31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 72
   33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              	.LVL0:
-  35              		.loc 1 50 1 is_stmt 0 view .LVU1
-  36 0000 00B5     		push	{lr}
-  37              	.LCFI0:
-  38              		.cfi_def_cfa_offset 4
-  39              		.cfi_offset 14, -4
-  40 0002 93B0     		sub	sp, sp, #76
-  41              	.LCFI1:
-  42              		.cfi_def_cfa_offset 80
-  43 0004 3EE0     		b	.L4
-  44              	.LVL1:
-  45              	.L6:
-  51:App/Tasks/SensorTask.c ****     IMU_Data_t imu;
-  52:App/Tasks/SensorTask.c ****     Barometer_Data_t baro;
-  53:App/Tasks/SensorTask.c **** 
-  54:App/Tasks/SensorTask.c ****     while (1)
-  55:App/Tasks/SensorTask.c ****     {
-  56:App/Tasks/SensorTask.c ****         if(MPU6050_Read(&imu))
-  57:App/Tasks/SensorTask.c ****         {
-  58:App/Tasks/SensorTask.c ****             xSemaphoreTake(imuMutex, portMAX_DELAY);
-  46              		.loc 1 58 13 is_stmt 1 view .LVU2
-  47 0006 254D     		ldr	r5, .L8
-  48 0008 4FF0FF31 		mov	r1, #-1
-  49 000c 2868     		ldr	r0, [r5]
-  50 000e FFF7FEFF 		bl	xQueueSemaphoreTake
-  51              	.LVL2:
-  59:App/Tasks/SensorTask.c ****             imu_data = imu;
-  52              		.loc 1 59 13 view .LVU3
-  53              		.loc 1 59 22 is_stmt 0 view .LVU4
-  54 0012 234C     		ldr	r4, .L8+4
-  55 0014 A446     		mov	ip, r4
-  56 0016 0DF1180E 		add	lr, sp, #24
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 3
+  34              		.loc 1 58 1 is_stmt 0 view .LVU1
+  35 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 20
+  38              		.cfi_offset 4, -20
+  39              		.cfi_offset 5, -16
+  40              		.cfi_offset 6, -12
+  41              		.cfi_offset 7, -8
+  42              		.cfi_offset 14, -4
+  43 0002 2DED028B 		vpush.64	{d8}
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 28
+  46              		.cfi_offset 80, -28
+  47              		.cfi_offset 81, -24
+  48 0006 93B0     		sub	sp, sp, #76
+  49              	.LCFI2:
+  50              		.cfi_def_cfa_offset 104
+  59:App/Tasks/SensorTask.c ****     IMU_Data_t imu;
+  51              		.loc 1 59 5 is_stmt 1 view .LVU2
+  60:App/Tasks/SensorTask.c ****     Barometer_Data_t baro;
+  52              		.loc 1 60 5 view .LVU3
+  61:App/Tasks/SensorTask.c ****     uint32_t last_ms = HAL_GetTick();
+  53              		.loc 1 61 5 view .LVU4
+  54              		.loc 1 61 24 is_stmt 0 view .LVU5
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 3
 
 
-  57 001a BEE80F00 		ldmia	lr!, {r0, r1, r2, r3}
-  58 001e ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
-  59 0022 BEE80F00 		ldmia	lr!, {r0, r1, r2, r3}
-  60 0026 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
-  61 002a 9EE80F00 		ldm	lr, {r0, r1, r2, r3}
-  62 002e 8CE80F00 		stm	ip, {r0, r1, r2, r3}
-  60:App/Tasks/SensorTask.c ****             imu_data.has_mag = false;
-  63              		.loc 1 60 13 is_stmt 1 view .LVU5
-  64              		.loc 1 60 30 is_stmt 0 view .LVU6
-  65 0032 0021     		movs	r1, #0
-  66 0034 84F82810 		strb	r1, [r4, #40]
-  61:App/Tasks/SensorTask.c ****             imu_data.has_temp = true;
-  67              		.loc 1 61 13 is_stmt 1 view .LVU7
-  68              		.loc 1 61 31 is_stmt 0 view .LVU8
-  69 0038 0123     		movs	r3, #1
-  70 003a 84F82930 		strb	r3, [r4, #41]
-  62:App/Tasks/SensorTask.c ****             xSemaphoreGive(imuMutex);
-  71              		.loc 1 62 13 is_stmt 1 view .LVU9
-  72 003e 0B46     		mov	r3, r1
-  73 0040 0A46     		mov	r2, r1
-  74 0042 2868     		ldr	r0, [r5]
-  75 0044 FFF7FEFF 		bl	xQueueGenericSend
-  76              	.LVL3:
-  77 0048 21E0     		b	.L2
-  78              	.L7:
-  63:App/Tasks/SensorTask.c ****         }
-  64:App/Tasks/SensorTask.c **** 
-  65:App/Tasks/SensorTask.c ****         if(MPL3115A2_Read(&baro))
-  66:App/Tasks/SensorTask.c ****         {
-  67:App/Tasks/SensorTask.c ****             xSemaphoreTake(baroMutex, portMAX_DELAY);
-  79              		.loc 1 67 13 view .LVU10
-  80 004a 164C     		ldr	r4, .L8+8
-  81 004c 4FF0FF31 		mov	r1, #-1
-  82 0050 2068     		ldr	r0, [r4]
-  83 0052 FFF7FEFF 		bl	xQueueSemaphoreTake
-  84              	.LVL4:
-  68:App/Tasks/SensorTask.c ****             baro_data = baro;
-  85              		.loc 1 68 13 view .LVU11
-  86              		.loc 1 68 23 is_stmt 0 view .LVU12
-  87 0056 144D     		ldr	r5, .L8+12
-  88 0058 AC46     		mov	ip, r5
-  89 005a 0DF1040E 		add	lr, sp, #4
-  90 005e BEE80F00 		ldmia	lr!, {r0, r1, r2, r3}
-  91 0062 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
-  92 0066 DEF80030 		ldr	r3, [lr]
-  93 006a CCF80030 		str	r3, [ip]
-  69:App/Tasks/SensorTask.c ****             baro_data.has_temp = true;
-  94              		.loc 1 69 13 is_stmt 1 view .LVU13
-  95              		.loc 1 69 32 is_stmt 0 view .LVU14
-  96 006e 0123     		movs	r3, #1
-  97 0070 2B73     		strb	r3, [r5, #12]
-  70:App/Tasks/SensorTask.c ****             xSemaphoreGive(baroMutex);
-  98              		.loc 1 70 13 is_stmt 1 view .LVU15
-  99 0072 0023     		movs	r3, #0
- 100 0074 1A46     		mov	r2, r3
- 101 0076 1946     		mov	r1, r3
- 102 0078 2068     		ldr	r0, [r4]
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 4
+  55 0008 FFF7FEFF 		bl	HAL_GetTick
+  56              	.LVL1:
+  57              		.loc 1 61 24 view .LVU6
+  58 000c 0446     		mov	r4, r0
+  59              	.LVL2:
+  62:App/Tasks/SensorTask.c ****     float dt = 0.0f;
+  60              		.loc 1 62 5 is_stmt 1 view .LVU7
+  61              		.loc 1 62 5 is_stmt 0 view .LVU8
+  62 000e 41E0     		b	.L4
+  63              	.LVL3:
+  64              	.L6:
+  65              	.LBB2:
+  63:App/Tasks/SensorTask.c **** 
+  64:App/Tasks/SensorTask.c ****     while (1)
+  65:App/Tasks/SensorTask.c ****     {
+  66:App/Tasks/SensorTask.c ****         /* Calculate dt */
+  67:App/Tasks/SensorTask.c ****         uint32_t now_ms = HAL_GetTick();
+  68:App/Tasks/SensorTask.c ****         dt = (now_ms - last_ms) / 1000.0f;
+  69:App/Tasks/SensorTask.c ****         last_ms = now_ms;
+  70:App/Tasks/SensorTask.c **** 
+  71:App/Tasks/SensorTask.c ****         /* Read IMU */
+  72:App/Tasks/SensorTask.c ****         if(MPU6050_Read(&imu))
+  73:App/Tasks/SensorTask.c ****         {
+  74:App/Tasks/SensorTask.c ****             xSemaphoreTake(imuMutex, portMAX_DELAY);
+  66              		.loc 1 74 13 is_stmt 1 view .LVU9
+  67 0010 2C4F     		ldr	r7, .L8
+  68 0012 4FF0FF31 		mov	r1, #-1
+  69 0016 3868     		ldr	r0, [r7]
+  70 0018 FFF7FEFF 		bl	xQueueSemaphoreTake
+  71              	.LVL4:
+  75:App/Tasks/SensorTask.c ****             imu_data = imu;
+  72              		.loc 1 75 13 view .LVU10
+  73              		.loc 1 75 22 is_stmt 0 view .LVU11
+  74 001c 2A4E     		ldr	r6, .L8+4
+  75 001e 3446     		mov	r4, r6
+  76 0020 0DF1180C 		add	ip, sp, #24
+  77 0024 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+  78 0028 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  79 002a BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+  80 002e 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  81 0030 9CE80F00 		ldm	ip, {r0, r1, r2, r3}
+  82 0034 84E80F00 		stm	r4, {r0, r1, r2, r3}
+  76:App/Tasks/SensorTask.c ****             imu_data.has_mag = false;
+  83              		.loc 1 76 13 is_stmt 1 view .LVU12
+  84              		.loc 1 76 30 is_stmt 0 view .LVU13
+  85 0038 0021     		movs	r1, #0
+  86 003a 86F82810 		strb	r1, [r6, #40]
+  77:App/Tasks/SensorTask.c ****             imu_data.has_temp = true;
+  87              		.loc 1 77 13 is_stmt 1 view .LVU14
+  88              		.loc 1 77 31 is_stmt 0 view .LVU15
+  89 003e 0123     		movs	r3, #1
+  90 0040 86F82930 		strb	r3, [r6, #41]
+  78:App/Tasks/SensorTask.c ****             xSemaphoreGive(imuMutex);
+  91              		.loc 1 78 13 is_stmt 1 view .LVU16
+  92 0044 0B46     		mov	r3, r1
+  93 0046 0A46     		mov	r2, r1
+  94 0048 3868     		ldr	r0, [r7]
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 4
 
 
- 103 007a FFF7FEFF 		bl	xQueueGenericSend
- 104              	.LVL5:
- 105              	.L3:
-  71:App/Tasks/SensorTask.c ****         }
-  72:App/Tasks/SensorTask.c **** 
-  73:App/Tasks/SensorTask.c ****         osDelay(10);
- 106              		.loc 1 73 9 view .LVU16
- 107 007e 0A20     		movs	r0, #10
- 108 0080 FFF7FEFF 		bl	osDelay
- 109              	.LVL6:
-  54:App/Tasks/SensorTask.c ****     {
- 110              		.loc 1 54 11 view .LVU17
- 111              	.L4:
-  51:App/Tasks/SensorTask.c ****     Barometer_Data_t baro;
- 112              		.loc 1 51 5 view .LVU18
-  52:App/Tasks/SensorTask.c **** 
- 113              		.loc 1 52 5 view .LVU19
-  54:App/Tasks/SensorTask.c ****     {
- 114              		.loc 1 54 5 view .LVU20
-  56:App/Tasks/SensorTask.c ****         {
- 115              		.loc 1 56 9 view .LVU21
-  56:App/Tasks/SensorTask.c ****         {
- 116              		.loc 1 56 12 is_stmt 0 view .LVU22
- 117 0084 06A8     		add	r0, sp, #24
- 118 0086 FFF7FEFF 		bl	MPU6050_Read
- 119              	.LVL7:
-  56:App/Tasks/SensorTask.c ****         {
- 120              		.loc 1 56 11 discriminator 1 view .LVU23
- 121 008a 0028     		cmp	r0, #0
- 122 008c BBD1     		bne	.L6
- 123              	.L2:
-  65:App/Tasks/SensorTask.c ****         {
- 124              		.loc 1 65 9 is_stmt 1 view .LVU24
-  65:App/Tasks/SensorTask.c ****         {
- 125              		.loc 1 65 12 is_stmt 0 view .LVU25
- 126 008e 01A8     		add	r0, sp, #4
- 127 0090 FFF7FEFF 		bl	MPL3115A2_Read
- 128              	.LVL8:
-  65:App/Tasks/SensorTask.c ****         {
- 129              		.loc 1 65 11 discriminator 1 view .LVU26
- 130 0094 0028     		cmp	r0, #0
- 131 0096 D8D1     		bne	.L7
- 132 0098 F1E7     		b	.L3
- 133              	.L9:
- 134 009a 00BF     		.align	2
- 135              	.L8:
- 136 009c 00000000 		.word	imuMutex
- 137 00a0 00000000 		.word	imu_data
- 138 00a4 00000000 		.word	baroMutex
- 139 00a8 00000000 		.word	baro_data
- 140              		.cfi_endproc
- 141              	.LFE746:
- 143              		.section	.text.SensorTask_Init,"ax",%progbits
- 144              		.align	1
- 145              		.global	SensorTask_Init
- 146              		.syntax unified
- 147              		.thumb
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 5
+  95 004a FFF7FEFF 		bl	xQueueGenericSend
+  96              	.LVL5:
+  97 004e 32E0     		b	.L2
+  98              	.L7:
+  79:App/Tasks/SensorTask.c ****         }
+  80:App/Tasks/SensorTask.c **** 
+  81:App/Tasks/SensorTask.c ****         /* Read Barometer */
+  82:App/Tasks/SensorTask.c ****         if(MPL3115A2_Read(&baro))
+  83:App/Tasks/SensorTask.c ****         {
+  84:App/Tasks/SensorTask.c ****             xSemaphoreTake(baroMutex, portMAX_DELAY);
+  99              		.loc 1 84 13 view .LVU17
+ 100 0050 1E4E     		ldr	r6, .L8+8
+ 101 0052 4FF0FF31 		mov	r1, #-1
+ 102 0056 3068     		ldr	r0, [r6]
+ 103 0058 FFF7FEFF 		bl	xQueueSemaphoreTake
+ 104              	.LVL6:
+  85:App/Tasks/SensorTask.c ****             baro_data = baro;
+ 105              		.loc 1 85 13 view .LVU18
+ 106              		.loc 1 85 23 is_stmt 0 view .LVU19
+ 107 005c 1C4F     		ldr	r7, .L8+12
+ 108 005e 3C46     		mov	r4, r7
+ 109 0060 0DF1040C 		add	ip, sp, #4
+ 110 0064 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+ 111 0068 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 112 006a DCF80030 		ldr	r3, [ip]
+ 113 006e 2360     		str	r3, [r4]
+  86:App/Tasks/SensorTask.c ****             baro_data.has_temp = true;
+ 114              		.loc 1 86 13 is_stmt 1 view .LVU20
+ 115              		.loc 1 86 32 is_stmt 0 view .LVU21
+ 116 0070 0123     		movs	r3, #1
+ 117 0072 3B73     		strb	r3, [r7, #12]
+  87:App/Tasks/SensorTask.c ****             xSemaphoreGive(baroMutex);
+ 118              		.loc 1 87 13 is_stmt 1 view .LVU22
+ 119 0074 0023     		movs	r3, #0
+ 120 0076 1A46     		mov	r2, r3
+ 121 0078 1946     		mov	r1, r3
+ 122 007a 3068     		ldr	r0, [r6]
+ 123 007c FFF7FEFF 		bl	xQueueGenericSend
+ 124              	.LVL7:
+ 125              	.L3:
+  88:App/Tasks/SensorTask.c ****         }
+  89:App/Tasks/SensorTask.c **** 
+  90:App/Tasks/SensorTask.c ****         /* Perform sensor fusion */
+  91:App/Tasks/SensorTask.c ****         ComplementaryFilter_Update(&CFilter, &imu, dt);
+ 126              		.loc 1 91 9 view .LVU23
+ 127 0080 B0EE480A 		vmov.f32	s0, s16
+ 128 0084 06A9     		add	r1, sp, #24
+ 129 0086 1348     		ldr	r0, .L8+16
+ 130 0088 FFF7FEFF 		bl	ComplementaryFilter_Update
+ 131              	.LVL8:
+  92:App/Tasks/SensorTask.c **** 
+  93:App/Tasks/SensorTask.c **** 
+  94:App/Tasks/SensorTask.c ****         osDelay(5);
+ 132              		.loc 1 94 9 view .LVU24
+ 133 008c 0520     		movs	r0, #5
+ 134 008e FFF7FEFF 		bl	osDelay
+ 135              	.LVL9:
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 5
 
 
- 148              		.thumb_func
- 150              	SensorTask_Init:
- 151              	.LFB745:
-  33:App/Tasks/SensorTask.c ****     /* Initialise MPU6050 */
- 152              		.loc 1 33 1 is_stmt 1 view -0
- 153              		.cfi_startproc
- 154              		@ args = 0, pretend = 0, frame = 0
- 155              		@ frame_needed = 0, uses_anonymous_args = 0
- 156 0000 10B5     		push	{r4, lr}
- 157              	.LCFI2:
- 158              		.cfi_def_cfa_offset 8
- 159              		.cfi_offset 4, -8
- 160              		.cfi_offset 14, -4
-  35:App/Tasks/SensorTask.c **** 
- 161              		.loc 1 35 5 view .LVU28
- 162 0002 0C4C     		ldr	r4, .L12
- 163 0004 2046     		mov	r0, r4
- 164 0006 FFF7FEFF 		bl	MPU6050_Init
- 165              	.LVL9:
-  38:App/Tasks/SensorTask.c **** 
- 166              		.loc 1 38 5 view .LVU29
- 167 000a 2046     		mov	r0, r4
- 168 000c FFF7FEFF 		bl	MPL3115A2_Init
- 169              	.LVL10:
-  41:App/Tasks/SensorTask.c **** 
- 170              		.loc 1 41 5 view .LVU30
-  41:App/Tasks/SensorTask.c **** 
- 171              		.loc 1 41 24 is_stmt 0 view .LVU31
- 172 0010 0021     		movs	r1, #0
- 173 0012 0948     		ldr	r0, .L12+4
- 174 0014 FFF7FEFF 		bl	osThreadCreate
- 175              	.LVL11:
-  41:App/Tasks/SensorTask.c **** 
- 176              		.loc 1 41 22 discriminator 1 view .LVU32
- 177 0018 084B     		ldr	r3, .L12+8
- 178 001a 1860     		str	r0, [r3]
-  44:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
- 179              		.loc 1 44 5 is_stmt 1 view .LVU33
-  44:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
- 180              		.loc 1 44 16 is_stmt 0 view .LVU34
- 181 001c 0120     		movs	r0, #1
- 182 001e FFF7FEFF 		bl	xQueueCreateMutex
- 183              	.LVL12:
-  44:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
- 184              		.loc 1 44 14 discriminator 1 view .LVU35
- 185 0022 074B     		ldr	r3, .L12+12
- 186 0024 1860     		str	r0, [r3]
-  45:App/Tasks/SensorTask.c ****     
- 187              		.loc 1 45 5 is_stmt 1 view .LVU36
-  45:App/Tasks/SensorTask.c ****     
- 188              		.loc 1 45 17 is_stmt 0 view .LVU37
- 189 0026 0120     		movs	r0, #1
- 190 0028 FFF7FEFF 		bl	xQueueCreateMutex
- 191              	.LVL13:
-  45:App/Tasks/SensorTask.c ****     
- 192              		.loc 1 45 15 discriminator 1 view .LVU38
- 193 002c 054B     		ldr	r3, .L12+16
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 6
+ 136              	.LBE2:
+  64:App/Tasks/SensorTask.c ****     {
+ 137              		.loc 1 64 11 view .LVU25
+ 138              	.LBB3:
+  69:App/Tasks/SensorTask.c **** 
+ 139              		.loc 1 69 17 is_stmt 0 view .LVU26
+ 140 0092 2C46     		mov	r4, r5
+ 141              	.LVL10:
+ 142              	.L4:
+  69:App/Tasks/SensorTask.c **** 
+ 143              		.loc 1 69 17 view .LVU27
+ 144              	.LBE3:
+  64:App/Tasks/SensorTask.c ****     {
+ 145              		.loc 1 64 5 is_stmt 1 view .LVU28
+ 146              	.LBB4:
+  67:App/Tasks/SensorTask.c ****         dt = (now_ms - last_ms) / 1000.0f;
+ 147              		.loc 1 67 9 view .LVU29
+  67:App/Tasks/SensorTask.c ****         dt = (now_ms - last_ms) / 1000.0f;
+ 148              		.loc 1 67 27 is_stmt 0 view .LVU30
+ 149 0094 FFF7FEFF 		bl	HAL_GetTick
+ 150              	.LVL11:
+ 151 0098 0546     		mov	r5, r0
+ 152              	.LVL12:
+  68:App/Tasks/SensorTask.c ****         last_ms = now_ms;
+ 153              		.loc 1 68 9 is_stmt 1 view .LVU31
+  68:App/Tasks/SensorTask.c ****         last_ms = now_ms;
+ 154              		.loc 1 68 22 is_stmt 0 view .LVU32
+ 155 009a 041B     		subs	r4, r0, r4
+ 156              	.LVL13:
+  68:App/Tasks/SensorTask.c ****         last_ms = now_ms;
+ 157              		.loc 1 68 33 view .LVU33
+ 158 009c 07EE904A 		vmov	s15, r4	@ int
+ 159 00a0 F8EE677A 		vcvt.f32.u32	s15, s15
+  68:App/Tasks/SensorTask.c ****         last_ms = now_ms;
+ 160              		.loc 1 68 12 view .LVU34
+ 161 00a4 9FED0C7A 		vldr.32	s14, .L8+20
+ 162 00a8 87EE878A 		vdiv.f32	s16, s15, s14
+ 163              	.LVL14:
+  69:App/Tasks/SensorTask.c **** 
+ 164              		.loc 1 69 9 is_stmt 1 view .LVU35
+  72:App/Tasks/SensorTask.c ****         {
+ 165              		.loc 1 72 9 view .LVU36
+  72:App/Tasks/SensorTask.c ****         {
+ 166              		.loc 1 72 12 is_stmt 0 view .LVU37
+ 167 00ac 06A8     		add	r0, sp, #24
+ 168              	.LVL15:
+  72:App/Tasks/SensorTask.c ****         {
+ 169              		.loc 1 72 12 view .LVU38
+ 170 00ae FFF7FEFF 		bl	MPU6050_Read
+ 171              	.LVL16:
+  72:App/Tasks/SensorTask.c ****         {
+ 172              		.loc 1 72 11 discriminator 1 view .LVU39
+ 173 00b2 0028     		cmp	r0, #0
+ 174 00b4 ACD1     		bne	.L6
+ 175              	.L2:
+  82:App/Tasks/SensorTask.c ****         {
+ 176              		.loc 1 82 9 is_stmt 1 view .LVU40
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 6
 
 
- 194 002e 1860     		str	r0, [r3]
-  47:App/Tasks/SensorTask.c **** 
- 195              		.loc 1 47 1 view .LVU39
- 196 0030 10BD     		pop	{r4, pc}
- 197              	.L13:
- 198 0032 00BF     		.align	2
- 199              	.L12:
- 200 0034 00000000 		.word	hi2c1
- 201 0038 00000000 		.word	os_thread_def_SensorTask
- 202 003c 00000000 		.word	SensorTaskHandle
- 203 0040 00000000 		.word	imuMutex
- 204 0044 00000000 		.word	baroMutex
- 205              		.cfi_endproc
- 206              	.LFE745:
- 208              		.section	.text.SensorTask_GetIMU,"ax",%progbits
- 209              		.align	1
- 210              		.global	SensorTask_GetIMU
- 211              		.syntax unified
- 212              		.thumb
- 213              		.thumb_func
- 215              	SensorTask_GetIMU:
- 216              	.LVL14:
- 217              	.LFB747:
-  74:App/Tasks/SensorTask.c ****     }
-  75:App/Tasks/SensorTask.c ****     
-  76:App/Tasks/SensorTask.c **** }
-  77:App/Tasks/SensorTask.c **** 
-  78:App/Tasks/SensorTask.c **** void SensorTask_GetIMU(IMU_Data_t *imu_out)
-  79:App/Tasks/SensorTask.c **** {
- 218              		.loc 1 79 1 is_stmt 1 view -0
- 219              		.cfi_startproc
- 220              		@ args = 0, pretend = 0, frame = 0
- 221              		@ frame_needed = 0, uses_anonymous_args = 0
- 222              		.loc 1 79 1 is_stmt 0 view .LVU41
- 223 0000 10B5     		push	{r4, lr}
- 224              	.LCFI3:
- 225              		.cfi_def_cfa_offset 8
- 226              		.cfi_offset 4, -8
- 227              		.cfi_offset 14, -4
- 228 0002 0446     		mov	r4, r0
-  80:App/Tasks/SensorTask.c ****     if (xSemaphoreTake(imuMutex, portMAX_DELAY)) {
- 229              		.loc 1 80 5 is_stmt 1 view .LVU42
- 230              		.loc 1 80 9 is_stmt 0 view .LVU43
- 231 0004 4FF0FF31 		mov	r1, #-1
- 232 0008 0C4B     		ldr	r3, .L18
- 233 000a 1868     		ldr	r0, [r3]
- 234              	.LVL15:
- 235              		.loc 1 80 9 view .LVU44
- 236 000c FFF7FEFF 		bl	xQueueSemaphoreTake
- 237              	.LVL16:
- 238              		.loc 1 80 8 discriminator 1 view .LVU45
- 239 0010 00B9     		cbnz	r0, .L17
- 240              	.LVL17:
- 241              	.L14:
-  81:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
-  82:App/Tasks/SensorTask.c ****         xSemaphoreGive(imuMutex);
-  83:App/Tasks/SensorTask.c ****     }
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 7
+  82:App/Tasks/SensorTask.c ****         {
+ 177              		.loc 1 82 12 is_stmt 0 view .LVU41
+ 178 00b6 01A8     		add	r0, sp, #4
+ 179 00b8 FFF7FEFF 		bl	MPL3115A2_Read
+ 180              	.LVL17:
+  82:App/Tasks/SensorTask.c ****         {
+ 181              		.loc 1 82 11 discriminator 1 view .LVU42
+ 182 00bc 0028     		cmp	r0, #0
+ 183 00be C7D1     		bne	.L7
+ 184 00c0 DEE7     		b	.L3
+ 185              	.L9:
+ 186 00c2 00BF     		.align	2
+ 187              	.L8:
+ 188 00c4 00000000 		.word	imuMutex
+ 189 00c8 00000000 		.word	imu_data
+ 190 00cc 00000000 		.word	baroMutex
+ 191 00d0 00000000 		.word	baro_data
+ 192 00d4 00000000 		.word	CFilter
+ 193 00d8 00007A44 		.word	1148846080
+ 194              	.LBE4:
+ 195              		.cfi_endproc
+ 196              	.LFE746:
+ 198              		.section	.text.SensorTask_Init,"ax",%progbits
+ 199              		.align	1
+ 200              		.global	SensorTask_Init
+ 201              		.syntax unified
+ 202              		.thumb
+ 203              		.thumb_func
+ 205              	SensorTask_Init:
+ 206              	.LFB745:
+  37:App/Tasks/SensorTask.c ****     /* Initialise MPU6050 */
+ 207              		.loc 1 37 1 is_stmt 1 view -0
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 0
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 211 0000 10B5     		push	{r4, lr}
+ 212              	.LCFI3:
+ 213              		.cfi_def_cfa_offset 8
+ 214              		.cfi_offset 4, -8
+ 215              		.cfi_offset 14, -4
+  39:App/Tasks/SensorTask.c **** 
+ 216              		.loc 1 39 5 view .LVU44
+ 217 0002 114C     		ldr	r4, .L12
+ 218 0004 2046     		mov	r0, r4
+ 219 0006 FFF7FEFF 		bl	MPU6050_Init
+ 220              	.LVL18:
+  42:App/Tasks/SensorTask.c **** 
+ 221              		.loc 1 42 5 view .LVU45
+ 222 000a 2046     		mov	r0, r4
+ 223 000c FFF7FEFF 		bl	MPL3115A2_Init
+ 224              	.LVL19:
+  45:App/Tasks/SensorTask.c **** 
+ 225              		.loc 1 45 5 view .LVU46
+  45:App/Tasks/SensorTask.c **** 
+ 226              		.loc 1 45 24 is_stmt 0 view .LVU47
+ 227 0010 0021     		movs	r1, #0
+ 228 0012 0E48     		ldr	r0, .L12+4
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 7
 
 
-  84:App/Tasks/SensorTask.c **** }
- 242              		.loc 1 84 1 view .LVU46
- 243 0012 10BD     		pop	{r4, pc}
- 244              	.LVL18:
- 245              	.L17:
-  81:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
- 246              		.loc 1 81 9 is_stmt 1 view .LVU47
-  81:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
- 247              		.loc 1 81 18 is_stmt 0 view .LVU48
- 248 0014 A446     		mov	ip, r4
- 249 0016 0A4C     		ldr	r4, .L18+4
- 250              	.LVL19:
-  81:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
- 251              		.loc 1 81 18 view .LVU49
- 252 0018 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
- 253 001a ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
- 254              	.LVL20:
-  81:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
- 255              		.loc 1 81 18 view .LVU50
- 256 001e 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
- 257 0020 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
- 258              	.LVL21:
-  81:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
- 259              		.loc 1 81 18 view .LVU51
- 260 0024 94E80F00 		ldm	r4, {r0, r1, r2, r3}
- 261 0028 8CE80F00 		stm	ip, {r0, r1, r2, r3}
-  82:App/Tasks/SensorTask.c ****     }
- 262              		.loc 1 82 9 is_stmt 1 view .LVU52
- 263 002c 0023     		movs	r3, #0
- 264 002e 1A46     		mov	r2, r3
- 265 0030 1946     		mov	r1, r3
- 266 0032 0248     		ldr	r0, .L18
- 267 0034 0068     		ldr	r0, [r0]
- 268 0036 FFF7FEFF 		bl	xQueueGenericSend
- 269              	.LVL22:
- 270              		.loc 1 84 1 is_stmt 0 view .LVU53
- 271 003a EAE7     		b	.L14
- 272              	.L19:
- 273              		.align	2
- 274              	.L18:
- 275 003c 00000000 		.word	imuMutex
- 276 0040 00000000 		.word	imu_data
- 277              		.cfi_endproc
- 278              	.LFE747:
- 280              		.section	.text.SensorTask_GetBaro,"ax",%progbits
- 281              		.align	1
- 282              		.global	SensorTask_GetBaro
- 283              		.syntax unified
- 284              		.thumb
- 285              		.thumb_func
- 287              	SensorTask_GetBaro:
- 288              	.LVL23:
- 289              	.LFB748:
-  85:App/Tasks/SensorTask.c **** 
-  86:App/Tasks/SensorTask.c **** void SensorTask_GetBaro(Barometer_Data_t *baro_out)
-  87:App/Tasks/SensorTask.c **** {
- 290              		.loc 1 87 1 is_stmt 1 view -0
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 8
+ 229 0014 FFF7FEFF 		bl	osThreadCreate
+ 230              	.LVL20:
+  45:App/Tasks/SensorTask.c **** 
+ 231              		.loc 1 45 22 discriminator 1 view .LVU48
+ 232 0018 0D4B     		ldr	r3, .L12+8
+ 233 001a 1860     		str	r0, [r3]
+  48:App/Tasks/SensorTask.c ****     attMutex = xSemaphoreCreateMutex();
+ 234              		.loc 1 48 5 is_stmt 1 view .LVU49
+  48:App/Tasks/SensorTask.c ****     attMutex = xSemaphoreCreateMutex();
+ 235              		.loc 1 48 16 is_stmt 0 view .LVU50
+ 236 001c 0120     		movs	r0, #1
+ 237 001e FFF7FEFF 		bl	xQueueCreateMutex
+ 238              	.LVL21:
+  48:App/Tasks/SensorTask.c ****     attMutex = xSemaphoreCreateMutex();
+ 239              		.loc 1 48 14 discriminator 1 view .LVU51
+ 240 0022 0C4B     		ldr	r3, .L12+12
+ 241 0024 1860     		str	r0, [r3]
+  49:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
+ 242              		.loc 1 49 5 is_stmt 1 view .LVU52
+  49:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
+ 243              		.loc 1 49 16 is_stmt 0 view .LVU53
+ 244 0026 0120     		movs	r0, #1
+ 245 0028 FFF7FEFF 		bl	xQueueCreateMutex
+ 246              	.LVL22:
+  49:App/Tasks/SensorTask.c ****     baroMutex = xSemaphoreCreateMutex();
+ 247              		.loc 1 49 14 discriminator 1 view .LVU54
+ 248 002c 0A4B     		ldr	r3, .L12+16
+ 249 002e 1860     		str	r0, [r3]
+  50:App/Tasks/SensorTask.c **** 
+ 250              		.loc 1 50 5 is_stmt 1 view .LVU55
+  50:App/Tasks/SensorTask.c **** 
+ 251              		.loc 1 50 17 is_stmt 0 view .LVU56
+ 252 0030 0120     		movs	r0, #1
+ 253 0032 FFF7FEFF 		bl	xQueueCreateMutex
+ 254              	.LVL23:
+  50:App/Tasks/SensorTask.c **** 
+ 255              		.loc 1 50 15 discriminator 1 view .LVU57
+ 256 0036 094B     		ldr	r3, .L12+20
+ 257 0038 1860     		str	r0, [r3]
+  53:App/Tasks/SensorTask.c ****     
+ 258              		.loc 1 53 5 is_stmt 1 view .LVU58
+ 259 003a 9FED090A 		vldr.32	s0, .L12+24
+ 260 003e 0948     		ldr	r0, .L12+28
+ 261 0040 FFF7FEFF 		bl	ComplementaryFilter_Init
+ 262              	.LVL24:
+  55:App/Tasks/SensorTask.c **** 
+ 263              		.loc 1 55 1 is_stmt 0 view .LVU59
+ 264 0044 10BD     		pop	{r4, pc}
+ 265              	.L13:
+ 266 0046 00BF     		.align	2
+ 267              	.L12:
+ 268 0048 00000000 		.word	hi2c1
+ 269 004c 00000000 		.word	os_thread_def_SensorTask
+ 270 0050 00000000 		.word	SensorTaskHandle
+ 271 0054 00000000 		.word	imuMutex
+ 272 0058 00000000 		.word	attMutex
+ 273 005c 00000000 		.word	baroMutex
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 8
 
 
- 291              		.cfi_startproc
- 292              		@ args = 0, pretend = 0, frame = 0
- 293              		@ frame_needed = 0, uses_anonymous_args = 0
- 294              		.loc 1 87 1 is_stmt 0 view .LVU55
- 295 0000 10B5     		push	{r4, lr}
- 296              	.LCFI4:
- 297              		.cfi_def_cfa_offset 8
- 298              		.cfi_offset 4, -8
- 299              		.cfi_offset 14, -4
- 300 0002 0446     		mov	r4, r0
-  88:App/Tasks/SensorTask.c ****     if (xSemaphoreTake(baroMutex, portMAX_DELAY)) {
- 301              		.loc 1 88 5 is_stmt 1 view .LVU56
- 302              		.loc 1 88 9 is_stmt 0 view .LVU57
- 303 0004 4FF0FF31 		mov	r1, #-1
- 304 0008 0A4B     		ldr	r3, .L24
- 305 000a 1868     		ldr	r0, [r3]
- 306              	.LVL24:
- 307              		.loc 1 88 9 view .LVU58
- 308 000c FFF7FEFF 		bl	xQueueSemaphoreTake
- 309              	.LVL25:
- 310              		.loc 1 88 8 discriminator 1 view .LVU59
- 311 0010 00B9     		cbnz	r0, .L23
- 312              	.LVL26:
- 313              	.L20:
-  89:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
-  90:App/Tasks/SensorTask.c ****         xSemaphoreGive(baroMutex);
-  91:App/Tasks/SensorTask.c ****     }
-  92:App/Tasks/SensorTask.c **** }
- 314              		.loc 1 92 1 view .LVU60
- 315 0012 10BD     		pop	{r4, pc}
- 316              	.LVL27:
- 317              	.L23:
-  89:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
- 318              		.loc 1 89 9 is_stmt 1 view .LVU61
-  89:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
- 319              		.loc 1 89 19 is_stmt 0 view .LVU62
- 320 0014 A446     		mov	ip, r4
- 321 0016 084C     		ldr	r4, .L24+4
- 322              	.LVL28:
-  89:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
- 323              		.loc 1 89 19 view .LVU63
- 324 0018 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
- 325 001a ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
- 326              	.LVL29:
-  89:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
- 327              		.loc 1 89 19 view .LVU64
- 328 001e 2368     		ldr	r3, [r4]
- 329 0020 CCF80030 		str	r3, [ip]
-  90:App/Tasks/SensorTask.c ****     }
- 330              		.loc 1 90 9 is_stmt 1 view .LVU65
- 331 0024 0023     		movs	r3, #0
- 332 0026 1A46     		mov	r2, r3
- 333 0028 1946     		mov	r1, r3
- 334 002a 0248     		ldr	r0, .L24
- 335 002c 0068     		ldr	r0, [r0]
- 336 002e FFF7FEFF 		bl	xQueueGenericSend
- 337              	.LVL30:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 9
+ 274 0060 48E17A3F 		.word	1065017672
+ 275 0064 00000000 		.word	CFilter
+ 276              		.cfi_endproc
+ 277              	.LFE745:
+ 279              		.section	.text.SensorTask_GetIMU,"ax",%progbits
+ 280              		.align	1
+ 281              		.global	SensorTask_GetIMU
+ 282              		.syntax unified
+ 283              		.thumb
+ 284              		.thumb_func
+ 286              	SensorTask_GetIMU:
+ 287              	.LVL25:
+ 288              	.LFB747:
+  95:App/Tasks/SensorTask.c ****     }
+  96:App/Tasks/SensorTask.c ****     
+  97:App/Tasks/SensorTask.c **** }
+  98:App/Tasks/SensorTask.c **** 
+  99:App/Tasks/SensorTask.c **** void SensorTask_GetIMU(IMU_Data_t *imu_out)
+ 100:App/Tasks/SensorTask.c **** {
+ 289              		.loc 1 100 1 is_stmt 1 view -0
+ 290              		.cfi_startproc
+ 291              		@ args = 0, pretend = 0, frame = 0
+ 292              		@ frame_needed = 0, uses_anonymous_args = 0
+ 293              		.loc 1 100 1 is_stmt 0 view .LVU61
+ 294 0000 10B5     		push	{r4, lr}
+ 295              	.LCFI4:
+ 296              		.cfi_def_cfa_offset 8
+ 297              		.cfi_offset 4, -8
+ 298              		.cfi_offset 14, -4
+ 299 0002 0446     		mov	r4, r0
+ 101:App/Tasks/SensorTask.c ****     if (xSemaphoreTake(imuMutex, portMAX_DELAY)) {
+ 300              		.loc 1 101 5 is_stmt 1 view .LVU62
+ 301              		.loc 1 101 9 is_stmt 0 view .LVU63
+ 302 0004 4FF0FF31 		mov	r1, #-1
+ 303 0008 0C4B     		ldr	r3, .L18
+ 304 000a 1868     		ldr	r0, [r3]
+ 305              	.LVL26:
+ 306              		.loc 1 101 9 view .LVU64
+ 307 000c FFF7FEFF 		bl	xQueueSemaphoreTake
+ 308              	.LVL27:
+ 309              		.loc 1 101 8 discriminator 1 view .LVU65
+ 310 0010 00B9     		cbnz	r0, .L17
+ 311              	.LVL28:
+ 312              	.L14:
+ 102:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
+ 103:App/Tasks/SensorTask.c ****         xSemaphoreGive(imuMutex);
+ 104:App/Tasks/SensorTask.c ****     }
+ 105:App/Tasks/SensorTask.c **** }
+ 313              		.loc 1 105 1 view .LVU66
+ 314 0012 10BD     		pop	{r4, pc}
+ 315              	.LVL29:
+ 316              	.L17:
+ 102:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
+ 317              		.loc 1 102 9 is_stmt 1 view .LVU67
+ 102:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
+ 318              		.loc 1 102 18 is_stmt 0 view .LVU68
+ 319 0014 A446     		mov	ip, r4
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 9
 
 
- 338              		.loc 1 92 1 is_stmt 0 view .LVU66
- 339 0032 EEE7     		b	.L20
- 340              	.L25:
- 341              		.align	2
- 342              	.L24:
- 343 0034 00000000 		.word	baroMutex
- 344 0038 00000000 		.word	baro_data
- 345              		.cfi_endproc
- 346              	.LFE748:
- 348              		.section	.bss.baro_data,"aw",%nobits
- 349              		.align	2
- 352              	baro_data:
- 353 0000 00000000 		.space	20
- 353      00000000 
- 353      00000000 
- 353      00000000 
- 353      00000000 
- 354              		.section	.bss.imu_data,"aw",%nobits
- 355              		.align	2
- 358              	imu_data:
- 359 0000 00000000 		.space	48
- 359      00000000 
- 359      00000000 
- 359      00000000 
- 359      00000000 
- 360              		.section	.bss.baroMutex,"aw",%nobits
- 361              		.align	2
- 364              	baroMutex:
- 365 0000 00000000 		.space	4
- 366              		.section	.bss.imuMutex,"aw",%nobits
- 367              		.align	2
- 370              	imuMutex:
- 371 0000 00000000 		.space	4
- 372              		.section	.bss.SensorTaskHandle,"aw",%nobits
- 373              		.align	2
- 376              	SensorTaskHandle:
- 377 0000 00000000 		.space	4
- 378              		.global	os_thread_def_SensorTask
- 379              		.section	.rodata.str1.4,"aMS",%progbits,1
- 380              		.align	2
- 381              	.LC0:
- 382 0000 53656E73 		.ascii	"SensorTask\000"
- 382      6F725461 
- 382      736B00
- 383              		.section	.rodata.os_thread_def_SensorTask,"a"
- 384              		.align	2
- 387              	os_thread_def_SensorTask:
- 388 0000 00000000 		.word	.LC0
- 389 0004 00000000 		.word	SensorTask_Run
- 390 0008 0000     		.short	0
- 391 000a 0000     		.space	2
- 392 000c 00000000 		.word	0
- 393 0010 00020000 		.word	512
- 394 0014 00000000 		.word	0
- 395 0018 00000000 		.word	0
- 396              		.text
- 397              	.Letext0:
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 10
+ 320 0016 0A4C     		ldr	r4, .L18+4
+ 321              	.LVL30:
+ 102:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
+ 322              		.loc 1 102 18 view .LVU69
+ 323 0018 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 324 001a ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 325              	.LVL31:
+ 102:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
+ 326              		.loc 1 102 18 view .LVU70
+ 327 001e 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 328 0020 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 329              	.LVL32:
+ 102:App/Tasks/SensorTask.c ****         *imu_out = imu_data;
+ 330              		.loc 1 102 18 view .LVU71
+ 331 0024 94E80F00 		ldm	r4, {r0, r1, r2, r3}
+ 332 0028 8CE80F00 		stm	ip, {r0, r1, r2, r3}
+ 103:App/Tasks/SensorTask.c ****     }
+ 333              		.loc 1 103 9 is_stmt 1 view .LVU72
+ 334 002c 0023     		movs	r3, #0
+ 335 002e 1A46     		mov	r2, r3
+ 336 0030 1946     		mov	r1, r3
+ 337 0032 0248     		ldr	r0, .L18
+ 338 0034 0068     		ldr	r0, [r0]
+ 339 0036 FFF7FEFF 		bl	xQueueGenericSend
+ 340              	.LVL33:
+ 341              		.loc 1 105 1 is_stmt 0 view .LVU73
+ 342 003a EAE7     		b	.L14
+ 343              	.L19:
+ 344              		.align	2
+ 345              	.L18:
+ 346 003c 00000000 		.word	imuMutex
+ 347 0040 00000000 		.word	imu_data
+ 348              		.cfi_endproc
+ 349              	.LFE747:
+ 351              		.section	.text.SensorTask_GetAttitude,"ax",%progbits
+ 352              		.align	1
+ 353              		.global	SensorTask_GetAttitude
+ 354              		.syntax unified
+ 355              		.thumb
+ 356              		.thumb_func
+ 358              	SensorTask_GetAttitude:
+ 359              	.LVL34:
+ 360              	.LFB748:
+ 106:App/Tasks/SensorTask.c **** 
+ 107:App/Tasks/SensorTask.c **** void SensorTask_GetAttitude(Attitude_Data_t *attitude_out)
+ 108:App/Tasks/SensorTask.c **** {
+ 361              		.loc 1 108 1 is_stmt 1 view -0
+ 362              		.cfi_startproc
+ 363              		@ args = 0, pretend = 0, frame = 0
+ 364              		@ frame_needed = 0, uses_anonymous_args = 0
+ 365              		.loc 1 108 1 is_stmt 0 view .LVU75
+ 366 0000 10B5     		push	{r4, lr}
+ 367              	.LCFI5:
+ 368              		.cfi_def_cfa_offset 8
+ 369              		.cfi_offset 4, -8
+ 370              		.cfi_offset 14, -4
+ 371 0002 0446     		mov	r4, r0
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 10
 
 
- 398              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 399              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 400              		.file 4 "App/Config/sensor_types.h"
- 401              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
- 402              		.file 6 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
- 403              		.file 7 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_types.h"
- 404              		.file 8 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/reent.h"
- 405              		.file 9 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/lock.h"
- 406              		.file 10 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
- 407              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 408              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
- 409              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h"
- 410              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
- 411              		.file 15 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 412              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 413              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 414              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
- 415              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
- 416              		.file 20 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
- 417              		.file 21 "Core/Inc/i2c.h"
- 418              		.file 22 "Drivers/MyDrivers/baro_mpl3115a2.h"
- 419              		.file 23 "Drivers/MyDrivers/imu_mpu6050.h"
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s 			page 11
+ 109:App/Tasks/SensorTask.c ****     if (xSemaphoreTake(attMutex, portMAX_DELAY)) {
+ 372              		.loc 1 109 5 is_stmt 1 view .LVU76
+ 373              		.loc 1 109 9 is_stmt 0 view .LVU77
+ 374 0004 4FF0FF31 		mov	r1, #-1
+ 375 0008 084B     		ldr	r3, .L24
+ 376 000a 1868     		ldr	r0, [r3]
+ 377              	.LVL35:
+ 378              		.loc 1 109 9 view .LVU78
+ 379 000c FFF7FEFF 		bl	xQueueSemaphoreTake
+ 380              	.LVL36:
+ 381              		.loc 1 109 8 discriminator 1 view .LVU79
+ 382 0010 00B9     		cbnz	r0, .L23
+ 383              	.L20:
+ 110:App/Tasks/SensorTask.c ****         *attitude_out = attitude;
+ 111:App/Tasks/SensorTask.c ****         xSemaphoreGive(attMutex);
+ 112:App/Tasks/SensorTask.c ****     }
+ 113:App/Tasks/SensorTask.c **** }
+ 384              		.loc 1 113 1 view .LVU80
+ 385 0012 10BD     		pop	{r4, pc}
+ 386              	.LVL37:
+ 387              	.L23:
+ 110:App/Tasks/SensorTask.c ****         *attitude_out = attitude;
+ 388              		.loc 1 110 9 is_stmt 1 view .LVU81
+ 110:App/Tasks/SensorTask.c ****         *attitude_out = attitude;
+ 389              		.loc 1 110 23 is_stmt 0 view .LVU82
+ 390 0014 064B     		ldr	r3, .L24+4
+ 391 0016 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 392 0018 84E80F00 		stm	r4, {r0, r1, r2, r3}
+ 111:App/Tasks/SensorTask.c ****     }
+ 393              		.loc 1 111 9 is_stmt 1 view .LVU83
+ 394 001c 0023     		movs	r3, #0
+ 395 001e 1A46     		mov	r2, r3
+ 396 0020 1946     		mov	r1, r3
+ 397 0022 0248     		ldr	r0, .L24
+ 398 0024 0068     		ldr	r0, [r0]
+ 399 0026 FFF7FEFF 		bl	xQueueGenericSend
+ 400              	.LVL38:
+ 401              		.loc 1 113 1 is_stmt 0 view .LVU84
+ 402 002a F2E7     		b	.L20
+ 403              	.L25:
+ 404              		.align	2
+ 405              	.L24:
+ 406 002c 00000000 		.word	attMutex
+ 407 0030 00000000 		.word	attitude
+ 408              		.cfi_endproc
+ 409              	.LFE748:
+ 411              		.section	.text.SensorTask_GetBaro,"ax",%progbits
+ 412              		.align	1
+ 413              		.global	SensorTask_GetBaro
+ 414              		.syntax unified
+ 415              		.thumb
+ 416              		.thumb_func
+ 418              	SensorTask_GetBaro:
+ 419              	.LVL39:
+ 420              	.LFB749:
+ 114:App/Tasks/SensorTask.c **** 
+ 115:App/Tasks/SensorTask.c **** void SensorTask_GetBaro(Barometer_Data_t *baro_out)
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 11
+
+
+ 116:App/Tasks/SensorTask.c **** {
+ 421              		.loc 1 116 1 is_stmt 1 view -0
+ 422              		.cfi_startproc
+ 423              		@ args = 0, pretend = 0, frame = 0
+ 424              		@ frame_needed = 0, uses_anonymous_args = 0
+ 425              		.loc 1 116 1 is_stmt 0 view .LVU86
+ 426 0000 10B5     		push	{r4, lr}
+ 427              	.LCFI6:
+ 428              		.cfi_def_cfa_offset 8
+ 429              		.cfi_offset 4, -8
+ 430              		.cfi_offset 14, -4
+ 431 0002 0446     		mov	r4, r0
+ 117:App/Tasks/SensorTask.c ****     if (xSemaphoreTake(baroMutex, portMAX_DELAY)) {
+ 432              		.loc 1 117 5 is_stmt 1 view .LVU87
+ 433              		.loc 1 117 9 is_stmt 0 view .LVU88
+ 434 0004 4FF0FF31 		mov	r1, #-1
+ 435 0008 0A4B     		ldr	r3, .L30
+ 436 000a 1868     		ldr	r0, [r3]
+ 437              	.LVL40:
+ 438              		.loc 1 117 9 view .LVU89
+ 439 000c FFF7FEFF 		bl	xQueueSemaphoreTake
+ 440              	.LVL41:
+ 441              		.loc 1 117 8 discriminator 1 view .LVU90
+ 442 0010 00B9     		cbnz	r0, .L29
+ 443              	.LVL42:
+ 444              	.L26:
+ 118:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
+ 119:App/Tasks/SensorTask.c ****         xSemaphoreGive(baroMutex);
+ 120:App/Tasks/SensorTask.c ****     }
+ 121:App/Tasks/SensorTask.c **** }
+ 445              		.loc 1 121 1 view .LVU91
+ 446 0012 10BD     		pop	{r4, pc}
+ 447              	.LVL43:
+ 448              	.L29:
+ 118:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
+ 449              		.loc 1 118 9 is_stmt 1 view .LVU92
+ 118:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
+ 450              		.loc 1 118 19 is_stmt 0 view .LVU93
+ 451 0014 A446     		mov	ip, r4
+ 452 0016 084C     		ldr	r4, .L30+4
+ 453              	.LVL44:
+ 118:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
+ 454              		.loc 1 118 19 view .LVU94
+ 455 0018 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 456 001a ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 457              	.LVL45:
+ 118:App/Tasks/SensorTask.c ****         *baro_out = baro_data;
+ 458              		.loc 1 118 19 view .LVU95
+ 459 001e 2368     		ldr	r3, [r4]
+ 460 0020 CCF80030 		str	r3, [ip]
+ 119:App/Tasks/SensorTask.c ****     }
+ 461              		.loc 1 119 9 is_stmt 1 view .LVU96
+ 462 0024 0023     		movs	r3, #0
+ 463 0026 1A46     		mov	r2, r3
+ 464 0028 1946     		mov	r1, r3
+ 465 002a 0248     		ldr	r0, .L30
+ 466 002c 0068     		ldr	r0, [r0]
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 12
+
+
+ 467 002e FFF7FEFF 		bl	xQueueGenericSend
+ 468              	.LVL46:
+ 469              		.loc 1 121 1 is_stmt 0 view .LVU97
+ 470 0032 EEE7     		b	.L26
+ 471              	.L31:
+ 472              		.align	2
+ 473              	.L30:
+ 474 0034 00000000 		.word	baroMutex
+ 475 0038 00000000 		.word	baro_data
+ 476              		.cfi_endproc
+ 477              	.LFE749:
+ 479              		.section	.data.CFilter,"aw"
+ 480              		.align	2
+ 483              	CFilter:
+ 484 0000 00000000 		.space	4
+ 485 0004 00000000 		.word	attitude
+ 486 0008 00000000 		.space	8
+ 486      00000000 
+ 487              		.section	.bss.attitude,"aw",%nobits
+ 488              		.align	2
+ 491              	attitude:
+ 492 0000 00000000 		.space	16
+ 492      00000000 
+ 492      00000000 
+ 492      00000000 
+ 493              		.section	.bss.baro_data,"aw",%nobits
+ 494              		.align	2
+ 497              	baro_data:
+ 498 0000 00000000 		.space	20
+ 498      00000000 
+ 498      00000000 
+ 498      00000000 
+ 498      00000000 
+ 499              		.section	.bss.imu_data,"aw",%nobits
+ 500              		.align	2
+ 503              	imu_data:
+ 504 0000 00000000 		.space	48
+ 504      00000000 
+ 504      00000000 
+ 504      00000000 
+ 504      00000000 
+ 505              		.section	.bss.attMutex,"aw",%nobits
+ 506              		.align	2
+ 509              	attMutex:
+ 510 0000 00000000 		.space	4
+ 511              		.section	.bss.baroMutex,"aw",%nobits
+ 512              		.align	2
+ 515              	baroMutex:
+ 516 0000 00000000 		.space	4
+ 517              		.section	.bss.imuMutex,"aw",%nobits
+ 518              		.align	2
+ 521              	imuMutex:
+ 522 0000 00000000 		.space	4
+ 523              		.section	.bss.SensorTaskHandle,"aw",%nobits
+ 524              		.align	2
+ 527              	SensorTaskHandle:
+ 528 0000 00000000 		.space	4
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 13
+
+
+ 529              		.global	os_thread_def_SensorTask
+ 530              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 531              		.align	2
+ 532              	.LC0:
+ 533 0000 53656E73 		.ascii	"SensorTask\000"
+ 533      6F725461 
+ 533      736B00
+ 534              		.section	.rodata.os_thread_def_SensorTask,"a"
+ 535              		.align	2
+ 538              	os_thread_def_SensorTask:
+ 539 0000 00000000 		.word	.LC0
+ 540 0004 00000000 		.word	SensorTask_Run
+ 541 0008 0000     		.short	0
+ 542 000a 0000     		.space	2
+ 543 000c 00000000 		.word	0
+ 544 0010 00020000 		.word	512
+ 545 0014 00000000 		.word	0
+ 546 0018 00000000 		.word	0
+ 547              		.text
+ 548              	.Letext0:
+ 549              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 550              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 551              		.file 4 "App/Config/sensor_types.h"
+ 552              		.file 5 "App/Config/filter_types.h"
+ 553              		.file 6 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 554              		.file 7 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/lib/gcc/arm-none-eabi/13.2.1/includ
+ 555              		.file 8 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_types.h"
+ 556              		.file 9 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/reent.h"
+ 557              		.file 10 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/lock.h"
+ 558              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 559              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 560              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 561              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h"
+ 562              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 563              		.file 16 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 564              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 565              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 566              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 567              		.file 20 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
+ 568              		.file 21 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
+ 569              		.file 22 "Core/Inc/i2c.h"
+ 570              		.file 23 "Drivers/MyDrivers/baro_mpl3115a2.h"
+ 571              		.file 24 "Drivers/MyDrivers/imu_mpu6050.h"
+ 572              		.file 25 "App/Utils/filter_complementary.h"
+ 573              		.file 26 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 SensorTask.c
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:21     .text.SensorTask_Run:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:27     .text.SensorTask_Run:00000000 SensorTask_Run
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:136    .text.SensorTask_Run:0000009c $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:370    .bss.imuMutex:00000000 imuMutex
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:358    .bss.imu_data:00000000 imu_data
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:364    .bss.baroMutex:00000000 baroMutex
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:352    .bss.baro_data:00000000 baro_data
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:144    .text.SensorTask_Init:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:150    .text.SensorTask_Init:00000000 SensorTask_Init
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:200    .text.SensorTask_Init:00000034 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:387    .rodata.os_thread_def_SensorTask:00000000 os_thread_def_SensorTask
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:376    .bss.SensorTaskHandle:00000000 SensorTaskHandle
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:209    .text.SensorTask_GetIMU:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:215    .text.SensorTask_GetIMU:00000000 SensorTask_GetIMU
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:275    .text.SensorTask_GetIMU:0000003c $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:281    .text.SensorTask_GetBaro:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:287    .text.SensorTask_GetBaro:00000000 SensorTask_GetBaro
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:343    .text.SensorTask_GetBaro:00000034 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:349    .bss.baro_data:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:355    .bss.imu_data:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:361    .bss.baroMutex:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:367    .bss.imuMutex:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:373    .bss.SensorTaskHandle:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:380    .rodata.str1.4:00000000 $d
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccPFO6UW.s:384    .rodata.os_thread_def_SensorTask:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:21     .text.SensorTask_Run:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:27     .text.SensorTask_Run:00000000 SensorTask_Run
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:188    .text.SensorTask_Run:000000c4 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:521    .bss.imuMutex:00000000 imuMutex
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:503    .bss.imu_data:00000000 imu_data
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:515    .bss.baroMutex:00000000 baroMutex
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:497    .bss.baro_data:00000000 baro_data
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:483    .data.CFilter:00000000 CFilter
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:199    .text.SensorTask_Init:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:205    .text.SensorTask_Init:00000000 SensorTask_Init
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:268    .text.SensorTask_Init:00000048 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:538    .rodata.os_thread_def_SensorTask:00000000 os_thread_def_SensorTask
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:527    .bss.SensorTaskHandle:00000000 SensorTaskHandle
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:509    .bss.attMutex:00000000 attMutex
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:280    .text.SensorTask_GetIMU:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:286    .text.SensorTask_GetIMU:00000000 SensorTask_GetIMU
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:346    .text.SensorTask_GetIMU:0000003c $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:352    .text.SensorTask_GetAttitude:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:358    .text.SensorTask_GetAttitude:00000000 SensorTask_GetAttitude
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:406    .text.SensorTask_GetAttitude:0000002c $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:491    .bss.attitude:00000000 attitude
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:412    .text.SensorTask_GetBaro:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:418    .text.SensorTask_GetBaro:00000000 SensorTask_GetBaro
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:474    .text.SensorTask_GetBaro:00000034 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:480    .data.CFilter:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:488    .bss.attitude:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:494    .bss.baro_data:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:500    .bss.imu_data:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:506    .bss.attMutex:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:512    .bss.baroMutex:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:518    .bss.imuMutex:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:524    .bss.SensorTaskHandle:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:531    .rodata.str1.4:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccUMfVlU.s:535    .rodata.os_thread_def_SensorTask:00000000 $d
 
 UNDEFINED SYMBOLS
+HAL_GetTick
 xQueueSemaphoreTake
 xQueueGenericSend
+ComplementaryFilter_Update
 osDelay
 MPU6050_Read
 MPL3115A2_Read
@@ -604,4 +818,5 @@ MPU6050_Init
 MPL3115A2_Init
 osThreadCreate
 xQueueCreateMutex
+ComplementaryFilter_Init
 hi2c1
