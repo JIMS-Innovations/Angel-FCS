@@ -32,7 +32,7 @@
 #include "usbd_cdc_if.h"
 #include "minimal/mavlink.h"
 #include "common/mavlink.h"
-#include "standard/mavlink.h"
+#include "common/common.h"
 
 /* USER CODE END Includes */
 
@@ -54,7 +54,8 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 uint8_t buf[MAVLINK_MAX_PACKET_LEN];
-mavlink_message_t msg;
+mavlink_message_t heart_beat;
+mavlink_message_t attitude_msg;
 uint16_t len;
 
 /* USER CODE END Variables */
@@ -168,11 +169,12 @@ void USBTask_Run(void const * argument)
   IMU_Data_t imu;
   Barometer_Data_t baro;
   Attitude_Data_t attitude;
+  uint32_t last_ms = HAL_GetTick();
 
   /* Infinite loop */
   for(;;)
   {
-    // SensorTask_GetIMU(&imu);
+    SensorTask_GetIMU(&imu);
     SensorTask_GetBaro(&baro);
     SensorTask_GetAttitude(&attitude);
     
@@ -182,9 +184,17 @@ void USBTask_Run(void const * argument)
     // snprintf(buffer, 128, "[IMU] Pitch: %.2f, Roll: %.2f\r\n[BARO] Altitude: %.2fm, Pressure: %.2fPa\r\n", RAD2DEG(attitude.pitch), RAD2DEG(attitude.roll), baro.altitude, baro.pressure);
     // CDC_Transmit_FS(buffer, strlen(buffer));
 
-    mavlink_msg_heartbeat_pack(1, 200, &msg, MAV_TYPE_QUADROTOR, MAV_AUTOPILOT_GENERIC, 0, 0, 0);
-    len = mavlink_msg_to_send_buffer(buf, &msg);
+    if(HAL_GetTick() - last_ms >= 1000)
+    {
+      mavlink_msg_heartbeat_pack(1, 1, &heart_beat, MAV_TYPE_QUADROTOR, MAV_AUTOPILOT_GENERIC, 0, 0, 0);
+      len = mavlink_msg_to_send_buffer(buf, &heart_beat);
+      CDC_Transmit_FS(buf, len);
+      last_ms = HAL_GetTick();
+    }
+    mavlink_msg_attitude_pack(1, 1, &attitude_msg, HAL_GetTick(), attitude.roll, attitude.pitch, 0, imu.gyro[1], imu.gyro[0], imu.gyro[2]);
+    len = mavlink_msg_to_send_buffer(buf, &attitude_msg);
     CDC_Transmit_FS(buf, len);
+
 
 
     
