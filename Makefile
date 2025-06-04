@@ -179,6 +179,10 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
 -IDrivers/CMSIS/Include \
 -IDrivers/MyDrivers \
+-Imavlink \
+-Imavlink/minimal \
+-Imavlink/standard \
+-Imavlink/common \
 -IApp/Utils \
 -IApp/Config \
 -IApp/Tasks 

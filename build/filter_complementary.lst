@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 1
+ARM GAS  /tmp/ccQnQFVZ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -19,16 +19,16 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.file 1 "App/Utils/filter_complementary.c"
-  20              		.section	.text.ComplementaryFilter_Init,"ax",%progbits
-  21              		.align	1
-  22              		.global	ComplementaryFilter_Init
-  23              		.syntax unified
-  24              		.thumb
-  25              		.thumb_func
-  27              	ComplementaryFilter_Init:
-  28              	.LVL0:
-  29              	.LFB0:
+  19              		.section	.text.ComplementaryFilter_Init,"ax",%progbits
+  20              		.align	1
+  21              		.global	ComplementaryFilter_Init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	ComplementaryFilter_Init:
+  27              	.LVL0:
+  28              	.LFB0:
+  29              		.file 1 "App/Utils/filter_complementary.c"
    1:App/Utils/filter_complementary.c **** /**
    2:App/Utils/filter_complementary.c ****  * @file filter_complementary.c
    3:App/Utils/filter_complementary.c ****  * @author Jesutofunmi Kupoluyi (jimsufficiency@gmail.com)
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 1
   34              		@ link register save eliminated.
   23:App/Utils/filter_complementary.c ****     filter->alpha = alpha;
   35              		.loc 1 23 5 view .LVU1
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 2
+ARM GAS  /tmp/ccQnQFVZ.s 			page 2
 
 
   36              		.loc 1 23 19 is_stmt 0 view .LVU2
@@ -118,147 +118,142 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 1
   78              		.cfi_offset 4, -12
   79              		.cfi_offset 5, -8
   80              		.cfi_offset 14, -4
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 3
+ARM GAS  /tmp/ccQnQFVZ.s 			page 3
 
 
-  81 0002 2DED048B 		vpush.64	{d8, d9}
+  81 0002 2DED028B 		vpush.64	{d8}
   82              	.LCFI1:
-  83              		.cfi_def_cfa_offset 32
-  84              		.cfi_offset 80, -32
-  85              		.cfi_offset 81, -28
-  86              		.cfi_offset 82, -24
-  87              		.cfi_offset 83, -20
-  88 0006 0546     		mov	r5, r0
-  89 0008 0C46     		mov	r4, r1
-  90 000a B0EE408A 		vmov.f32	s16, s0
+  83              		.cfi_def_cfa_offset 24
+  84              		.cfi_offset 80, -24
+  85              		.cfi_offset 81, -20
+  86 0006 0546     		mov	r5, r0
+  87 0008 0C46     		mov	r4, r1
+  88 000a B0EE408A 		vmov.f32	s16, s0
   38:App/Utils/filter_complementary.c ****     /* Attitude estimate from accelerometer values */
   39:App/Utils/filter_complementary.c ****     float pitch_acc = atan2f(-imu_data->accel[0], sqrtf(imu_data->accel[1]*imu_data->accel[1] + imu
-  91              		.loc 1 39 5 is_stmt 1 view .LVU15
-  92              		.loc 1 39 46 is_stmt 0 view .LVU16
-  93 000e D1ED008A 		vldr.32	s17, [r1]
-  94              		.loc 1 39 72 view .LVU17
-  95 0012 91ED019A 		vldr.32	s18, [r1, #4]
-  96              		.loc 1 39 75 view .LVU18
-  97 0016 29EE090A 		vmul.f32	s0, s18, s18
-  98              	.LVL2:
-  99              		.loc 1 39 112 view .LVU19
- 100 001a D1ED029A 		vldr.32	s19, [r1, #8]
- 101              		.loc 1 39 115 view .LVU20
- 102 001e 69EEA97A 		vmul.f32	s15, s19, s19
- 103              		.loc 1 39 23 view .LVU21
- 104 0022 30EE270A 		vadd.f32	s0, s0, s15
- 105 0026 FFF7FEFF 		bl	sqrtf
- 106              	.LVL3:
- 107              		.loc 1 39 23 view .LVU22
- 108 002a F0EE400A 		vmov.f32	s1, s0
- 109              		.loc 1 39 23 discriminator 1 view .LVU23
- 110 002e B1EE680A 		vneg.f32	s0, s17
- 111 0032 FFF7FEFF 		bl	atan2f
- 112              	.LVL4:
- 113 0036 F0EE408A 		vmov.f32	s17, s0
- 114              	.LVL5:
+  89              		.loc 1 39 5 is_stmt 1 view .LVU15
+  90              		.loc 1 39 46 is_stmt 0 view .LVU16
+  91 000e D1ED008A 		vldr.32	s17, [r1]
+  92              		.loc 1 39 72 view .LVU17
+  93 0012 91ED010A 		vldr.32	s0, [r1, #4]
+  94              	.LVL2:
+  95              		.loc 1 39 75 view .LVU18
+  96 0016 20EE000A 		vmul.f32	s0, s0, s0
+  97              		.loc 1 39 112 view .LVU19
+  98 001a D1ED027A 		vldr.32	s15, [r1, #8]
+  99              		.loc 1 39 115 view .LVU20
+ 100 001e 67EEA77A 		vmul.f32	s15, s15, s15
+ 101              		.loc 1 39 23 view .LVU21
+ 102 0022 30EE270A 		vadd.f32	s0, s0, s15
+ 103 0026 FFF7FEFF 		bl	sqrtf
+ 104              	.LVL3:
+ 105              		.loc 1 39 23 view .LVU22
+ 106 002a F0EE400A 		vmov.f32	s1, s0
+ 107 002e B1EE680A 		vneg.f32	s0, s17
+ 108 0032 FFF7FEFF 		bl	atan2f
+ 109              	.LVL4:
+ 110 0036 F0EE408A 		vmov.f32	s17, s0
+ 111              	.LVL5:
   40:App/Utils/filter_complementary.c ****     float roll_acc = atan2f(imu_data->accel[1], imu_data->accel[2]);
- 115              		.loc 1 40 5 is_stmt 1 view .LVU24
- 116              		.loc 1 40 22 is_stmt 0 view .LVU25
- 117 003a F0EE690A 		vmov.f32	s1, s19
- 118 003e B0EE490A 		vmov.f32	s0, s18
- 119              	.LVL6:
- 120              		.loc 1 40 22 view .LVU26
- 121 0042 FFF7FEFF 		bl	atan2f
- 122              	.LVL7:
+ 112              		.loc 1 40 5 is_stmt 1 view .LVU23
+ 113              		.loc 1 40 22 is_stmt 0 view .LVU24
+ 114 003a D4ED020A 		vldr.32	s1, [r4, #8]
+ 115 003e 94ED010A 		vldr.32	s0, [r4, #4]
+ 116              	.LVL6:
+ 117              		.loc 1 40 22 view .LVU25
+ 118 0042 FFF7FEFF 		bl	atan2f
+ 119              	.LVL7:
   41:App/Utils/filter_complementary.c **** 
   42:App/Utils/filter_complementary.c ****     /* Integrate gyro values */
   43:App/Utils/filter_complementary.c ****     float pitch_gyro = filter->attitude->pitch + imu_data->gyro[1] * dt;
- 123              		.loc 1 43 5 is_stmt 1 view .LVU27
- 124              		.loc 1 43 30 is_stmt 0 view .LVU28
- 125 0046 6B68     		ldr	r3, [r5, #4]
- 126              		.loc 1 43 40 view .LVU29
- 127 0048 93ED007A 		vldr.32	s14, [r3]
- 128              		.loc 1 43 64 view .LVU30
- 129 004c D4ED047A 		vldr.32	s15, [r4, #16]
- 130              		.loc 1 43 68 view .LVU31
- 131 0050 67EE887A 		vmul.f32	s15, s15, s16
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 4
+ 120              		.loc 1 43 5 is_stmt 1 view .LVU26
+ 121              		.loc 1 43 30 is_stmt 0 view .LVU27
+ 122 0046 6B68     		ldr	r3, [r5, #4]
+ 123              		.loc 1 43 40 view .LVU28
+ 124 0048 93ED007A 		vldr.32	s14, [r3]
+ 125              		.loc 1 43 64 view .LVU29
+ 126 004c 94ED046A 		vldr.32	s12, [r4, #16]
+ 127              		.loc 1 43 68 view .LVU30
+ 128 0050 26EE086A 		vmul.f32	s12, s12, s16
+ 129              		.loc 1 43 11 view .LVU31
+ 130 0054 37EE067A 		vadd.f32	s14, s14, s12
+ 131              	.LVL8:
+ARM GAS  /tmp/ccQnQFVZ.s 			page 4
 
 
- 132              		.loc 1 43 11 view .LVU32
- 133 0054 37EE277A 		vadd.f32	s14, s14, s15
- 134              	.LVL8:
   44:App/Utils/filter_complementary.c ****     float roll_gyro = filter->attitude->roll + imu_data->gyro[0] * dt;
- 135              		.loc 1 44 5 is_stmt 1 view .LVU33
- 136              		.loc 1 44 39 is_stmt 0 view .LVU34
- 137 0058 D3ED017A 		vldr.32	s15, [r3, #4]
- 138              		.loc 1 44 62 view .LVU35
- 139 005c D4ED036A 		vldr.32	s13, [r4, #12]
- 140              		.loc 1 44 66 view .LVU36
- 141 0060 66EE886A 		vmul.f32	s13, s13, s16
- 142              		.loc 1 44 11 view .LVU37
- 143 0064 77EEA67A 		vadd.f32	s15, s15, s13
- 144              	.LVL9:
+ 132              		.loc 1 44 5 is_stmt 1 view .LVU32
+ 133              		.loc 1 44 39 is_stmt 0 view .LVU33
+ 134 0058 D3ED017A 		vldr.32	s15, [r3, #4]
+ 135              		.loc 1 44 62 view .LVU34
+ 136 005c 94ED036A 		vldr.32	s12, [r4, #12]
+ 137              		.loc 1 44 66 view .LVU35
+ 138 0060 26EE088A 		vmul.f32	s16, s12, s16
+ 139              	.LVL9:
+ 140              		.loc 1 44 11 view .LVU36
+ 141 0064 77EE887A 		vadd.f32	s15, s15, s16
+ 142              	.LVL10:
   45:App/Utils/filter_complementary.c **** 
   46:App/Utils/filter_complementary.c ****     /* Sensor fusion by complemetary filter */
   47:App/Utils/filter_complementary.c ****     filter->attitude->pitch = filter->alpha * pitch_gyro + (1 - filter->alpha) * pitch_acc;
- 145              		.loc 1 47 5 is_stmt 1 view .LVU38
- 146              		.loc 1 47 37 is_stmt 0 view .LVU39
- 147 0068 95ED006A 		vldr.32	s12, [r5]
- 148              		.loc 1 47 45 view .LVU40
- 149 006c 26EE077A 		vmul.f32	s14, s12, s14
- 150              	.LVL10:
- 151              		.loc 1 47 63 view .LVU41
- 152 0070 F7EE006A 		vmov.f32	s13, #1.0e+0
- 153 0074 36EEC66A 		vsub.f32	s12, s13, s12
- 154              		.loc 1 47 80 view .LVU42
- 155 0078 26EE286A 		vmul.f32	s12, s12, s17
- 156              		.loc 1 47 58 view .LVU43
- 157 007c 37EE067A 		vadd.f32	s14, s14, s12
- 158              		.loc 1 47 29 view .LVU44
- 159 0080 83ED007A 		vstr.32	s14, [r3]
- 160              	.LVL11:
+ 143              		.loc 1 47 5 is_stmt 1 view .LVU37
+ 144              		.loc 1 47 37 is_stmt 0 view .LVU38
+ 145 0068 95ED006A 		vldr.32	s12, [r5]
+ 146              		.loc 1 47 45 view .LVU39
+ 147 006c 26EE077A 		vmul.f32	s14, s12, s14
+ 148              	.LVL11:
+ 149              		.loc 1 47 63 view .LVU40
+ 150 0070 F7EE006A 		vmov.f32	s13, #1.0e+0
+ 151 0074 36EEC66A 		vsub.f32	s12, s13, s12
+ 152              		.loc 1 47 80 view .LVU41
+ 153 0078 26EE286A 		vmul.f32	s12, s12, s17
+ 154              		.loc 1 47 58 view .LVU42
+ 155 007c 37EE067A 		vadd.f32	s14, s14, s12
+ 156              		.loc 1 47 29 view .LVU43
+ 157 0080 83ED007A 		vstr.32	s14, [r3]
+ 158              	.LVL12:
   48:App/Utils/filter_complementary.c ****     filter->attitude->roll = filter->alpha * roll_gyro + (1 - filter->alpha) * roll_acc;
- 161              		.loc 1 48 5 is_stmt 1 view .LVU45
- 162              		.loc 1 48 36 is_stmt 0 view .LVU46
- 163 0084 95ED007A 		vldr.32	s14, [r5]
- 164              		.loc 1 48 44 view .LVU47
- 165 0088 67EE277A 		vmul.f32	s15, s14, s15
- 166              	.LVL12:
- 167              		.loc 1 48 61 view .LVU48
- 168 008c 76EEC76A 		vsub.f32	s13, s13, s14
- 169              		.loc 1 48 78 view .LVU49
- 170 0090 66EE806A 		vmul.f32	s13, s13, s0
- 171              		.loc 1 48 11 view .LVU50
- 172 0094 6B68     		ldr	r3, [r5, #4]
- 173              		.loc 1 48 56 view .LVU51
- 174 0096 77EEA67A 		vadd.f32	s15, s15, s13
- 175              		.loc 1 48 28 view .LVU52
- 176 009a C3ED017A 		vstr.32	s15, [r3, #4]
+ 159              		.loc 1 48 5 is_stmt 1 view .LVU44
+ 160              		.loc 1 48 36 is_stmt 0 view .LVU45
+ 161 0084 95ED007A 		vldr.32	s14, [r5]
+ 162              		.loc 1 48 44 view .LVU46
+ 163 0088 67EE277A 		vmul.f32	s15, s14, s15
+ 164              	.LVL13:
+ 165              		.loc 1 48 61 view .LVU47
+ 166 008c 76EEC76A 		vsub.f32	s13, s13, s14
+ 167              		.loc 1 48 78 view .LVU48
+ 168 0090 66EE806A 		vmul.f32	s13, s13, s0
+ 169              		.loc 1 48 11 view .LVU49
+ 170 0094 6B68     		ldr	r3, [r5, #4]
+ 171              	.LVL14:
+ 172              		.loc 1 48 56 view .LVU50
+ 173 0096 77EEA67A 		vadd.f32	s15, s15, s13
+ 174              		.loc 1 48 28 view .LVU51
+ 175 009a C3ED017A 		vstr.32	s15, [r3, #4]
   49:App/Utils/filter_complementary.c **** 
   50:App/Utils/filter_complementary.c **** }
- 177              		.loc 1 50 1 view .LVU53
- 178 009e BDEC048B 		vldm	sp!, {d8-d9}
- 179              	.LCFI2:
- 180              		.cfi_restore 82
- 181              		.cfi_restore 83
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 5
+ 176              		.loc 1 50 1 view .LVU52
+ 177 009e BDEC028B 		vldm	sp!, {d8}
+ 178              	.LCFI2:
+ 179              		.cfi_restore 80
+ 180              		.cfi_restore 81
+ 181              		.cfi_def_cfa_offset 16
+ARM GAS  /tmp/ccQnQFVZ.s 			page 5
 
 
- 182              		.cfi_restore 80
- 183              		.cfi_restore 81
- 184              		.cfi_def_cfa_offset 16
- 185              	.LVL13:
- 186              		.loc 1 50 1 view .LVU54
- 187 00a2 38BD     		pop	{r3, r4, r5, pc}
- 188              		.loc 1 50 1 view .LVU55
- 189              		.cfi_endproc
- 190              	.LFE1:
- 192              		.section	.text.ComplementaryFilter_GetAttitude,"ax",%progbits
- 193              		.align	1
- 194              		.global	ComplementaryFilter_GetAttitude
- 195              		.syntax unified
- 196              		.thumb
- 197              		.thumb_func
- 199              	ComplementaryFilter_GetAttitude:
- 200              	.LVL14:
- 201              	.LFB2:
+ 182 00a2 38BD     		pop	{r3, r4, r5, pc}
+ 183              		.loc 1 50 1 view .LVU53
+ 184              		.cfi_endproc
+ 185              	.LFE1:
+ 187              		.section	.text.ComplementaryFilter_GetAttitude,"ax",%progbits
+ 188              		.align	1
+ 189              		.global	ComplementaryFilter_GetAttitude
+ 190              		.syntax unified
+ 191              		.thumb
+ 192              		.thumb_func
+ 194              	ComplementaryFilter_GetAttitude:
+ 195              	.LVL15:
+ 196              	.LFB2:
   51:App/Utils/filter_complementary.c **** 
   52:App/Utils/filter_complementary.c **** /**
   53:App/Utils/filter_complementary.c ****  * @brief Function for reading attitude data result from complemetary filter
@@ -268,39 +263,39 @@ ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 1
   57:App/Utils/filter_complementary.c ****  */
   58:App/Utils/filter_complementary.c **** Attitude_Data_t* ComplementaryFilter_GetAttitude(ComplementaryFilter_Data_t* filter)
   59:App/Utils/filter_complementary.c **** {
- 202              		.loc 1 59 1 is_stmt 1 view -0
- 203              		.cfi_startproc
- 204              		@ args = 0, pretend = 0, frame = 0
- 205              		@ frame_needed = 0, uses_anonymous_args = 0
- 206              		@ link register save eliminated.
+ 197              		.loc 1 59 1 is_stmt 1 view -0
+ 198              		.cfi_startproc
+ 199              		@ args = 0, pretend = 0, frame = 0
+ 200              		@ frame_needed = 0, uses_anonymous_args = 0
+ 201              		@ link register save eliminated.
   60:App/Utils/filter_complementary.c ****     return filter->attitude;
- 207              		.loc 1 60 5 view .LVU57
+ 202              		.loc 1 60 5 view .LVU55
   61:App/Utils/filter_complementary.c **** }...
- 208              		.loc 1 61 1 is_stmt 0 view .LVU58
- 209 0000 4068     		ldr	r0, [r0, #4]
- 210              	.LVL15:
- 211              		.loc 1 61 1 view .LVU59
- 212 0002 7047     		bx	lr
- 213              		.cfi_endproc
- 214              	.LFE2:
- 216              		.text
- 217              	.Letext0:
- 218              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
- 219              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
- 220              		.file 4 "App/Config/sensor_types.h"
- 221              		.file 5 "App/Config/filter_types.h"
- 222              		.file 6 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/math.h"
-ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s 			page 6
+ 203              		.loc 1 61 1 is_stmt 0 view .LVU56
+ 204 0000 4068     		ldr	r0, [r0, #4]
+ 205              	.LVL16:
+ 206              		.loc 1 61 1 view .LVU57
+ 207 0002 7047     		bx	lr
+ 208              		.cfi_endproc
+ 209              	.LFE2:
+ 211              		.text
+ 212              	.Letext0:
+ 213              		.file 2 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h"
+ 214              		.file 3 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h"
+ 215              		.file 4 "App/Config/sensor_types.h"
+ 216              		.file 5 "App/Config/filter_types.h"
+ 217              		.file 6 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/math.h"
+ARM GAS  /tmp/ccQnQFVZ.s 			page 6
 
 
 DEFINED SYMBOLS
-                            *ABS*:00000000 filter_complementary.c
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s:21     .text.ComplementaryFilter_Init:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s:27     .text.ComplementaryFilter_Init:00000000 ComplementaryFilter_Init
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s:60     .text.ComplementaryFilter_Update:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s:66     .text.ComplementaryFilter_Update:00000000 ComplementaryFilter_Update
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s:193    .text.ComplementaryFilter_GetAttitude:00000000 $t
-/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//cctHrWxL.s:199    .text.ComplementaryFilter_GetAttitude:00000000 ComplementaryFilter_GetAttitude
+                            *ABS*:0000000000000000 filter_complementary.c
+     /tmp/ccQnQFVZ.s:20     .text.ComplementaryFilter_Init:0000000000000000 $t
+     /tmp/ccQnQFVZ.s:26     .text.ComplementaryFilter_Init:0000000000000000 ComplementaryFilter_Init
+     /tmp/ccQnQFVZ.s:60     .text.ComplementaryFilter_Update:0000000000000000 $t
+     /tmp/ccQnQFVZ.s:66     .text.ComplementaryFilter_Update:0000000000000000 ComplementaryFilter_Update
+     /tmp/ccQnQFVZ.s:188    .text.ComplementaryFilter_GetAttitude:0000000000000000 $t
+     /tmp/ccQnQFVZ.s:194    .text.ComplementaryFilter_GetAttitude:0000000000000000 ComplementaryFilter_GetAttitude
 
 UNDEFINED SYMBOLS
 sqrtf

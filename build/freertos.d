@@ -67,7 +67,16 @@ build/freertos.o: Core/Src/freertos.c \
  USB_DEVICE/Target/usbd_conf.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
- Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
+ mavlink/minimal/mavlink.h mavlink/minimal/version.h \
+ mavlink/minimal/minimal.h mavlink/minimal/../protocol.h \
+ mavlink/minimal/../mavlink_types.h mavlink/minimal/../mavlink_helpers.h \
+ mavlink/minimal/../checksum.h mavlink/minimal/../mavlink_conversions.h \
+ mavlink/minimal/../mavlink_sha256.h \
+ mavlink/minimal/./mavlink_msg_heartbeat.h \
+ mavlink/minimal/./mavlink_msg_protocol_version.h \
+ mavlink/minimal/../mavlink_get_info.h mavlink/common/mavlink.h \
+ mavlink/standard/mavlink.h
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -143,3 +152,17 @@ USB_DEVICE/Target/usbd_conf.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
+mavlink/minimal/mavlink.h:
+mavlink/minimal/version.h:
+mavlink/minimal/minimal.h:
+mavlink/minimal/../protocol.h:
+mavlink/minimal/../mavlink_types.h:
+mavlink/minimal/../mavlink_helpers.h:
+mavlink/minimal/../checksum.h:
+mavlink/minimal/../mavlink_conversions.h:
+mavlink/minimal/../mavlink_sha256.h:
+mavlink/minimal/./mavlink_msg_heartbeat.h:
+mavlink/minimal/./mavlink_msg_protocol_version.h:
+mavlink/minimal/../mavlink_get_info.h:
+mavlink/common/mavlink.h:
+mavlink/standard/mavlink.h:

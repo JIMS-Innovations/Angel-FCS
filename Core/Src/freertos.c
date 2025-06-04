@@ -30,6 +30,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "usbd_cdc_if.h"
+#include "minimal/mavlink.h"
+#include "common/mavlink.h"
+#include "standard/mavlink.h"
 
 /* USER CODE END Includes */
 
@@ -50,6 +53,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+uint8_t buf[MAVLINK_MAX_PACKET_LEN];
+mavlink_message_t msg;
+uint16_t len;
 
 /* USER CODE END Variables */
 osThreadId USBTaskHandle;
@@ -173,10 +179,17 @@ void USBTask_Run(void const * argument)
     char buffer[128];
     // snprintf(buffer, 128, "[IMU] Gyro(deg/s) >> X:%.2f, Y:%.2f, Z:%.2f | Acc(m/s2) >> X:%.2f, Y:%.2f, Z:%.2f | Baro >> %.2fm, %.2fPa, %.2f\r\n", imu.gyro[0], imu.gyro[1], imu.gyro[2], imu.accel[0], imu.accel[1], imu.accel[2], baro.altitude, baro.pressure, baro.temperature);
 
-    snprintf(buffer, 128, "[IMU] Pitch: %.2f, Roll: %.2f\r\n[BARO] Altitude: %.2fm, Pressure: %.2fPa\r\n", RAD2DEG(attitude.pitch), RAD2DEG(attitude.roll), baro.altitude, baro.pressure);
-    CDC_Transmit_FS(buffer, strlen(buffer));
+    // snprintf(buffer, 128, "[IMU] Pitch: %.2f, Roll: %.2f\r\n[BARO] Altitude: %.2fm, Pressure: %.2fPa\r\n", RAD2DEG(attitude.pitch), RAD2DEG(attitude.roll), baro.altitude, baro.pressure);
+    // CDC_Transmit_FS(buffer, strlen(buffer));
 
+    mavlink_msg_heartbeat_pack(1, 200, &msg, MAV_TYPE_QUADROTOR, MAV_AUTOPILOT_GENERIC, 0, 0, 0);
+    len = mavlink_msg_to_send_buffer(buf, &msg);
+    CDC_Transmit_FS(buf, len);
+
+
+    
     osDelay(50); // 20Hz
+
   }
   /* USER CODE END USBTask_Run */
 }

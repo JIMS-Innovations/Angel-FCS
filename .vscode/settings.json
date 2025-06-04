@@ -4,6 +4,8 @@
         ""
     ],
     "files.associations": {
-        "sensortask.h": "c"
+        "sensortask.h": "c",
+        "mavlink.h": "c",
+        "minimal.h": "c"
     }
 }

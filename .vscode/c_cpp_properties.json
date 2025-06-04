@@ -16,6 +16,7 @@
                 "Drivers/CMSIS/Device/ST/STM32F4xx/Include",
                 "Drivers/CMSIS/Include",
                 "Drivers/MyDrivers",
+                "mavlink/**",
                 "App/Tasks",
                 "App/Utils",
                 "App/Config"
@@ -28,7 +29,7 @@
             "cStandard": "c17",
             "cppStandard": "c++14",
             "intelliSenseMode": "macos-clang-x64",
-            "compilerPath": "/usr/local/bin/arm-none-eabi-gcc"
+            "compilerPath": "/usr/bin/arm-none-eabi-gcc"
         }
     ],
     "version": 4
