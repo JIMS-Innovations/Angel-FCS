@@ -21,6 +21,7 @@
 
 /* Registers */
 #define STATUS      0x00    // R
+#define DR_STATUS   0x06    // R
 #define OUT_P_MSB   0x01    // R
 #define OUT_P_CSB   0x02    // R
 #define OUT_P_LSB   0x03    // R
@@ -29,6 +30,35 @@
 #define WHO_AM_I    0x0C    // R
 #define PT_DATA_CFG 0x13    // R/W
 #define CTRL_REG1   0x26    // R/W
+
+/* Bit masks */
+enum PT_DATA_CFG_MASK 
+{
+    TDEFE   = 0x01,
+    PDEFE   = 0x02,
+    DREM    = 0x04
+};
+
+enum CTRL_REG1_MASK 
+{
+    SBYB    = 0x01,
+    OST     = 0x02,
+    RST     = 0x04,
+    OS_0    = 0x08,
+    OS_1    = 0x10,
+    OS_2    = 0x20,
+    ALT     = 0x80
+};
+
+enum DR_STATUS_MASK
+{
+    TDR     = 0x02,
+    PDR     = 0x04,
+    PTDR    = 0x08,
+    TOW     = 0x20,
+    POW     = 0x40,
+    PTOW    = 0x80
+};
 
 
 
@@ -50,13 +80,13 @@ bool MPL3115A2_Init(I2C_HandleTypeDef *hi2c)
 {
     baro_i2c = hi2c;
 
-    /* Set to standby mode */
-    reg_data = 0xB8;
+    /* Put barometer in standby mode */
+    reg_data = 0x00;
     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_data, 1, I2C_TIMEOUT);
     if(status != HAL_OK) return(false);
 
     /* Enable data flags */
-    reg_data = 0x07;
+    reg_data = (TDEFE | DREM | PDEFE);
     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, PT_DATA_CFG, I2C_MEMADD_SIZE_8BIT, &reg_data, 1, I2C_TIMEOUT);
     if(status != HAL_OK) return(false);
 
@@ -66,8 +96,9 @@ bool MPL3115A2_Init(I2C_HandleTypeDef *hi2c)
     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_data, 1, I2C_TIMEOUT);
     if(status != HAL_OK) return(false);
 #else
-    /* Set barometer active in barometer mode, oversampling ratio: 64 @ 258ms */
-    reg_data = 0x31;
+    /* Set barometer active in barometer mode  */
+    // reg_data = 0x31; // oversampling ratio: 64 @ 258ms
+    reg_data = (SBYB | OS_0 | OS_1 | OS_2);    // oversampling ratio: 16@ 66ms
     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_data, 1, I2C_TIMEOUT);
     if(status != HAL_OK) return(false);
 #endif
@@ -107,12 +138,20 @@ bool MPL3115A2_Read(Barometer_Data_t *data)
 
 #else
 
-    /* Read status register */
-    status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, STATUS, I2C_MEMADD_SIZE_8BIT, &reg_data, 1, I2C_TIMEOUT);
+    /* Read Status register */
+    status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, DR_STATUS, I2C_MEMADD_SIZE_8BIT, &reg_data, 1, I2C_TIMEOUT);
     if(status != HAL_OK) return(false);
    
-    if((reg_data & 0x08))
+    if((reg_data & PDR) && (reg_data & TDR))
     {
+        // /* Start measurement */
+        // reg_data = 0x22;    
+        // status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_data, 1, I2C_TIMEOUT);
+        // if(status != HAL_OK) return(false);
+
+        // /* Wait */
+        // HAL_Delay(70);
+
         /* Read pressure and temperature */
         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &data_8, 5, I2C_TIMEOUT);
         if(status != HAL_OK) return(false);

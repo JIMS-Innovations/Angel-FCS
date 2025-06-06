@@ -56,6 +56,7 @@
 uint8_t buf[MAVLINK_MAX_PACKET_LEN];
 mavlink_message_t heart_beat;
 mavlink_message_t attitude_msg;
+mavlink_message_t altitude_msg;
 uint16_t len;
 
 /* USER CODE END Variables */
@@ -169,7 +170,9 @@ void USBTask_Run(void const * argument)
   IMU_Data_t imu;
   Barometer_Data_t baro;
   Attitude_Data_t attitude;
-  uint32_t last_ms = HAL_GetTick();
+  uint32_t last_ms_heart_beat = HAL_GetTick();
+  uint32_t last_ms_attitude = HAL_GetTick();
+  uint32_t last_ms_altitude = HAL_GetTick();
 
   /* Infinite loop */
   for(;;)
@@ -184,21 +187,40 @@ void USBTask_Run(void const * argument)
     // snprintf(buffer, 128, "[IMU] Pitch: %.2f, Roll: %.2f\r\n[BARO] Altitude: %.2fm, Pressure: %.2fPa\r\n", RAD2DEG(attitude.pitch), RAD2DEG(attitude.roll), baro.altitude, baro.pressure);
     // CDC_Transmit_FS(buffer, strlen(buffer));
 
-    if(HAL_GetTick() - last_ms >= 1000)
+    if(HAL_GetTick() - last_ms_heart_beat >= 1000)
     {
-      mavlink_msg_heartbeat_pack(1, 1, &heart_beat, MAV_TYPE_QUADROTOR, MAV_AUTOPILOT_GENERIC, 0, 0, 0);
+      mavlink_msg_heartbeat_pack(1, MAV_COMP_ID_AUTOPILOT1, &heart_beat, MAV_TYPE_SUBMARINE, MAV_AUTOPILOT_ARDUPILOTMEGA, 0, 0, 0);
       len = mavlink_msg_to_send_buffer(buf, &heart_beat);
       CDC_Transmit_FS(buf, len);
-      last_ms = HAL_GetTick();
+      last_ms_heart_beat += 1000;
     }
-    mavlink_msg_attitude_pack(1, 1, &attitude_msg, HAL_GetTick(), attitude.roll, attitude.pitch, 0, imu.gyro[1], imu.gyro[0], imu.gyro[2]);
-    len = mavlink_msg_to_send_buffer(buf, &attitude_msg);
-    CDC_Transmit_FS(buf, len);
+    
+    if(HAL_GetTick() - last_ms_altitude >= 100)
+    {
+      mavlink_msg_altitude_pack(1, MAV_COMP_ID_AUTOPILOT1, &altitude_msg, HAL_GetTick() * 1000, baro.altitude, baro.altitude, baro.altitude - LOCAL_ALT, baro.altitude - LOCAL_ALT, baro.altitude - LOCAL_ALT, 0);
+      len = mavlink_msg_to_send_buffer(buf, &altitude_msg);
+      CDC_Transmit_FS(buf, len);
+      last_ms_altitude += 100;
+    }
+
+    if(HAL_GetTick() - last_ms_attitude >= 40)
+    {
+      mavlink_msg_attitude_pack(1, MAV_COMP_ID_AUTOPILOT1, &attitude_msg, HAL_GetTick(), attitude.roll, attitude.pitch, 0, imu.gyro[1], imu.gyro[0], imu.gyro[2]);
+      len = mavlink_msg_to_send_buffer(buf, &attitude_msg);
+      CDC_Transmit_FS(buf, len);
+      last_ms_attitude += 10;
+    }
+
+
+
+
+
 
 
 
     
-    osDelay(50); // 20Hz
+    osDelay(4); // 500Hz
+    // vTaskDelay(pdMS_TO_TICKS(2.5));
 
   }
   /* USER CODE END USBTask_Run */

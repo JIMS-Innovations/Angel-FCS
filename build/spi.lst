@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccgWRKeK.s 			page 1
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -19,15 +19,15 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.section	.text.MX_SPI1_Init,"ax",%progbits
-  20              		.align	1
-  21              		.global	MX_SPI1_Init
-  22              		.syntax unified
-  23              		.thumb
-  24              		.thumb_func
-  26              	MX_SPI1_Init:
-  27              	.LFB740:
-  28              		.file 1 "Core/Src/spi.c"
+  19              		.file 1 "Core/Src/spi.c"
+  20              		.section	.text.MX_SPI1_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	MX_SPI1_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	MX_SPI1_Init:
+  28              	.LFB740:
    1:Core/Src/spi.c **** /* USER CODE BEGIN Header */
    2:Core/Src/spi.c **** /**
    3:Core/Src/spi.c ****   ******************************************************************************
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
   28:Core/Src/spi.c **** 
   29:Core/Src/spi.c **** /* SPI1 init function */
   30:Core/Src/spi.c **** void MX_SPI1_Init(void)
-ARM GAS  /tmp/ccgWRKeK.s 			page 2
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 2
 
 
   31:Core/Src/spi.c **** {
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
   66 001e C361     		str	r3, [r0, #28]
   48:Core/Src/spi.c ****   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   67              		.loc 1 48 3 is_stmt 1 view .LVU17
-ARM GAS  /tmp/ccgWRKeK.s 			page 3
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 3
 
 
   68              		.loc 1 48 23 is_stmt 0 view .LVU18
@@ -141,7 +141,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
   81              		.loc 1 52 7 is_stmt 0 view .LVU26
   82 002a FFF7FEFF 		bl	HAL_SPI_Init
   83              	.LVL0:
-  84              		.loc 1 52 6 view .LVU27
+  84              		.loc 1 52 6 discriminator 1 view .LVU27
   85 002e 00B9     		cbnz	r0, .L4
   86              	.L1:
   53:Core/Src/spi.c ****   {
@@ -164,7 +164,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
   95              	.L6:
   96              		.align	2
   97              	.L5:
-  98 0038 00000000 		.word	.LANCHOR0
+  98 0038 00000000 		.word	hspi1
   99 003c 00300140 		.word	1073819648
  100              		.cfi_endproc
  101              	.LFE740:
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
  111              	.LVL2:
  112              	.LFB741:
   61:Core/Src/spi.c **** 
-ARM GAS  /tmp/ccgWRKeK.s 			page 4
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 4
 
 
   62:Core/Src/spi.c **** void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
   87:Core/Src/spi.c ****   /* USER CODE BEGIN SPI1_MspInit 1 */
   88:Core/Src/spi.c **** 
   89:Core/Src/spi.c ****   /* USER CODE END SPI1_MspInit 1 */
-ARM GAS  /tmp/ccgWRKeK.s 			page 5
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 5
 
 
   90:Core/Src/spi.c ****   }
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
  183              		.loc 1 74 5 view .LVU49
  184 004a 029B     		ldr	r3, [sp, #8]
  185              	.LBE3:
-ARM GAS  /tmp/ccgWRKeK.s 			page 6
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 6
 
 
   74:Core/Src/spi.c ****     /**SPI1 GPIO Configuration
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
  230              	.LFB742:
   92:Core/Src/spi.c **** 
   93:Core/Src/spi.c **** void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
-ARM GAS  /tmp/ccgWRKeK.s 			page 7
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 7
 
 
   94:Core/Src/spi.c **** {
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
  261 0018 0348     		ldr	r0, .L17+8
  262              	.LVL10:
  109:Core/Src/spi.c **** 
-ARM GAS  /tmp/ccgWRKeK.s 			page 8
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 8
 
 
  263              		.loc 1 109 5 is_stmt 0 view .LVU71
@@ -437,42 +437,41 @@ ARM GAS  /tmp/ccgWRKeK.s 			page 1
  277              		.global	hspi1
  278              		.section	.bss.hspi1,"aw",%nobits
  279              		.align	2
- 280              		.set	.LANCHOR0,. + 0
- 283              	hspi1:
- 284 0000 00000000 		.space	88
- 284      00000000 
- 284      00000000 
- 284      00000000 
- 284      00000000 
- 285              		.text
- 286              	.Letext0:
- 287              		.file 2 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h"
- 288              		.file 3 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h"
- 289              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 290              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 291              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
- 292              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 293              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
- 294              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
- 295              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
- 296              		.file 11 "Core/Inc/main.h"
- 297              		.file 12 "Core/Inc/spi.h"
-ARM GAS  /tmp/ccgWRKeK.s 			page 9
+ 282              	hspi1:
+ 283 0000 00000000 		.space	88
+ 283      00000000 
+ 283      00000000 
+ 283      00000000 
+ 283      00000000 
+ 284              		.text
+ 285              	.Letext0:
+ 286              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 287              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 288              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 289              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 290              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 291              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 292              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 293              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
+ 294              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
+ 295              		.file 11 "Core/Inc/spi.h"
+ 296              		.file 12 "Core/Inc/main.h"
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s 			page 9
 
 
 DEFINED SYMBOLS
-                            *ABS*:0000000000000000 spi.c
-     /tmp/ccgWRKeK.s:20     .text.MX_SPI1_Init:0000000000000000 $t
-     /tmp/ccgWRKeK.s:26     .text.MX_SPI1_Init:0000000000000000 MX_SPI1_Init
-     /tmp/ccgWRKeK.s:98     .text.MX_SPI1_Init:0000000000000038 $d
-     /tmp/ccgWRKeK.s:104    .text.HAL_SPI_MspInit:0000000000000000 $t
-     /tmp/ccgWRKeK.s:110    .text.HAL_SPI_MspInit:0000000000000000 HAL_SPI_MspInit
-     /tmp/ccgWRKeK.s:216    .text.HAL_SPI_MspInit:0000000000000068 $d
-     /tmp/ccgWRKeK.s:222    .text.HAL_SPI_MspDeInit:0000000000000000 $t
-     /tmp/ccgWRKeK.s:228    .text.HAL_SPI_MspDeInit:0000000000000000 HAL_SPI_MspDeInit
-     /tmp/ccgWRKeK.s:271    .text.HAL_SPI_MspDeInit:0000000000000020 $d
-     /tmp/ccgWRKeK.s:283    .bss.hspi1:0000000000000000 hspi1
-     /tmp/ccgWRKeK.s:279    .bss.hspi1:0000000000000000 $d
+                            *ABS*:00000000 spi.c
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:21     .text.MX_SPI1_Init:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:27     .text.MX_SPI1_Init:00000000 MX_SPI1_Init
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:98     .text.MX_SPI1_Init:00000038 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:282    .bss.hspi1:00000000 hspi1
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:104    .text.HAL_SPI_MspInit:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:110    .text.HAL_SPI_MspInit:00000000 HAL_SPI_MspInit
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:216    .text.HAL_SPI_MspInit:00000068 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:222    .text.HAL_SPI_MspDeInit:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:228    .text.HAL_SPI_MspDeInit:00000000 HAL_SPI_MspDeInit
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:271    .text.HAL_SPI_MspDeInit:00000020 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccXmXGoa.s:279    .bss.hspi1:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_SPI_Init

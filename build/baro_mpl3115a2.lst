@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccAOXidX.s 			page 1
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -19,16 +19,16 @@ ARM GAS  /tmp/ccAOXidX.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.section	.text.MPL3115A2_Init,"ax",%progbits
-  20              		.align	1
-  21              		.global	MPL3115A2_Init
-  22              		.syntax unified
-  23              		.thumb
-  24              		.thumb_func
-  26              	MPL3115A2_Init:
-  27              	.LVL0:
-  28              	.LFB134:
-  29              		.file 1 "Drivers/MyDrivers/baro_mpl3115a2.c"
+  19              		.file 1 "Drivers/MyDrivers/baro_mpl3115a2.c"
+  20              		.section	.text.MPL3115A2_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	MPL3115A2_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	MPL3115A2_Init:
+  28              	.LVL0:
+  29              	.LFB134:
    1:Drivers/MyDrivers/baro_mpl3115a2.c **** /**
    2:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @file baro_mpl3115a2.c
    3:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @author Jesutofunmi Kupoluyi (jimsufficiency@gmail.com)
@@ -52,64 +52,97 @@ ARM GAS  /tmp/ccAOXidX.s 			page 1
   21:Drivers/MyDrivers/baro_mpl3115a2.c **** 
   22:Drivers/MyDrivers/baro_mpl3115a2.c **** /* Registers */
   23:Drivers/MyDrivers/baro_mpl3115a2.c **** #define STATUS      0x00    // R
-  24:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_P_MSB   0x01    // R
-  25:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_P_CSB   0x02    // R
-  26:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_P_LSB   0x03    // R
-  27:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_T_MSB   0x04    // R
-  28:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_T_LSB   0x05    // R
-  29:Drivers/MyDrivers/baro_mpl3115a2.c **** #define WHO_AM_I    0x0C    // R
-ARM GAS  /tmp/ccAOXidX.s 			page 2
+  24:Drivers/MyDrivers/baro_mpl3115a2.c **** #define DR_STATUS   0x06    // R
+  25:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_P_MSB   0x01    // R
+  26:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_P_CSB   0x02    // R
+  27:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_P_LSB   0x03    // R
+  28:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_T_MSB   0x04    // R
+  29:Drivers/MyDrivers/baro_mpl3115a2.c **** #define OUT_T_LSB   0x05    // R
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 2
 
 
-  30:Drivers/MyDrivers/baro_mpl3115a2.c **** #define PT_DATA_CFG 0x13    // R/W
-  31:Drivers/MyDrivers/baro_mpl3115a2.c **** #define CTRL_REG1   0x26    // R/W
-  32:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  30:Drivers/MyDrivers/baro_mpl3115a2.c **** #define WHO_AM_I    0x0C    // R
+  31:Drivers/MyDrivers/baro_mpl3115a2.c **** #define PT_DATA_CFG 0x13    // R/W
+  32:Drivers/MyDrivers/baro_mpl3115a2.c **** #define CTRL_REG1   0x26    // R/W
   33:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  34:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  35:Drivers/MyDrivers/baro_mpl3115a2.c **** static I2C_HandleTypeDef *baro_i2c;
-  36:Drivers/MyDrivers/baro_mpl3115a2.c **** static uint8_t reg_data;
-  37:Drivers/MyDrivers/baro_mpl3115a2.c **** static HAL_StatusTypeDef status;
-  38:Drivers/MyDrivers/baro_mpl3115a2.c **** static uint8_t data_8[6];
-  39:Drivers/MyDrivers/baro_mpl3115a2.c **** static int16_t data_16;
-  40:Drivers/MyDrivers/baro_mpl3115a2.c **** static uint32_t data_u32;
+  34:Drivers/MyDrivers/baro_mpl3115a2.c **** /* Bit masks */
+  35:Drivers/MyDrivers/baro_mpl3115a2.c **** enum PT_DATA_CFG_MASK 
+  36:Drivers/MyDrivers/baro_mpl3115a2.c **** {
+  37:Drivers/MyDrivers/baro_mpl3115a2.c ****     TDEFE   = 0x01,
+  38:Drivers/MyDrivers/baro_mpl3115a2.c ****     PDEFE   = 0x02,
+  39:Drivers/MyDrivers/baro_mpl3115a2.c ****     DREM    = 0x04
+  40:Drivers/MyDrivers/baro_mpl3115a2.c **** };
   41:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  42:Drivers/MyDrivers/baro_mpl3115a2.c **** /**
-  43:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @brief MPL3115A2 initilisation function
-  44:Drivers/MyDrivers/baro_mpl3115a2.c ****  * 
-  45:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @param hi2c 
-  46:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return true 
-  47:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return false 
-  48:Drivers/MyDrivers/baro_mpl3115a2.c ****  */
-  49:Drivers/MyDrivers/baro_mpl3115a2.c **** bool MPL3115A2_Init(I2C_HandleTypeDef *hi2c)
-  50:Drivers/MyDrivers/baro_mpl3115a2.c **** {
-  30              		.loc 1 50 1 view -0
+  42:Drivers/MyDrivers/baro_mpl3115a2.c **** enum CTRL_REG1_MASK 
+  43:Drivers/MyDrivers/baro_mpl3115a2.c **** {
+  44:Drivers/MyDrivers/baro_mpl3115a2.c ****     SBYB    = 0x01,
+  45:Drivers/MyDrivers/baro_mpl3115a2.c ****     OST     = 0x02,
+  46:Drivers/MyDrivers/baro_mpl3115a2.c ****     RST     = 0x04,
+  47:Drivers/MyDrivers/baro_mpl3115a2.c ****     OS_0    = 0x08,
+  48:Drivers/MyDrivers/baro_mpl3115a2.c ****     OS_1    = 0x10,
+  49:Drivers/MyDrivers/baro_mpl3115a2.c ****     OS_2    = 0x20,
+  50:Drivers/MyDrivers/baro_mpl3115a2.c ****     ALT     = 0x80
+  51:Drivers/MyDrivers/baro_mpl3115a2.c **** };
+  52:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  53:Drivers/MyDrivers/baro_mpl3115a2.c **** enum DR_STATUS_MASK
+  54:Drivers/MyDrivers/baro_mpl3115a2.c **** {
+  55:Drivers/MyDrivers/baro_mpl3115a2.c ****     TDR     = 0x02,
+  56:Drivers/MyDrivers/baro_mpl3115a2.c ****     PDR     = 0x04,
+  57:Drivers/MyDrivers/baro_mpl3115a2.c ****     PTDR    = 0x08,
+  58:Drivers/MyDrivers/baro_mpl3115a2.c ****     TOW     = 0x20,
+  59:Drivers/MyDrivers/baro_mpl3115a2.c ****     POW     = 0x40,
+  60:Drivers/MyDrivers/baro_mpl3115a2.c ****     PTOW    = 0x80
+  61:Drivers/MyDrivers/baro_mpl3115a2.c **** };
+  62:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  63:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  64:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  65:Drivers/MyDrivers/baro_mpl3115a2.c **** static I2C_HandleTypeDef *baro_i2c;
+  66:Drivers/MyDrivers/baro_mpl3115a2.c **** static uint8_t reg_data;
+  67:Drivers/MyDrivers/baro_mpl3115a2.c **** static HAL_StatusTypeDef status;
+  68:Drivers/MyDrivers/baro_mpl3115a2.c **** static uint8_t data_8[6];
+  69:Drivers/MyDrivers/baro_mpl3115a2.c **** static int16_t data_16;
+  70:Drivers/MyDrivers/baro_mpl3115a2.c **** static uint32_t data_u32;
+  71:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  72:Drivers/MyDrivers/baro_mpl3115a2.c **** /**
+  73:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @brief MPL3115A2 initilisation function
+  74:Drivers/MyDrivers/baro_mpl3115a2.c ****  * 
+  75:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @param hi2c 
+  76:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return true 
+  77:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return false 
+  78:Drivers/MyDrivers/baro_mpl3115a2.c ****  */
+  79:Drivers/MyDrivers/baro_mpl3115a2.c **** bool MPL3115A2_Init(I2C_HandleTypeDef *hi2c)
+  80:Drivers/MyDrivers/baro_mpl3115a2.c **** {
+  30              		.loc 1 80 1 view -0
   31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              		.loc 1 50 1 is_stmt 0 view .LVU1
+  34              		.loc 1 80 1 is_stmt 0 view .LVU1
   35 0000 00B5     		push	{lr}
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 3
+
+
   36              	.LCFI0:
   37              		.cfi_def_cfa_offset 4
   38              		.cfi_offset 14, -4
   39 0002 85B0     		sub	sp, sp, #20
   40              	.LCFI1:
   41              		.cfi_def_cfa_offset 24
-  51:Drivers/MyDrivers/baro_mpl3115a2.c ****     baro_i2c = hi2c;
-  42              		.loc 1 51 5 is_stmt 1 view .LVU2
-  43              		.loc 1 51 14 is_stmt 0 view .LVU3
+  81:Drivers/MyDrivers/baro_mpl3115a2.c ****     baro_i2c = hi2c;
+  42              		.loc 1 81 5 is_stmt 1 view .LVU2
+  43              		.loc 1 81 14 is_stmt 0 view .LVU3
   44 0004 1F4B     		ldr	r3, .L9
   45 0006 1860     		str	r0, [r3]
-  52:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  53:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Set to standby mode */
-  54:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = 0xB8;
-  46              		.loc 1 54 5 is_stmt 1 view .LVU4
-  47              		.loc 1 54 14 is_stmt 0 view .LVU5
+  82:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  83:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Put barometer in standby mode */
+  84:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = 0x00;
+  46              		.loc 1 84 5 is_stmt 1 view .LVU4
+  47              		.loc 1 84 14 is_stmt 0 view .LVU5
   48 0008 1F4A     		ldr	r2, .L9+4
-  49 000a B823     		movs	r3, #184
+  49 000a 0023     		movs	r3, #0
   50 000c 1370     		strb	r3, [r2]
-  55:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
-  51              		.loc 1 55 5 is_stmt 1 view .LVU6
-  52              		.loc 1 55 14 is_stmt 0 view .LVU7
+  85:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
+  51              		.loc 1 85 5 is_stmt 1 view .LVU6
+  52              		.loc 1 85 14 is_stmt 0 view .LVU7
   53 000e 4FF47A73 		mov	r3, #1000
   54 0012 0293     		str	r3, [sp, #8]
   55 0014 0123     		movs	r3, #1
@@ -118,42 +151,43 @@ ARM GAS  /tmp/ccAOXidX.s 			page 1
   58 001a 2622     		movs	r2, #38
   59 001c C021     		movs	r1, #192
   60 001e FFF7FEFF 		bl	HAL_I2C_Mem_Write
-ARM GAS  /tmp/ccAOXidX.s 			page 3
-
-
   61              	.LVL1:
-  62              		.loc 1 55 12 view .LVU8
+  62              		.loc 1 85 12 discriminator 1 view .LVU8
   63 0022 1A4B     		ldr	r3, .L9+8
   64 0024 1870     		strb	r0, [r3]
-  56:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  65              		.loc 1 56 5 is_stmt 1 view .LVU9
-  66              		.loc 1 56 7 is_stmt 0 view .LVU10
+  86:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+  65              		.loc 1 86 5 is_stmt 1 view .LVU9
+  66              		.loc 1 86 7 is_stmt 0 view .LVU10
   67 0026 18B1     		cbz	r0, .L7
-  68              		.loc 1 56 32 view .LVU11
+  68              		.loc 1 86 32 discriminator 1 view .LVU11
   69 0028 0020     		movs	r0, #0
   70              	.L2:
-  57:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  58:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Enable data flags */
-  59:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = 0x07;
-  60:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, PT_DATA_CFG, I2C_MEMADD_SIZE_8BIT, &reg
-  61:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  62:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  63:Drivers/MyDrivers/baro_mpl3115a2.c **** #ifdef ALTIMETER_MODE
-  64:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Set barometer active in altimeter mode, oversampling ratio: 64 @ 258ms */
-  65:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = 0xB1;
-  66:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
-  67:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  68:Drivers/MyDrivers/baro_mpl3115a2.c **** #else
-  69:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Set barometer active in barometer mode, oversampling ratio: 64 @ 258ms */
-  70:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = 0x31;
-  71:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
-  72:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  73:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
-  74:Drivers/MyDrivers/baro_mpl3115a2.c ****     
-  75:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  76:Drivers/MyDrivers/baro_mpl3115a2.c ****     return true;
-  77:Drivers/MyDrivers/baro_mpl3115a2.c **** }
-  71              		.loc 1 77 1 view .LVU12
+  87:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  88:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Enable data flags */
+  89:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = (TDEFE | DREM | PDEFE);
+  90:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, PT_DATA_CFG, I2C_MEMADD_SIZE_8BIT, &reg
+  91:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+  92:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+  93:Drivers/MyDrivers/baro_mpl3115a2.c **** #ifdef ALTIMETER_MODE
+  94:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Set barometer active in altimeter mode, oversampling ratio: 64 @ 258ms */
+  95:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = 0xB1;
+  96:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
+  97:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+  98:Drivers/MyDrivers/baro_mpl3115a2.c **** #else
+  99:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Set barometer active in barometer mode  */
+ 100:Drivers/MyDrivers/baro_mpl3115a2.c ****     // reg_data = 0x31; // oversampling ratio: 64 @ 258ms
+ 101:Drivers/MyDrivers/baro_mpl3115a2.c ****     reg_data = (SBYB | OS_0 | OS_1 | OS_2);    // oversampling ratio: 16@ 66ms
+ 102:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 4
+
+
+ 103:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+ 104:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
+ 105:Drivers/MyDrivers/baro_mpl3115a2.c ****     
+ 106:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 107:Drivers/MyDrivers/baro_mpl3115a2.c ****     return true;
+ 108:Drivers/MyDrivers/baro_mpl3115a2.c **** }
+  71              		.loc 1 108 1 view .LVU12
   72 002a 05B0     		add	sp, sp, #20
   73              	.LCFI2:
   74              		.cfi_remember_state
@@ -163,24 +197,21 @@ ARM GAS  /tmp/ccAOXidX.s 			page 1
   78              	.L7:
   79              	.LCFI3:
   80              		.cfi_restore_state
-  59:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, PT_DATA_CFG, I2C_MEMADD_SIZE_8BIT, &reg
-  81              		.loc 1 59 5 is_stmt 1 view .LVU13
-  59:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, PT_DATA_CFG, I2C_MEMADD_SIZE_8BIT, &reg
-  82              		.loc 1 59 14 is_stmt 0 view .LVU14
+  89:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, PT_DATA_CFG, I2C_MEMADD_SIZE_8BIT, &reg
+  81              		.loc 1 89 5 is_stmt 1 view .LVU13
+  89:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, PT_DATA_CFG, I2C_MEMADD_SIZE_8BIT, &reg
+  82              		.loc 1 89 14 is_stmt 0 view .LVU14
   83 0030 154A     		ldr	r2, .L9+4
   84 0032 0723     		movs	r3, #7
   85 0034 1370     		strb	r3, [r2]
-  60:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  86              		.loc 1 60 5 is_stmt 1 view .LVU15
-  60:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  87              		.loc 1 60 14 is_stmt 0 view .LVU16
+  90:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+  86              		.loc 1 90 5 is_stmt 1 view .LVU15
+  90:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+  87              		.loc 1 90 14 is_stmt 0 view .LVU16
   88 0036 4FF47A73 		mov	r3, #1000
   89 003a 0293     		str	r3, [sp, #8]
   90 003c 0123     		movs	r3, #1
   91 003e 0193     		str	r3, [sp, #4]
-ARM GAS  /tmp/ccAOXidX.s 			page 4
-
-
   92 0040 0092     		str	r2, [sp]
   93 0042 1322     		movs	r2, #19
   94 0044 C021     		movs	r1, #192
@@ -188,31 +219,34 @@ ARM GAS  /tmp/ccAOXidX.s 			page 1
   96 0048 0068     		ldr	r0, [r0]
   97 004a FFF7FEFF 		bl	HAL_I2C_Mem_Write
   98              	.LVL2:
-  60:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  99              		.loc 1 60 12 view .LVU17
+  90:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+  99              		.loc 1 90 12 discriminator 1 view .LVU17
  100 004e 0F4B     		ldr	r3, .L9+8
  101 0050 1870     		strb	r0, [r3]
-  61:Drivers/MyDrivers/baro_mpl3115a2.c **** 
- 102              		.loc 1 61 5 is_stmt 1 view .LVU18
-  61:Drivers/MyDrivers/baro_mpl3115a2.c **** 
- 103              		.loc 1 61 7 is_stmt 0 view .LVU19
+  91:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 102              		.loc 1 91 5 is_stmt 1 view .LVU18
+  91:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 103              		.loc 1 91 7 is_stmt 0 view .LVU19
  104 0052 08B1     		cbz	r0, .L8
-  61:Drivers/MyDrivers/baro_mpl3115a2.c **** 
- 105              		.loc 1 61 32 view .LVU20
+  91:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 105              		.loc 1 91 32 discriminator 1 view .LVU20
  106 0054 0020     		movs	r0, #0
  107 0056 E8E7     		b	.L2
  108              	.L8:
-  70:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
- 109              		.loc 1 70 5 is_stmt 1 view .LVU21
-  70:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
- 110              		.loc 1 70 14 is_stmt 0 view .LVU22
+ 101:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
+ 109              		.loc 1 101 5 is_stmt 1 view .LVU21
+ 101:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT, &reg_d
+ 110              		.loc 1 101 14 is_stmt 0 view .LVU22
  111 0058 0B4A     		ldr	r2, .L9+4
- 112 005a 3123     		movs	r3, #49
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 5
+
+
+ 112 005a 3923     		movs	r3, #57
  113 005c 1370     		strb	r3, [r2]
-  71:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
- 114              		.loc 1 71 5 is_stmt 1 view .LVU23
-  71:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
- 115              		.loc 1 71 14 is_stmt 0 view .LVU24
+ 102:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+ 114              		.loc 1 102 5 is_stmt 1 view .LVU23
+ 102:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+ 115              		.loc 1 102 14 is_stmt 0 view .LVU24
  116 005e 4FF47A73 		mov	r3, #1000
  117 0062 0293     		str	r3, [sp, #8]
  118 0064 0123     		movs	r3, #1
@@ -224,33 +258,30 @@ ARM GAS  /tmp/ccAOXidX.s 			page 1
  124 0070 0068     		ldr	r0, [r0]
  125 0072 FFF7FEFF 		bl	HAL_I2C_Mem_Write
  126              	.LVL3:
-  71:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
- 127              		.loc 1 71 12 view .LVU25
+ 102:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+ 127              		.loc 1 102 12 discriminator 1 view .LVU25
  128 0076 054B     		ldr	r3, .L9+8
  129 0078 1870     		strb	r0, [r3]
-  72:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
- 130              		.loc 1 72 5 is_stmt 1 view .LVU26
-  72:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
- 131              		.loc 1 72 7 is_stmt 0 view .LVU27
+ 103:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
+ 130              		.loc 1 103 5 is_stmt 1 view .LVU26
+ 103:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
+ 131              		.loc 1 103 7 is_stmt 0 view .LVU27
  132 007a 08B9     		cbnz	r0, .L5
-  76:Drivers/MyDrivers/baro_mpl3115a2.c **** }
- 133              		.loc 1 76 12 view .LVU28
+ 107:Drivers/MyDrivers/baro_mpl3115a2.c **** }
+ 133              		.loc 1 107 12 view .LVU28
  134 007c 0120     		movs	r0, #1
  135 007e D4E7     		b	.L2
  136              	.L5:
-ARM GAS  /tmp/ccAOXidX.s 			page 5
-
-
-  72:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
- 137              		.loc 1 72 32 view .LVU29
+ 103:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
+ 137              		.loc 1 103 32 discriminator 1 view .LVU29
  138 0080 0020     		movs	r0, #0
  139 0082 D2E7     		b	.L2
  140              	.L10:
  141              		.align	2
  142              	.L9:
- 143 0084 00000000 		.word	.LANCHOR0
- 144 0088 00000000 		.word	.LANCHOR1
- 145 008c 00000000 		.word	.LANCHOR2
+ 143 0084 00000000 		.word	baro_i2c
+ 144 0088 00000000 		.word	reg_data
+ 145 008c 00000000 		.word	status
  146              		.cfi_endproc
  147              	.LFE134:
  149              		.global	__aeabi_f2d
@@ -266,350 +297,357 @@ ARM GAS  /tmp/ccAOXidX.s 			page 1
  160              	MPL3115A2_Read:
  161              	.LVL4:
  162              	.LFB135:
-  78:Drivers/MyDrivers/baro_mpl3115a2.c **** 
-  79:Drivers/MyDrivers/baro_mpl3115a2.c **** /**
-  80:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @brief MPL3115A2 read function
-  81:Drivers/MyDrivers/baro_mpl3115a2.c ****  * 
-  82:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @param data 
-  83:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return true 
-  84:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return false 
-  85:Drivers/MyDrivers/baro_mpl3115a2.c ****  */
-  86:Drivers/MyDrivers/baro_mpl3115a2.c **** bool MPL3115A2_Read(Barometer_Data_t *data)
-  87:Drivers/MyDrivers/baro_mpl3115a2.c **** {
- 163              		.loc 1 87 1 is_stmt 1 view -0
+ 109:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 6
+
+
+ 110:Drivers/MyDrivers/baro_mpl3115a2.c **** /**
+ 111:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @brief MPL3115A2 read function
+ 112:Drivers/MyDrivers/baro_mpl3115a2.c ****  * 
+ 113:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @param data 
+ 114:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return true 
+ 115:Drivers/MyDrivers/baro_mpl3115a2.c ****  * @return false 
+ 116:Drivers/MyDrivers/baro_mpl3115a2.c ****  */
+ 117:Drivers/MyDrivers/baro_mpl3115a2.c **** bool MPL3115A2_Read(Barometer_Data_t *data)
+ 118:Drivers/MyDrivers/baro_mpl3115a2.c **** {
+ 163              		.loc 1 118 1 is_stmt 1 view -0
  164              		.cfi_startproc
  165              		@ args = 0, pretend = 0, frame = 0
  166              		@ frame_needed = 0, uses_anonymous_args = 0
- 167              		.loc 1 87 1 is_stmt 0 view .LVU31
- 168 0000 30B5     		push	{r4, r5, lr}
+ 167              		.loc 1 118 1 is_stmt 0 view .LVU31
+ 168 0000 10B5     		push	{r4, lr}
  169              	.LCFI4:
- 170              		.cfi_def_cfa_offset 12
- 171              		.cfi_offset 4, -12
- 172              		.cfi_offset 5, -8
- 173              		.cfi_offset 14, -4
- 174 0002 85B0     		sub	sp, sp, #20
- 175              	.LCFI5:
- 176              		.cfi_def_cfa_offset 32
- 177 0004 0546     		mov	r5, r0
-  88:Drivers/MyDrivers/baro_mpl3115a2.c ****     
-  89:Drivers/MyDrivers/baro_mpl3115a2.c **** #ifdef ALTIMETER_MODE
-  90:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Read status register */
-  91:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, STATUS, I2C_MEMADD_SIZE_8BIT, &reg_data,
-  92:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
-  93:Drivers/MyDrivers/baro_mpl3115a2.c ****    
-  94:Drivers/MyDrivers/baro_mpl3115a2.c ****     if((reg_data & 0x08))
-ARM GAS  /tmp/ccAOXidX.s 			page 6
+ 170              		.cfi_def_cfa_offset 8
+ 171              		.cfi_offset 4, -8
+ 172              		.cfi_offset 14, -4
+ 173 0002 84B0     		sub	sp, sp, #16
+ 174              	.LCFI5:
+ 175              		.cfi_def_cfa_offset 24
+ 176 0004 0446     		mov	r4, r0
+ 119:Drivers/MyDrivers/baro_mpl3115a2.c ****     
+ 120:Drivers/MyDrivers/baro_mpl3115a2.c **** #ifdef ALTIMETER_MODE
+ 121:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Read status register */
+ 122:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, STATUS, I2C_MEMADD_SIZE_8BIT, &reg_data,
+ 123:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+ 124:Drivers/MyDrivers/baro_mpl3115a2.c ****    
+ 125:Drivers/MyDrivers/baro_mpl3115a2.c ****     if((reg_data & 0x08))
+ 126:Drivers/MyDrivers/baro_mpl3115a2.c ****     {
+ 127:Drivers/MyDrivers/baro_mpl3115a2.c ****         /* Read pressure and temperature */
+ 128:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
+ 129:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
+ 130:Drivers/MyDrivers/baro_mpl3115a2.c ****         else
+ 131:Drivers/MyDrivers/baro_mpl3115a2.c ****         {
+ 132:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_16 = (data_8[0] << 8) | data_8[1];
+ 133:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = ((float)(data_8[3] * PRECISION) + (float)(data_8[4] >> 4)) / PRECIS
+ 134:Drivers/MyDrivers/baro_mpl3115a2.c ****             // data->temperature = (float)((data_8[4]>>4));
+ 135:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = (float)((data_16 * PRECISION) + (data_8[2] & 0xF0)) / PRECISION ;
+ 136:Drivers/MyDrivers/baro_mpl3115a2.c ****         }
+ 137:Drivers/MyDrivers/baro_mpl3115a2.c ****     }
+ 138:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 139:Drivers/MyDrivers/baro_mpl3115a2.c **** #else
+ 140:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 141:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Read Status register */
+ 142:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, DR_STATUS, I2C_MEMADD_SIZE_8BIT, &reg_da
+ 177              		.loc 1 142 5 is_stmt 1 view .LVU32
+ 178              		.loc 1 142 14 is_stmt 0 view .LVU33
+ 179 0006 4FF47A73 		mov	r3, #1000
+ 180 000a 0293     		str	r3, [sp, #8]
+ 181 000c 0123     		movs	r3, #1
+ 182 000e 0193     		str	r3, [sp, #4]
+ 183 0010 3D4A     		ldr	r2, .L19+16
+ 184 0012 0092     		str	r2, [sp]
+ 185 0014 0622     		movs	r2, #6
+ 186 0016 C021     		movs	r1, #192
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 7
 
 
-  95:Drivers/MyDrivers/baro_mpl3115a2.c ****     {
-  96:Drivers/MyDrivers/baro_mpl3115a2.c ****         /* Read pressure and temperature */
-  97:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
-  98:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
-  99:Drivers/MyDrivers/baro_mpl3115a2.c ****         else
- 100:Drivers/MyDrivers/baro_mpl3115a2.c ****         {
- 101:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_16 = (data_8[0] << 8) | data_8[1];
- 102:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = ((float)(data_8[3] * PRECISION) + (float)(data_8[4] >> 4)) / PRECIS
- 103:Drivers/MyDrivers/baro_mpl3115a2.c ****             // data->temperature = (float)((data_8[4]>>4));
- 104:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = (float)((data_16 * PRECISION) + (data_8[2] & 0xF0)) / PRECISION ;
- 105:Drivers/MyDrivers/baro_mpl3115a2.c ****         }
- 106:Drivers/MyDrivers/baro_mpl3115a2.c ****     }
- 107:Drivers/MyDrivers/baro_mpl3115a2.c **** 
- 108:Drivers/MyDrivers/baro_mpl3115a2.c **** #else
- 109:Drivers/MyDrivers/baro_mpl3115a2.c **** 
- 110:Drivers/MyDrivers/baro_mpl3115a2.c ****     /* Read status register */
- 111:Drivers/MyDrivers/baro_mpl3115a2.c ****     status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, STATUS, I2C_MEMADD_SIZE_8BIT, &reg_data,
- 178              		.loc 1 111 5 is_stmt 1 view .LVU32
- 179              		.loc 1 111 14 is_stmt 0 view .LVU33
- 180 0006 4FF47A73 		mov	r3, #1000
- 181 000a 0293     		str	r3, [sp, #8]
- 182 000c 0123     		movs	r3, #1
- 183 000e 0193     		str	r3, [sp, #4]
- 184 0010 3D4A     		ldr	r2, .L19+16
- 185 0012 0092     		str	r2, [sp]
- 186 0014 0022     		movs	r2, #0
- 187 0016 C021     		movs	r1, #192
- 188 0018 3C4C     		ldr	r4, .L19+20
- 189 001a 2068     		ldr	r0, [r4]
- 190              	.LVL5:
- 191              		.loc 1 111 14 view .LVU34
- 192 001c FFF7FEFF 		bl	HAL_I2C_Mem_Read
- 193              	.LVL6:
- 194              		.loc 1 111 12 view .LVU35
- 195 0020 3B4B     		ldr	r3, .L19+24
- 196 0022 1870     		strb	r0, [r3]
- 112:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
- 197              		.loc 1 112 5 is_stmt 1 view .LVU36
- 198              		.loc 1 112 7 is_stmt 0 view .LVU37
- 199 0024 0028     		cmp	r0, #0
- 200 0026 63D1     		bne	.L13
- 113:Drivers/MyDrivers/baro_mpl3115a2.c ****    
- 114:Drivers/MyDrivers/baro_mpl3115a2.c ****     if((reg_data & 0x08))
- 201              		.loc 1 114 5 is_stmt 1 view .LVU38
- 202              		.loc 1 114 18 is_stmt 0 view .LVU39
- 203 0028 374B     		ldr	r3, .L19+16
- 204 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 205              		.loc 1 114 7 view .LVU40
- 206 002c 13F0080F 		tst	r3, #8
- 207 0030 02D1     		bne	.L17
- 115:Drivers/MyDrivers/baro_mpl3115a2.c ****     {
- 116:Drivers/MyDrivers/baro_mpl3115a2.c ****         /* Read pressure and temperature */
- 117:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
- 118:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
- 119:Drivers/MyDrivers/baro_mpl3115a2.c ****         else
- 120:Drivers/MyDrivers/baro_mpl3115a2.c ****         {
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
-ARM GAS  /tmp/ccAOXidX.s 			page 7
-
-
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 124:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
- 125:Drivers/MyDrivers/baro_mpl3115a2.c ****         }
- 126:Drivers/MyDrivers/baro_mpl3115a2.c ****     }
- 127:Drivers/MyDrivers/baro_mpl3115a2.c **** 
- 128:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
- 129:Drivers/MyDrivers/baro_mpl3115a2.c ****     
- 130:Drivers/MyDrivers/baro_mpl3115a2.c **** 
- 131:Drivers/MyDrivers/baro_mpl3115a2.c ****     return true;
- 208              		.loc 1 131 12 view .LVU41
- 209 0032 0120     		movs	r0, #1
+ 187 0018 3C48     		ldr	r0, .L19+20
+ 188              	.LVL5:
+ 189              		.loc 1 142 14 view .LVU34
+ 190 001a 0068     		ldr	r0, [r0]
+ 191 001c FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 192              	.LVL6:
+ 193              		.loc 1 142 12 discriminator 1 view .LVU35
+ 194 0020 3B4B     		ldr	r3, .L19+24
+ 195 0022 1870     		strb	r0, [r3]
+ 143:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+ 196              		.loc 1 143 5 is_stmt 1 view .LVU36
+ 197              		.loc 1 143 7 is_stmt 0 view .LVU37
+ 198 0024 0028     		cmp	r0, #0
+ 199 0026 65D1     		bne	.L13
+ 144:Drivers/MyDrivers/baro_mpl3115a2.c ****    
+ 145:Drivers/MyDrivers/baro_mpl3115a2.c ****     if((reg_data & PDR) && (reg_data & TDR))
+ 200              		.loc 1 145 5 is_stmt 1 view .LVU38
+ 201              		.loc 1 145 25 is_stmt 0 view .LVU39
+ 202 0028 374B     		ldr	r3, .L19+16
+ 203 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 204              		.loc 1 145 7 view .LVU40
+ 205 002c 03F00603 		and	r3, r3, #6
+ 206 0030 062B     		cmp	r3, #6
+ 207 0032 02D0     		beq	.L17
+ 146:Drivers/MyDrivers/baro_mpl3115a2.c ****     {
+ 147:Drivers/MyDrivers/baro_mpl3115a2.c ****         // /* Start measurement */
+ 148:Drivers/MyDrivers/baro_mpl3115a2.c ****         // reg_data = 0x22;    
+ 149:Drivers/MyDrivers/baro_mpl3115a2.c ****         // status = HAL_I2C_Mem_Write(baro_i2c, MPL3115A2_ADDRESS, CTRL_REG1, I2C_MEMADD_SIZE_8BIT,
+ 150:Drivers/MyDrivers/baro_mpl3115a2.c ****         // if(status != HAL_OK) return(false);
+ 151:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 152:Drivers/MyDrivers/baro_mpl3115a2.c ****         // /* Wait */
+ 153:Drivers/MyDrivers/baro_mpl3115a2.c ****         // HAL_Delay(70);
+ 154:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 155:Drivers/MyDrivers/baro_mpl3115a2.c ****         /* Read pressure and temperature */
+ 156:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
+ 157:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
+ 158:Drivers/MyDrivers/baro_mpl3115a2.c ****         else
+ 159:Drivers/MyDrivers/baro_mpl3115a2.c ****         {
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 163:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
+ 164:Drivers/MyDrivers/baro_mpl3115a2.c ****         }
+ 165:Drivers/MyDrivers/baro_mpl3115a2.c ****     }
+ 166:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 167:Drivers/MyDrivers/baro_mpl3115a2.c **** #endif
+ 168:Drivers/MyDrivers/baro_mpl3115a2.c ****     
+ 169:Drivers/MyDrivers/baro_mpl3115a2.c **** 
+ 170:Drivers/MyDrivers/baro_mpl3115a2.c ****     return true;
+ 208              		.loc 1 170 12 view .LVU41
+ 209 0034 0120     		movs	r0, #1
  210              	.L12:
- 132:Drivers/MyDrivers/baro_mpl3115a2.c **** }...
- 211              		.loc 1 132 1 view .LVU42
- 212 0034 05B0     		add	sp, sp, #20
+ 171:Drivers/MyDrivers/baro_mpl3115a2.c **** }...
+ 211              		.loc 1 171 1 view .LVU42
+ 212 0036 04B0     		add	sp, sp, #16
  213              	.LCFI6:
  214              		.cfi_remember_state
- 215              		.cfi_def_cfa_offset 12
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 8
+
+
+ 215              		.cfi_def_cfa_offset 8
  216              		@ sp needed
- 217 0036 30BD     		pop	{r4, r5, pc}
+ 217 0038 10BD     		pop	{r4, pc}
  218              	.LVL7:
  219              	.L17:
  220              	.LCFI7:
  221              		.cfi_restore_state
- 117:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
- 222              		.loc 1 117 9 is_stmt 1 view .LVU43
- 117:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
- 223              		.loc 1 117 18 is_stmt 0 view .LVU44
- 224 0038 4FF47A73 		mov	r3, #1000
- 225 003c 0293     		str	r3, [sp, #8]
- 226 003e 0523     		movs	r3, #5
- 227 0040 0193     		str	r3, [sp, #4]
- 228 0042 344B     		ldr	r3, .L19+28
- 229 0044 0093     		str	r3, [sp]
- 230 0046 0123     		movs	r3, #1
- 231 0048 1A46     		mov	r2, r3
- 232 004a C021     		movs	r1, #192
- 233 004c 2068     		ldr	r0, [r4]
- 234 004e FFF7FEFF 		bl	HAL_I2C_Mem_Read
- 235              	.LVL8:
- 117:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
- 236              		.loc 1 117 16 view .LVU45
- 237 0052 2F4B     		ldr	r3, .L19+24
- 238 0054 1870     		strb	r0, [r3]
- 118:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
- 239              		.loc 1 118 9 is_stmt 1 view .LVU46
- 118:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
- 240              		.loc 1 118 11 is_stmt 0 view .LVU47
- 241 0056 08B1     		cbz	r0, .L18
- 118:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
- 242              		.loc 1 118 36 view .LVU48
- 243 0058 0020     		movs	r0, #0
- 244 005a EBE7     		b	.L12
- 245              	.L18:
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 246              		.loc 1 121 13 is_stmt 1 view .LVU49
-ARM GAS  /tmp/ccAOXidX.s 			page 8
+ 156:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
+ 222              		.loc 1 156 9 is_stmt 1 view .LVU43
+ 156:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
+ 223              		.loc 1 156 18 is_stmt 0 view .LVU44
+ 224 003a 4FF47A73 		mov	r3, #1000
+ 225 003e 0293     		str	r3, [sp, #8]
+ 226 0040 0523     		movs	r3, #5
+ 227 0042 0193     		str	r3, [sp, #4]
+ 228 0044 334B     		ldr	r3, .L19+28
+ 229 0046 0093     		str	r3, [sp]
+ 230 0048 0123     		movs	r3, #1
+ 231 004a 1A46     		mov	r2, r3
+ 232 004c C021     		movs	r1, #192
+ 233 004e 2F48     		ldr	r0, .L19+20
+ 234 0050 0068     		ldr	r0, [r0]
+ 235 0052 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 236              	.LVL8:
+ 156:Drivers/MyDrivers/baro_mpl3115a2.c ****         status = HAL_I2C_Mem_Read(baro_i2c, MPL3115A2_ADDRESS, OUT_P_MSB, I2C_MEMADD_SIZE_8BIT, &da
+ 237              		.loc 1 156 16 discriminator 1 view .LVU45
+ 238 0056 2E4B     		ldr	r3, .L19+24
+ 239 0058 1870     		strb	r0, [r3]
+ 157:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
+ 240              		.loc 1 157 9 is_stmt 1 view .LVU46
+ 157:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
+ 241              		.loc 1 157 11 is_stmt 0 view .LVU47
+ 242 005a 08B1     		cbz	r0, .L18
+ 157:Drivers/MyDrivers/baro_mpl3115a2.c ****         if(status != HAL_OK) return(false);
+ 243              		.loc 1 157 36 discriminator 1 view .LVU48
+ 244 005c 0020     		movs	r0, #0
+ 245 005e EAE7     		b	.L12
+ 246              	.L18:
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 247              		.loc 1 160 13 is_stmt 1 view .LVU49
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 248              		.loc 1 160 31 is_stmt 0 view .LVU50
+ 249 0060 2C49     		ldr	r1, .L19+28
+ 250 0062 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 251              		.loc 1 160 51 view .LVU51
+ 252 0064 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 253              		.loc 1 160 55 view .LVU52
+ 254 0066 9B00     		lsls	r3, r3, #2
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 255              		.loc 1 160 42 view .LVU53
+ 256 0068 43EA8223 		orr	r3, r3, r2, lsl #10
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 257              		.loc 1 160 70 view .LVU54
+ 258 006c 8A78     		ldrb	r2, [r1, #2]	@ zero_extendqisi2
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 9
 
 
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 247              		.loc 1 121 31 is_stmt 0 view .LVU50
- 248 005c 2D48     		ldr	r0, .L19+28
- 249 005e 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 250              		.loc 1 121 51 view .LVU51
- 251 0060 4378     		ldrb	r3, [r0, #1]	@ zero_extendqisi2
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 252              		.loc 1 121 55 view .LVU52
- 253 0062 9B00     		lsls	r3, r3, #2
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 254              		.loc 1 121 42 view .LVU53
- 255 0064 43EA8223 		orr	r3, r3, r2, lsl #10
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 256              		.loc 1 121 70 view .LVU54
- 257 0068 8278     		ldrb	r2, [r0, #2]	@ zero_extendqisi2
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 258              		.loc 1 121 61 view .LVU55
- 259 006a 43EA9213 		orr	r3, r3, r2, lsr #6
- 121:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
- 260              		.loc 1 121 22 view .LVU56
- 261 006e 2A49     		ldr	r1, .L19+32
- 262 0070 0B60     		str	r3, [r1]
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 263              		.loc 1 122 13 is_stmt 1 view .LVU57
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 264              		.loc 1 122 48 is_stmt 0 view .LVU58
- 265 0072 90F803C0 		ldrb	ip, [r0, #3]	@ zero_extendqisi2
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 266              		.loc 1 122 52 view .LVU59
- 267 0076 6424     		movs	r4, #100
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 268              		.loc 1 122 73 view .LVU60
- 269 0078 0179     		ldrb	r1, [r0, #4]	@ zero_extendqisi2
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 270              		.loc 1 122 65 view .LVU61
- 271 007a 04FB0C11 		mla	r1, r4, ip, r1
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 272              		.loc 1 122 33 view .LVU62
- 273 007e 07EE901A 		vmov	s15, r1	@ int
- 274 0082 F8EEE77A 		vcvt.f32.s32	s15, s15
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 275              		.loc 1 122 78 view .LVU63
- 276 0086 DFED256A 		vldr.32	s13, .L19+36
- 277 008a 87EEA67A 		vdiv.f32	s14, s15, s13
- 122:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
- 278              		.loc 1 122 31 view .LVU64
- 279 008e 85ED027A 		vstr.32	s14, [r5, #8]
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 280              		.loc 1 123 13 is_stmt 1 view .LVU65
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 281              		.loc 1 123 48 is_stmt 0 view .LVU66
- 282 0092 04FB03F3 		mul	r3, r4, r3
- 283 0096 07EE903A 		vmov	s15, r3	@ int
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 284              		.loc 1 123 81 view .LVU67
- 285 009a 1209     		lsrs	r2, r2, #4
-ARM GAS  /tmp/ccAOXidX.s 			page 9
+ 259              		.loc 1 160 61 view .LVU55
+ 260 006e 43EA9213 		orr	r3, r3, r2, lsr #6
+ 160:Drivers/MyDrivers/baro_mpl3115a2.c ****             data_u32 = (data_8[0] << 10) | (data_8[1] << 2) | (data_8[2] >> 6);
+ 261              		.loc 1 160 22 view .LVU56
+ 262 0072 2948     		ldr	r0, .L19+32
+ 263 0074 0360     		str	r3, [r0]
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 264              		.loc 1 161 13 is_stmt 1 view .LVU57
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 265              		.loc 1 161 48 is_stmt 0 view .LVU58
+ 266 0076 91F803C0 		ldrb	ip, [r1, #3]	@ zero_extendqisi2
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 267              		.loc 1 161 52 view .LVU59
+ 268 007a 6420     		movs	r0, #100
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 269              		.loc 1 161 73 view .LVU60
+ 270 007c 0979     		ldrb	r1, [r1, #4]	@ zero_extendqisi2
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 271              		.loc 1 161 65 view .LVU61
+ 272 007e 00FB0C11 		mla	r1, r0, ip, r1
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 273              		.loc 1 161 33 view .LVU62
+ 274 0082 07EE901A 		vmov	s15, r1	@ int
+ 275 0086 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 276              		.loc 1 161 78 view .LVU63
+ 277 008a DFED246A 		vldr.32	s13, .L19+36
+ 278 008e 87EEA67A 		vdiv.f32	s14, s15, s13
+ 161:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->temperature = (float)((data_8[3] * PRECISION) + data_8[4]) / PRECISION;
+ 279              		.loc 1 161 31 view .LVU64
+ 280 0092 84ED027A 		vstr.32	s14, [r4, #8]
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 281              		.loc 1 162 13 is_stmt 1 view .LVU65
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 282              		.loc 1 162 48 is_stmt 0 view .LVU66
+ 283 0096 00FB03F3 		mul	r3, r0, r3
+ 284 009a 07EE903A 		vmov	s15, r3	@ int
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 285              		.loc 1 162 81 view .LVU67
+ 286 009e 1209     		lsrs	r2, r2, #4
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 287              		.loc 1 162 63 view .LVU68
+ 288 00a0 07EE102A 		vmov	s14, r2	@ int
+ 289 00a4 B8EEC77A 		vcvt.f32.s32	s14, s14
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 290              		.loc 1 162 30 view .LVU69
+ 291 00a8 F8EE677A 		vcvt.f32.u32	s15, s15
+ 292 00ac 77EE877A 		vadd.f32	s15, s15, s14
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 293              		.loc 1 162 88 view .LVU70
+ 294 00b0 87EEA67A 		vdiv.f32	s14, s15, s13
+ 162:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
+ 295              		.loc 1 162 28 view .LVU71
+ 296 00b4 84ED007A 		vstr.32	s14, [r4]
+ 163:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
+ 297              		.loc 1 163 13 is_stmt 1 view .LVU72
+ 163:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 10
 
 
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 286              		.loc 1 123 63 view .LVU68
- 287 009c 07EE102A 		vmov	s14, r2	@ int
- 288 00a0 B8EEC77A 		vcvt.f32.s32	s14, s14
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 289              		.loc 1 123 30 view .LVU69
- 290 00a4 F8EE677A 		vcvt.f32.u32	s15, s15
- 291 00a8 77EE877A 		vadd.f32	s15, s15, s14
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 292              		.loc 1 123 88 view .LVU70
- 293 00ac 87EEA67A 		vdiv.f32	s14, s15, s13
- 123:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->pressure = (float)((data_u32 * PRECISION) + (float)(data_8[2] >> 4)) / PRECISION 
- 294              		.loc 1 123 28 view .LVU71
- 295 00b0 85ED007A 		vstr.32	s14, [r5]
- 124:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
- 296              		.loc 1 124 13 is_stmt 1 view .LVU72
- 124:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
- 297              		.loc 1 124 46 is_stmt 0 view .LVU73
- 298 00b4 DFED1A7A 		vldr.32	s15, .L19+40
- 299 00b8 C7EE277A 		vdiv.f32	s15, s14, s15
- 300 00bc 17EE900A 		vmov	r0, s15
- 301 00c0 FFF7FEFF 		bl	__aeabi_f2d
- 302              	.LVL9:
- 303 00c4 9FED0C1B 		vldr.64	d1, .L19
- 304 00c8 41EC100B 		vmov	d0, r0, r1
- 305 00cc FFF7FEFF 		bl	pow
- 306              	.LVL10:
- 307 00d0 53EC102B 		vmov	r2, r3, d0
- 124:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
- 308              		.loc 1 124 44 view .LVU74
- 309 00d4 0020     		movs	r0, #0
- 310 00d6 1349     		ldr	r1, .L19+44
- 311 00d8 FFF7FEFF 		bl	__aeabi_dsub
- 312              	.LVL11:
- 124:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
- 313              		.loc 1 124 39 view .LVU75
- 314 00dc 08A3     		adr	r3, .L19+8
- 315 00de D3E90023 		ldrd	r2, [r3]
- 316 00e2 FFF7FEFF 		bl	__aeabi_dmul
- 317              	.LVL12:
- 318 00e6 FFF7FEFF 		bl	__aeabi_d2f
- 319              	.LVL13:
- 124:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
- 320              		.loc 1 124 28 view .LVU76
- 321 00ea 6860     		str	r0, [r5, #4]	@ float
- 131:Drivers/MyDrivers/baro_mpl3115a2.c ****     return true;
- 322              		.loc 1 131 12 view .LVU77
- 323 00ec 0120     		movs	r0, #1
- 324 00ee A1E7     		b	.L12
- 325              	.L13:
- 112:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
- 326              		.loc 1 112 32 view .LVU78
- 327 00f0 0020     		movs	r0, #0
- 328 00f2 9FE7     		b	.L12
- 329              	.L20:
- 330 00f4 AFF30080 		.align	3
- 331              	.L19:
-ARM GAS  /tmp/ccAOXidX.s 			page 10
+ 298              		.loc 1 163 46 is_stmt 0 view .LVU73
+ 299 00b8 DFED197A 		vldr.32	s15, .L19+40
+ 300 00bc C7EE277A 		vdiv.f32	s15, s14, s15
+ 301 00c0 17EE900A 		vmov	r0, s15
+ 302 00c4 FFF7FEFF 		bl	__aeabi_f2d
+ 303              	.LVL9:
+ 304 00c8 9FED0B1B 		vldr.64	d1, .L19
+ 305 00cc 41EC100B 		vmov	d0, r0, r1
+ 306 00d0 FFF7FEFF 		bl	pow
+ 307              	.LVL10:
+ 308 00d4 53EC102B 		vmov	r2, r3, d0
+ 163:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
+ 309              		.loc 1 163 44 discriminator 1 view .LVU74
+ 310 00d8 0020     		movs	r0, #0
+ 311 00da 1249     		ldr	r1, .L19+44
+ 312 00dc FFF7FEFF 		bl	__aeabi_dsub
+ 313              	.LVL11:
+ 163:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
+ 314              		.loc 1 163 39 discriminator 1 view .LVU75
+ 315 00e0 07A3     		adr	r3, .L19+8
+ 316 00e2 D3E90023 		ldrd	r2, [r3]
+ 317 00e6 FFF7FEFF 		bl	__aeabi_dmul
+ 318              	.LVL12:
+ 319 00ea FFF7FEFF 		bl	__aeabi_d2f
+ 320              	.LVL13:
+ 163:Drivers/MyDrivers/baro_mpl3115a2.c ****             data->altitude = 44330.77 * (1 - pow((data->pressure/SEA_LEVEL_PRESSURE), 0.1902632));
+ 321              		.loc 1 163 28 discriminator 1 view .LVU76
+ 322 00ee 6060     		str	r0, [r4, #4]	@ float
+ 170:Drivers/MyDrivers/baro_mpl3115a2.c ****     return true;
+ 323              		.loc 1 170 12 view .LVU77
+ 324 00f0 0120     		movs	r0, #1
+ 325 00f2 A0E7     		b	.L12
+ 326              	.L13:
+ 143:Drivers/MyDrivers/baro_mpl3115a2.c ****     if(status != HAL_OK) return(false);
+ 327              		.loc 1 143 32 discriminator 1 view .LVU78
+ 328 00f4 0020     		movs	r0, #0
+ 329 00f6 9EE7     		b	.L12
+ 330              	.L20:
+ 331              		.align	3
+ 332              	.L19:
+ 333 00f8 71EFD066 		.word	1724968817
+ 334 00fc 8B5AC83F 		.word	1070094987
+ 335 0100 3D0AD7A3 		.word	-1546188227
+ 336 0104 58A5E540 		.word	1088791896
+ 337 0108 00000000 		.word	reg_data
+ 338 010c 00000000 		.word	baro_i2c
+ 339 0110 00000000 		.word	status
+ 340 0114 00000000 		.word	data_8
+ 341 0118 00000000 		.word	data_u32
+ 342 011c 0000C842 		.word	1120403456
+ 343 0120 00E7C547 		.word	1204152064
+ 344 0124 0000F03F 		.word	1072693248
+ 345              		.cfi_endproc
+ 346              	.LFE135:
+ 348              		.section	.bss.data_u32,"aw",%nobits
+ 349              		.align	2
+ 352              	data_u32:
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 11
 
 
- 332 00f8 71EFD066 		.word	1724968817
- 333 00fc 8B5AC83F 		.word	1070094987
- 334 0100 3D0AD7A3 		.word	-1546188227
- 335 0104 58A5E540 		.word	1088791896
- 336 0108 00000000 		.word	.LANCHOR1
- 337 010c 00000000 		.word	.LANCHOR0
- 338 0110 00000000 		.word	.LANCHOR2
- 339 0114 00000000 		.word	.LANCHOR3
- 340 0118 00000000 		.word	.LANCHOR4
- 341 011c 0000C842 		.word	1120403456
- 342 0120 00E7C547 		.word	1204152064
- 343 0124 0000F03F 		.word	1072693248
- 344              		.cfi_endproc
- 345              	.LFE135:
- 347              		.section	.bss.baro_i2c,"aw",%nobits
- 348              		.align	2
- 349              		.set	.LANCHOR0,. + 0
- 352              	baro_i2c:
  353 0000 00000000 		.space	4
  354              		.section	.bss.data_8,"aw",%nobits
  355              		.align	2
- 356              		.set	.LANCHOR3,. + 0
- 359              	data_8:
- 360 0000 00000000 		.space	6
- 360      0000
- 361              		.section	.bss.data_u32,"aw",%nobits
- 362              		.align	2
- 363              		.set	.LANCHOR4,. + 0
- 366              	data_u32:
- 367 0000 00000000 		.space	4
- 368              		.section	.bss.reg_data,"aw",%nobits
- 369              		.set	.LANCHOR1,. + 0
- 372              	reg_data:
- 373 0000 00       		.space	1
- 374              		.section	.bss.status,"aw",%nobits
- 375              		.set	.LANCHOR2,. + 0
- 378              	status:
- 379 0000 00       		.space	1
- 380              		.text
- 381              	.Letext0:
- 382              		.file 2 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h"
- 383              		.file 3 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h"
- 384              		.file 4 "App/Config/sensor_types.h"
- 385              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 386              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 387              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 388              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
- 389              		.file 9 "/usr/share/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/math.h"
-ARM GAS  /tmp/ccAOXidX.s 			page 11
+ 358              	data_8:
+ 359 0000 00000000 		.space	6
+ 359      0000
+ 360              		.section	.bss.status,"aw",%nobits
+ 363              	status:
+ 364 0000 00       		.space	1
+ 365              		.section	.bss.reg_data,"aw",%nobits
+ 368              	reg_data:
+ 369 0000 00       		.space	1
+ 370              		.section	.bss.baro_i2c,"aw",%nobits
+ 371              		.align	2
+ 374              	baro_i2c:
+ 375 0000 00000000 		.space	4
+ 376              		.text
+ 377              	.Letext0:
+ 378              		.file 2 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 379              		.file 3 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 380              		.file 4 "App/Config/sensor_types.h"
+ 381              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 382              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 383              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 384              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 385              		.file 9 "/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/arm-none-eabi/include/math.h"
+ARM GAS  /var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s 			page 12
 
 
 DEFINED SYMBOLS
-                            *ABS*:0000000000000000 baro_mpl3115a2.c
-     /tmp/ccAOXidX.s:20     .text.MPL3115A2_Init:0000000000000000 $t
-     /tmp/ccAOXidX.s:26     .text.MPL3115A2_Init:0000000000000000 MPL3115A2_Init
-     /tmp/ccAOXidX.s:143    .text.MPL3115A2_Init:0000000000000084 $d
-     /tmp/ccAOXidX.s:154    .text.MPL3115A2_Read:0000000000000000 $t
-     /tmp/ccAOXidX.s:160    .text.MPL3115A2_Read:0000000000000000 MPL3115A2_Read
-     /tmp/ccAOXidX.s:332    .text.MPL3115A2_Read:00000000000000f8 $d
-     /tmp/ccAOXidX.s:348    .bss.baro_i2c:0000000000000000 $d
-     /tmp/ccAOXidX.s:352    .bss.baro_i2c:0000000000000000 baro_i2c
-     /tmp/ccAOXidX.s:355    .bss.data_8:0000000000000000 $d
-     /tmp/ccAOXidX.s:359    .bss.data_8:0000000000000000 data_8
-     /tmp/ccAOXidX.s:362    .bss.data_u32:0000000000000000 $d
-     /tmp/ccAOXidX.s:366    .bss.data_u32:0000000000000000 data_u32
-     /tmp/ccAOXidX.s:372    .bss.reg_data:0000000000000000 reg_data
-     /tmp/ccAOXidX.s:373    .bss.reg_data:0000000000000000 $d
-     /tmp/ccAOXidX.s:378    .bss.status:0000000000000000 status
-     /tmp/ccAOXidX.s:379    .bss.status:0000000000000000 $d
+                            *ABS*:00000000 baro_mpl3115a2.c
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:21     .text.MPL3115A2_Init:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:27     .text.MPL3115A2_Init:00000000 MPL3115A2_Init
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:143    .text.MPL3115A2_Init:00000084 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:374    .bss.baro_i2c:00000000 baro_i2c
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:368    .bss.reg_data:00000000 reg_data
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:363    .bss.status:00000000 status
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:154    .text.MPL3115A2_Read:00000000 $t
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:160    .text.MPL3115A2_Read:00000000 MPL3115A2_Read
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:333    .text.MPL3115A2_Read:000000f8 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:358    .bss.data_8:00000000 data_8
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:352    .bss.data_u32:00000000 data_u32
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:349    .bss.data_u32:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:355    .bss.data_8:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:364    .bss.status:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:369    .bss.reg_data:00000000 $d
+/var/folders/5r/fplts1414czdxljy659l60kh0000gn/T//ccmEJ7of.s:371    .bss.baro_i2c:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_I2C_Mem_Write
